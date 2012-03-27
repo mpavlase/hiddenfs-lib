@@ -1,0 +1,5 @@
+*.bin
+*.o
+/mp3_examples/
+nbproject/
+Doxyfile
