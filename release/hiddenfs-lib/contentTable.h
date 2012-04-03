@@ -26,7 +26,7 @@ public:
 
     typedef map<inode_t, tableItem> table_t;
 
-    contentTable(structTable* ST);
+    contentTable();
     contentTable(const contentTable& orig);
     virtual ~contentTable();
 
@@ -48,19 +48,11 @@ public:
     void getMetadata(inode_t inode, tableItem* content);
 
     /**
-     * Přečte kompletní obsah virtuálního souboru ze všech fragmentů
-     * @param inode inode souboru
-     * @param buffer obsah souboru
-     * @param length délka souboru v bytech
-     */
-    void getContent(inode_t inode, char* buffer, size_t* length);
-
-    /**
      * Inicializuje vnitřní struktury pro ukložení fragmentů
-     * Je nutné volat ještě před jakoukoli manipulací s
+     * Je nutné volat ještě před jakoukoli manipulací s uskladněným inode
      * @param inode inode souboru
      */
-    void newContent(inode_t inode) throw (ExceptionInodeExists);
+    void newEmptyContent(inode_t inode) throw (ExceptionInodeExists);
 
     //void
 
@@ -68,7 +60,6 @@ public:
 private:
     /** map[inode_t] = tableItem */
     table_t table;
-    structTable* ST;
 };
 
 #endif	/* CONTENTTABLE_H */

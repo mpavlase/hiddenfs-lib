@@ -9,15 +9,17 @@
 
 #include <string>
 #include <sstream>
+#include <exception>
 #include "types.h"
 
 using namespace std;
 
 class ExceptionBase {
 public:
-    string toString() {
-        return this->msg;
+    const char* what() {
+        return this->msg.c_str();
     }
+    //virtual ~ExceptionBase() throw() = 0;
 
 protected:
     string msg;
@@ -27,7 +29,13 @@ class ExceptionFileNotFound: public ExceptionBase {
 public:
     ExceptionFileNotFound(inode_t inode) {
         stringstream s;
-        s << "Soubor " << inode << " nenalezen";
+        s << "Soubor s inode " << inode << " nenalezen";
+
+        this->msg = s.str();
+    }
+    ExceptionFileNotFound(string filename) {
+        stringstream s;
+        s << "Soubor s názvem" << filename << " nenalezen";
 
         this->msg = s.str();
     }
@@ -59,6 +67,15 @@ public:
         this->msg = s.str();
     }
 };
+
+class ExceptionRuntimeError: public ExceptionBase {
+public:
+    ExceptionRuntimeError(string str) {
+        this->msg = str;
+    }
+};
+
+
 
 #endif	/* EXCEPTIONS_H */
 

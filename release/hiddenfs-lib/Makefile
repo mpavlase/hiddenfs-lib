@@ -10,10 +10,11 @@ OUTPUT=$(PROJECT).bin
 
 CXX=g++
 CXXFLAGS=-g -Wall -pedantic
+CXXFLAGS=-g -std=c++98 -Wall
 OBJFILES=taglib-1.7/taglib/libtag.so
 OBJFILES=structTable.o contentTable.o hiddenfs-lib.o hashTable.o common.o
 
-.PHONY: all valgrind clean mount umount
+.PHONY: all valgrind clean mount umount doc
 
 all: $(PROJECT)
 
@@ -50,19 +51,28 @@ $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 
 $(PROJECT): $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
+	@echo "---"
+	@echo "Kompilace je OK."
 ###############################################
 valgrind: all
-	valgrind -v --leak-check=full ./$(OUTPUT)
+	valgrind -v --leak-check=full --show-reachable=yes ./$(OUTPUT) -d ./vfs
 
 mount: all
-	./$(OUTPUT) vfs/
+	./$(OUTPUT) -d vfs/
+
+debug: all umount
+	gdb -x list.gdb --args ./$(OUTPUT) -d ./vfs
 
 umount:
-	fusermount -u vfs/
+	./umount.sh
 
-run: all mount
-	@echo "Připojeno."
+run: umount all mount
+	@echo "mp3fs je už nyní odpojený."
+
+doc:
+	doxygen
 
 clean:
 	rm -f *.bin *.o *.a
+	rm -rf doc/html/*
 

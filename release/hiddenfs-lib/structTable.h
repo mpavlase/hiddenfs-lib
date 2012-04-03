@@ -15,6 +15,7 @@
 using namespace std;
 
 #include "types.h"
+#include <exception>
 #include "exceptions.h"
 
 
@@ -23,7 +24,10 @@ public:
     structTable();
     structTable(const structTable& orig);
     virtual ~structTable();
-    static const inode_t FIRST_INODE = 1;
+    static const inode_t ROOT_INODE = 1;
+    static const inode_t ERR_INODE = -1;
+    static const char PATH_DELIM = '/';
+    typedef map<inode_t, set<inode_t> > table_content_t;
 
     /**
      * user-friendly obsah tabulek
@@ -31,11 +35,11 @@ public:
     void print(void);
 
     /**
-     * Vytvoří nový soubor (přepíše hodnotu inode!)
-     * @param vFile očekává se vyplněná struktura (mimo složky inode)
+     * Vytvoří nový soubor (přepíše hodnotu inode!) a zapíše všechna potřebná metadata (především přiřazení k "parent")
+     * @param file očekává se vyplněná struktura (mimo složky inode)
      * @return inode přávě vloženého souboru
      */
-    inode_t newFile(vFile*);
+    inode_t newFile(vFile* file);
 
     /**
      * Odstraní soubor z tabulek
@@ -49,15 +53,65 @@ public:
      * @param parent inode nadřazeného adresáře
      * @param file podrobnosti o souboru
      */
-    void findFileByName(string filename, inode_t parent, vFile* file) throw (ExceptionFileNotFound);
+    void findFileByName(string filename, inode_t parent, vFile** file) throw (ExceptionFileNotFound);
 
     /**
      * Vyhledá soubor na základě inode, jinak vyhazuje výjimku "FileNotFound"
      * @param inode identifikátor souboru
      * @param file file podrobnosti o souboru
      */
-    void findFileByInode(inode_t inode, vFile* file) throw (ExceptionFileNotFound);
+    void findFileByInode(inode_t inode, vFile** file) throw (ExceptionFileNotFound);
 
+
+    /**
+     * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
+     * @param path absolutní cesta ve virtuálním systému souborů
+     * @return inode cílového adresáře
+     */
+    inode_t pathToInode(string path);
+    /**
+     * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
+     * @param path absolutní cesta ve virtuálním systému souborů
+     * @return inode cílového adresáře
+     */
+    inode_t pathToInode(const char* path);
+    /**
+     * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
+     * @param path absolutní cesta ve virtuálním systému souborů
+     * @param retFile naplní ukazatel na cílový soubor
+     * @return inode cílového adresáře
+     */
+    inode_t pathToInode(string path, vFile** retFile);
+    /**
+     * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
+     * @param path absolutní cesta ve virtuálním systému souborů
+     * @param retFile naplní ukazatel na cílový soubor
+     * @return inode cílového adresáře
+     */
+    inode_t pathToInode(const char* path, vFile** retFile);
+
+    /**
+     * Rozdělení cesty (path) na inode rodiče (parent) a zbylý název souboru (filename)
+     * @param path vstupní cesta pro překlad
+     * @param parent vrací inode rodiče po překladu základu cesty
+     * @param filename vrací zbylý název souboru z konce cesty
+     */
+    void splitPathToFilename(string path, inode_t* parent, string* filename);
+
+    /**
+     * Vrací iterátor na obsah virtuálního adresáře
+     * @param inode inode adresáře
+     * @return iterátor na seznam inode vnořených souborů
+     */
+    table_content_t::iterator directoryContent(inode_t inode);
+
+    /**
+     * Změní atribut 'parent' od inode na jiný. Funkce volající tuto metodu MUSÍ ZAJISTIT,
+     * aby se pod stejném 'parent' nevyskytovaly dva soubory stejného jména.
+     * @param inode inode souboru, kterému se má změnit nadřazený adresáč
+     * @param parent nový nadřazený adresář pro 'inode'
+     */
+    void moveInode(vFile* inode, inode_t parent);
 
 private:
     typedef map<inode_t, vFile* > table_t;
@@ -75,7 +129,7 @@ private:
      * Pomocná tabulka pro rychlejší vyhledávání v adresářích podle názvu
      * mapování: parent inode -> inodes (inode souborů uvnitř rodiče)
      */
-    map<inode_t, set<inode_t> > tableDirContent;
+    table_content_t tableDirContent;
 };
 
 #endif	/* STRUCTTABLE_H */

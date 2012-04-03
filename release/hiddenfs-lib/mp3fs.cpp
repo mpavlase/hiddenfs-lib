@@ -148,10 +148,10 @@ void mp3fs::storageRefreshIndex(string filename) {
             f.read(blok, N);
 
             source = *i;
-            StringSource(source, true, new HashFilter(hash, new HexEncoder(new StringSink(value))));
+            //StringSource(source, true, new HashFilter(hash, new HexEncoder(new StringSink(value))));
 
             this->HT->add(source, value);
-        }
+         }
 
         f.close();
     }
@@ -160,8 +160,19 @@ void mp3fs::storageRefreshIndex(string filename) {
 }
 
 int main(int argc, char* argv[]) {
+    int ret;
     mp3fs* fs = new mp3fs;
-    int ret = fs->run(argc, argv);
+
+    if(false) {
+        string a[2];
+        a[0] = "-d";
+        a[1] = "vfs/";
+        const char* argv2[] = {a[0].c_str(), a[1].c_str()};
+        int argc2 = 3;
+        ret = fs->run(argc2, (char**)argv2);
+    } else {
+        ret = fs->run(argc, argv);
+    }
 
     delete fs;
 

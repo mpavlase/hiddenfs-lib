@@ -14,8 +14,8 @@
 
 using namespace std;
 
-contentTable::contentTable(structTable* ST) {
-    this->ST = ST;
+contentTable::contentTable() {
+
 }
 
 contentTable::contentTable(const contentTable& orig) {
@@ -61,32 +61,13 @@ void contentTable::getMetadata(inode_t inode, tableItem* content) {
     content = &this->table[inode];
 }
 
-void contentTable::newContent(inode_t inode) throw (ExceptionInodeExists) {
+void contentTable::newEmptyContent(inode_t inode) throw (ExceptionInodeExists) {
     tableItem ti;
-    table_t::iterator it = this->table.find(inode);
+    table_t::iterator iter = this->table.find(inode);
 
-    if(it == table.end()) {
+    if(iter == table.end()) {
         this->table[inode] = ti;
     } else {
-        throw new ExceptionInodeExists(inode);
-    }
-}
-
-void contentTable::getContent(inode_t inode, char* buffer, size_t* length) {
-    tableItem* ti = NULL;
-    vFile* file = NULL;
-    size_t len = 0;
-
-    this->getMetadata(inode, ti);
-    this->ST->findFileByInode(inode, file);
-
-    buffer = new char[file->size];
-
-
-    for(map<int, vector<vBlock*> >::iterator i = ti->content.begin(); i !=  ti->content.end(); i++) {
-        for(vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++)
-        {
-            // spojit fragmenty dohromady
-        }
+        throw ExceptionInodeExists(inode);
     }
 }

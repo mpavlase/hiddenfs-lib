@@ -6,10 +6,18 @@
 
 
 #include "hiddenfs-lib.h"
-#include <fuse/fuse_common.h>
+#include "common.h"
+//#include <fuse/fuse_common.h>
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
+#include <sys/types.h>
+
+#include <exception>
+#include <assert.h>
+#include <errno.h>
+#include <fcntl.h>
 
 /*
 struct fuse_file_info {
@@ -101,7 +109,7 @@ void allocatorEngine::setStrategy(ALLOC_METHOD strategy) throw (ExceptionNotImpl
             ss << this->strategy;
             ss << "' is not implemented.";
 
-            throw new ExceptionNotImplemented(ss.str());
+            throw ExceptionNotImplemented(ss.str());
         }
     }
 
@@ -111,16 +119,19 @@ void allocatorEngine::setStrategy(ALLOC_METHOD strategy) throw (ExceptionNotImpl
 allocatorEngine::ALLOC_METHOD allocatorEngine::getStrategy() {
     return this->strategy;
 }
-// -----------------------------------------------
 
 hiddenFs::hiddenFs() {
     this->HT = new hashTable();
     this->ST = new structTable();
-    this->CT = new contentTable(this->ST);
+    this->CT = new contentTable();
     this->allocator = new allocatorEngine(this->CT);
 
     this->setAllocationMethod(allocatorEngine::SPEED);
     this->cacheHashTable = true;
+
+    /** výchozí délka bloku: 4kB */
+    //BLOCK_MAX_LENGTH = (1 << 12);
+    //this->BLOCK_LENGH = (1 << 10);
 }
 
 hiddenFs::~hiddenFs() {
@@ -130,59 +141,208 @@ hiddenFs::~hiddenFs() {
     delete this->allocator;
 }
 
+/** do stbuf nastavit délku souboru */
 int hiddenFs::fuse_getattr(const char* path, struct stat* stbuf) {
-/*
-int hiddenFs::fuse_getattr(const char* path, char* b, size_t c, off_t d, fuse_file_info* e) {
-    int res = 0;
+    int ret = 0;
+    inode_t inode;
+    vFile* file;
+    hiddenFs* hfs = GET_INSTANCE;
+
+    try {
+        inode = hfs->ST->pathToInode(path);
+        hfs->ST->findFileByInode(inode, &file);
+    } catch (ExceptionFileNotFound) {
+        return -ENOENT;
+    }
+
+
+
     memset(stbuf, 0, sizeof(struct stat));
-    if(strcmp(path, "/") == 0) {
-        stbuf->st_mode = S_IFDIR | 0755;
-        stbuf->st_nlink = 2;
+    stbuf->st_uid = getuid();
+    stbuf->st_gid = stbuf->st_uid;
+    stbuf->st_mode = S_IWUSR | S_IRUSR;
+    if(file->flags & vFile::FLAG_DIR) {
+        stbuf->st_mode |= S_IFDIR;
+    } else {
+        stbuf->st_mode |= S_IFREG;
+        stbuf->st_size = file->size;
     }
-    else if(strcmp(path, hello_path) == 0) {
-        stbuf->st_mode = S_IFREG | 0444;
-        stbuf->st_nlink = 1;
-        stbuf->st_size = strlen(hello_str);
-    }
-    else
-        res = -ENOENT;
-    return res;
-}
-*/
-    return 0;
+
+    cout << endl << "------------------------------------- \"" << path << "\" ---" << endl;
+
+    return ret;
 }
 
 int hiddenFs::fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i) {
+    cout << endl << "&&&&&&&&& &&&&&&& &&&&&&& &&&&&&& &&&&&&& &&&&&&&" << endl;
+    cout << "&&&&&&&&& &&&&&&& &&&&&&&      fuse_creat: " << path << endl;
+    cout << "&&&&&&&&& &&&&&&& &&&&&&& &&&&&&& &&&&&&& &&&&&&&" << endl << endl;
+
     inode_t inode;
     hiddenFs* hfs = GET_INSTANCE;
     vFile* file = new vFile;
 
+    hfs->ST->print();
+
     /// @todo nastavit mode podle 'mode'
     file->flags = vFile::FLAG_NONE | vFile::FLAG_READ | vFile::FLAG_WRITE | vFile::FLAG_EXECUTE;
 
+    hfs->ST->splitPathToFilename(path, &file->parent, &file->filename);
+
+    cout << print_vFile(file) << endl;
+
     inode = hfs->ST->newFile(file);
-    hfs->CT->newContent(inode);
+
+    hfs->ST->print();
+
+    hfs->CT->newEmptyContent(inode);
 
     return 0;
 }
 
-int hiddenFs::fuse_mkdir(const char* path, mode_t) {
+int hiddenFs::fuse_mkdir(const char* path, mode_t mode) {
     return 0;
 }
 
 int hiddenFs::fuse_open(const char* path, struct fuse_file_info* file_i) {
+    /*
+    int ret = 0;
+    inode_t inode;
+    vFile* file;
+    hiddenFs* hfs = GET_INSTANCE;
+
+    try {
+        inode = hfs->ST->pathToInode(path);
+        hfs->ST->findFileByInode(inode, &file);
+    } catch (ExceptionFileNotFound) {
+        return -ENOENT;
+    }
+    */
+
+    return 0;
+
+    // nemáme oprávnění pro čtení tohoto souboru
+    return -EACCES;
+
+    // soubor neexistuje
+    return -ENOENT;
     return 0;
 }
 
-int hiddenFs::fuse_read(const char* path, char*, size_t, off_t, struct fuse_file_info* file_i) {
-    return 0;
+int hiddenFs::fuse_read(const char* path, char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i) {
+
+    // 1) překlad cesty na cílový i-node
+    inode_t inode;
+    vFile* file;
+    hiddenFs* hfs = GET_INSTANCE;
+
+
+
+    cout << " <<<<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+    stringstream str;
+    str << "fuse_read('";
+    str << path;
+    str << "')\n";
+
+    try {
+        inode = hfs->ST->pathToInode(path, &file);
+        str << "length: " << file->size << "\n";
+    } catch (ExceptionFileNotFound) {
+        cout << " ## " << "path se nepodařilo přeložit na inode..." << " ##" << endl;
+        /** @todo po doladění fuse_read odkomentovat! */
+        //return -ENOENT;
+    }
+    cout << "Obsah souboru: -" << str.str() << "-" << endl;
+    size = str.str().length();
+    memcpy(buffer, str.str().c_str(), size);
+    cout << "buffer: -" << buffer << "-" << endl;
+    
+    return size;
+
+
+
+    // 2) načíst obsah
+    char* bufferContent;
+    size_t sizeContent;
+
+    hfs->getContent(file->inode, &bufferContent, &sizeContent);
+
+    // 3) naplnění obsahu
+    if(offset > sizeContent) {
+        // ochrana proti čtení "za soubor"
+        if(size + offset > sizeContent) {
+            size = sizeContent - offset;
+        }
+
+        memcpy(buffer, bufferContent + offset, size);
+    } else {
+        size = 0;
+    }
+
+    return size;
 }
 
-int hiddenFs::fuse_readdir(const char* path, void*, fuse_fill_dir_t, off_t, struct fuse_file_info* file_i) {
-    return 0;
+int hiddenFs::fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* file_i) {
+    inode_t inode;
+    vFile* file;
+    hiddenFs* hfs = GET_INSTANCE;
+    map<inode_t, set<inode_t> >::iterator it;
+
+    try {
+        inode = hfs->ST->pathToInode(path);
+        hfs->ST->findFileByInode(inode, &file);
+
+        it = hfs->ST->directoryContent(file->inode);
+        for(set<inode_t>::iterator i = it->second.begin(); i != it->second.end(); i++) {
+            // kořenový adresář nevypisovat, protože se jedná jen o logický záznam
+            if(*i == structTable::ROOT_INODE) {
+                continue;
+            }
+
+            hfs->ST->findFileByInode((*i), &file);
+            filler(buffer, file->filename.c_str(), NULL, 0);
+        }
+    } catch (ExceptionFileNotFound) {
+        return -ENOENT;
+    }
+
+    return -errno;
 }
 
 int hiddenFs::fuse_rename(const char* from, const char* to) {
+    inode_t inodeParent, inode;
+    string filenameTo;
+    hiddenFs* hfs = GET_INSTANCE;
+    vFile* fileFrom;
+    vFile* fileTo;
+
+    inode = hfs->ST->pathToInode(from);
+    hfs->ST->findFileByInode(inode, &fileFrom);
+
+    hfs->ST->splitPathToFilename(to, &inodeParent, &filenameTo);
+    try {
+        hfs->ST->findFileByName(filenameTo, inodeParent, &fileTo);
+
+        // v cílovém adresáři se už tento souboru nachází -> starý smazat
+        hfs->ST->removeFile(fileTo->inode);
+    } catch (ExceptionFileNotFound) { }
+
+    hfs->ST->moveInode(fileFrom, inodeParent);
+
+    fileFrom->filename = filenameTo;
+
+    // Přesouváme:
+
+    // 1) vyhledat "from"
+    // 2) vyhledat "to"
+    // 2a) pokud "to" EXISTUJE
+    //     - ST->removeFile(from) -- pouze obsah, cestu budeme pořebovat
+    //     - ST->moveFile(from(inode), to(inode) parent)
+    // 2b) pokud "to" NEEXISTUJE
+    //     - ST->moveFile(from(inode), to(inode) parent)
+
+    // přejmenování
+
     return 0;
 }
 
@@ -190,20 +350,34 @@ int hiddenFs::fuse_rmdir(const char* path) {
     return 0;
 }
 
-int hiddenFs::fuse_write(const char* path, const char*, size_t, off_t, struct fuse_file_info* file_i) {
-    return 0;
+int hiddenFs::fuse_write(const char* path, const char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i) {
+    //vFile* file;
+    inode_t inode;
+    hiddenFs* hfs = GET_INSTANCE;
+    vector<vBlock*> reserved;
+
+    inode = hfs->ST->pathToInode(path);
+
+
+    /// @todo toto už obstarává allocator, ne hiddenFS !!
+    hfs->CT->getReservedBlocks(inode, &reserved);
+
+    /// @todo vracet skutečný počet zapsaných bytů
+    return size;
 }
 
 int hiddenFs::run(int argc, char* argv[]) {
     string path;
 
+
+
     if(argc == 2) {
         path.assign(argv[1]);
     } else {
-        path.assign("../../mp3");
+        path.assign("../../mp3_examples");
     }
 
-    this->storageRefreshIndex(path);
+    //this->storageRefreshIndex(path);
 
     // 1) find boot-block
 
@@ -211,14 +385,35 @@ int hiddenFs::run(int argc, char* argv[]) {
 
     // 3) načíst ST, CT, HT
 
-    vFile* file = new vFile;
-    file->filename = "soubor1.txt";
-    file->flags = 0;
+    inode_t inode_ret;
+
+    vFile* file;
+    file = new vFile;
+    file->filename = "soubor2.txt";
+    file->flags = vFile::FLAG_NONE;
     file->parent = 1;
-    file->size = 100;
+    file->size = 37;
+    this->ST->newFile(file);
+
+    file = new vFile;
+    file->filename = "dir1";
+    file->flags = vFile::FLAG_DIR;
+    file->parent = 1;
+    file->size = 0;
+    inode_ret = this->ST->newFile(file);
+
+    file = new vFile;
+    file->filename = "souborJiný.txt";
+    file->flags = vFile::FLAG_NONE;
+    file->parent = inode_ret;
+    file->size = 123;
     this->ST->newFile(file);
     this->ST->print();
 
+    vFile* ftest;
+    this->ST->findFileByInode(1, &ftest);
+
+    /*
     char* content = new char[file->size];
     string content_string = "obsah souboru";
     size_t length = sizeof(content_string.c_str());
@@ -228,23 +423,26 @@ int hiddenFs::run(int argc, char* argv[]) {
 
     cout << endl;
     this->CT->print();
+    */
 
     // set allowed FUSE operations
-    struct fuse_operations fsOperations;
+    static struct fuse_operations fsOperations;
 
     fsOperations.getattr = this->fuse_getattr;
+    fsOperations.readdir = this->fuse_readdir;
     fsOperations.open = this->fuse_open;
     fsOperations.read = this->fuse_read;
     fsOperations.write = this->fuse_write;
     fsOperations.create  = this->fuse_create;
     fsOperations.rename  = this->fuse_rename;
-    fsOperations.mkdir  = this->fuse_mkdir;
-    fsOperations.rmdir  = this->fuse_rmdir;
-    fsOperations.readdir = this->fuse_readdir;
+    //fsOperations.mkdir  = this->fuse_mkdir;
+    //fsOperations.rmdir  = this->fuse_rmdir;
+
+    //delete [] content;
 
     // private data = pointer to actual instance
     /** @todo vyřazení FUSE z provozu!! */
-    //return fuse_main(argc, argv, &fsOperations, this);
+    return fuse_main(argc, argv, &fsOperations, this);
     return 0;
 }
 
@@ -256,3 +454,93 @@ void hiddenFs::setAllocationMethod(allocatorEngine::ALLOC_METHOD method) {
     this->allocator->setStrategy(method);
 }
 
+/*
+void hiddenFs::setBlockMaxLength(int length) {
+    this->BLOCK_MAX_LENGTH = length;
+}
+*/
+
+bool hiddenFs::checkSum(char* content, size_t contentLength, checksum_t checksum) {
+    /** @todo implementova CRC nebo jiný součtový algoritmus */
+    cout << "implementovat hiddenFs::checkSum!" << endl;
+    return true;
+}
+
+void hiddenFs::getContent(inode_t inode, char** buffer, size_t* length) {
+    contentTable::tableItem* ti = NULL;
+    vFile* file = NULL;
+    char* fragmentBuffer = new char[BLOCK_MAX_LENGTH];
+    size_t len = 0;                     // pozice posledního zapsaného fragmentu
+    *length = 0;
+    int counter = 0;                    // pořadové číslo posledního zapsaného fragmentu
+    size_t blockLenRet = 0;
+    size_t blockLen = 0;                // celková délka bloku (nejen jeho využitého obsahu)
+    size_t fragmentContentLen = 0;
+    blockContent* block = new blockContent;
+
+    this->CT->getMetadata(inode, ti);
+    this->ST->findFileByInode(inode, &file);
+
+    *buffer = new char[file->size];
+
+    for(map<int, vector<vBlock*> >::iterator i = ti->content.begin(); i !=  ti->content.end(); i++) {
+
+        // detekce chybějícího fragmentu
+        if(counter != i->first) {
+            stringstream ss;
+            ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
+            throw ExceptionRuntimeError(ss.str());
+        }
+
+        // nalezení prvního nepoškozeného bloku a připojení ke zbytku skutečného souboru
+        for(vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++)
+        {
+            blockLenRet = 0;
+            fragmentContentLen = (*j)->length;
+            blockLen = fragmentContentLen + sizeof(checksum_t);
+
+            blockLenRet = this->readBlock((*j)->hash, (*j)->block, fragmentBuffer, blockLen);
+
+            // podařilo se načíst fragment celý?
+            if(blockLenRet != blockLen) {
+                if(j == i->second.end()) {
+                    stringstream ss;
+                    ss << "Blok č. " << (*j)->block << " v souboru s hash " << (*j)->hash << " se nepodařilo načíst celý!";
+                    throw ExceptionRuntimeError(ss.str());
+                }
+
+                // pokusit se načíst další z kopie bloku
+                continue;
+            }
+
+            memcpy(block, fragmentBuffer, blockLen);
+
+            // není obsah poškozený?
+            if(!this->checkSum(fragmentBuffer, fragmentContentLen, block->checksum)) {
+                if(j == i->second.end()) {
+                    stringstream ss;
+                    ss << "Blok č. " << (*j)->block << " v souboru s hash " << (*j)->hash << " je poškozený!";
+                    throw ExceptionRuntimeError(ss.str());
+                }
+
+                // pokusit se načíst další z kopie bloku
+                continue;
+            }
+
+            /** @todo spojit dohromady */
+            memcpy(*buffer + len, block->content, fragmentContentLen);
+
+            counter++;
+            len += fragmentContentLen;
+            break;
+        }
+    }
+
+    if(len != file->size) {
+        stringstream ss;
+        ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
+        throw ExceptionRuntimeError(ss.str());
+    }
+
+    *length = len;
+}

@@ -15,8 +15,11 @@
 
 #define GET_INSTANCE (hiddenFs*) fuse_get_context()->private_data
 
+#define BLOCK_MAX_LENGTH (1 << 12)
+#define BLOCK_LENGH (1 << 10)
+
 using namespace std;
-struct fuse_file_info;
+//struct fuse_file_info;
 
 /**
  * Dohlíží nad alokací bloků
@@ -56,6 +59,12 @@ class hiddenFs {
 public:
     hiddenFs();
     virtual ~hiddenFs();
+    typedef int checksum_t;
+
+    struct blockContent {
+        checksum_t checksum;
+        char* content[BLOCK_MAX_LENGTH];
+    };
 
     /**
      * Main executable method
@@ -74,10 +83,16 @@ public:
 
 
     /**
-     * Set allocation strategy
-     * @param method type of allocation strategy
+     * Nastavuje druh strategie pro alokování bloků
+     * @param method druh alokace (enum)
      */
     void setAllocationMethod(allocatorEngine::ALLOC_METHOD method);
+
+    /**
+     * Nastaví maximální délku bloku, se kterou se bude operovat
+     * @param length délka bloku v bytech
+     */
+    //void setBlockMaxLength(int length);
 
 protected:
     /**
@@ -100,10 +115,27 @@ protected:
     virtual void writeBlock(string filename, T_BLOCK_NUMBER block, char* buff, size_t length) = 0;
 
     /**
-     * Rebuild content of hash table (mapping filename of real file to uniqe string)
-     * @param filename path to directory as storage
+     * Naplní hash tabulku (mapování cesty skutečného souboru na jednoznačný řetězec)
+     * @param filename umístění adresáře určeného jako úložiště (storage)
      */
     virtual void storageRefreshIndex(string filename) = 0;
+
+    /**
+     * Přečte kompletní obsah virtuálního souboru ze všech fragmentů
+     * @param inode inode souboru
+     * @param buffer obsah souboru (metoda sama alokuje obsah)
+     * @param length délka souboru v bytech
+     */
+    void getContent(inode_t inode, char** buffer, size_t* length);
+
+    /**
+     * Vypočítá kontrolní součet a vrací výsledek porovnání s referenčním
+     * @param content zkoumaná data
+     * @param lengthConten délka dat ke kontrole
+     * @param checksum referenční kontrolní součet
+     * @return blok je/není v pořádku
+     */
+    virtual bool checkSum(char* content, size_t contentLength, checksum_t checksum);
 
     contentTable* CT;
     structTable* ST;
@@ -113,15 +145,14 @@ protected:
     bool cacheHashTable;
 
     static int fuse_getattr(const char* path, struct stat* stbuf);
-    //static int fuse_getattr(const char* path, char* b, size_t c, off_t d, fuse_file_info* e);
     static int fuse_open(const char* path, struct fuse_file_info* file_i);
-    static int fuse_read(const char* path, char *, size_t, off_t, struct fuse_file_info* file_i);
-    static int fuse_write(const char* path, const char *, size_t, off_t, struct fuse_file_info* file_i);
-    // maybe fuse_release
-    static int fuse_create(const char* path, mode_t, struct fuse_file_info* file_i);
+    static int fuse_read(const char* path, char* buffer, size_t size, off_t length, struct fuse_file_info* file_i);
+    static int fuse_write(const char* path, const char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i);
+    // možná ještě fuse_release
+    static int fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i);
     static int fuse_rename(const char* from, const char* to);
-    static int fuse_mkdir(const char* path, mode_t);
+    static int fuse_mkdir(const char* path, mode_t mode);
     static int fuse_rmdir(const char* path);
-    static int fuse_readdir(const char* path, void *, fuse_fill_dir_t, off_t, struct fuse_file_info* file_i);
+    static int fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* file_i);
 };
 

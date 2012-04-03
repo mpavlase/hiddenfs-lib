@@ -8,9 +8,12 @@
 #define	COMMON_H
 
 #include <string>
+#include <iostream>
 #include "types.h"
+#include <errno.h>
 
 using namespace std;
+#define _D(f) cerr << "DEBUG: " << f << endl;
 
 string print_vFile(vFile* f);
 

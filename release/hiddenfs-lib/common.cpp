@@ -10,7 +10,24 @@
 
 string print_vFile(vFile* f) {
     stringstream ss;
-    ss << "inode: [" << f->inode << "], parent: [" << f->parent << "], fn: [" << f->filename << "], size: [" << f->size << "], flags: [" << f->flags << "]";
+    ss << "inode: [" << f->inode << "], parent: [" << f->parent << "], fn: [" << f->filename << "], size: [" << f->size << "], flags: [";
+
+    if(f->flags & vFile::FLAG_DIR) {
+        ss << "D";
+    }
+
+    if(f->flags & vFile::FLAG_READ) {
+        ss << "R";
+    }
+
+    if(f->flags & vFile::FLAG_WRITE) {
+        ss << "W";
+    }
+
+    if(f->flags & vFile::FLAG_EXECUTE) {
+        ss << "X";
+    }
+    ss<< "]";
 
     return ss.str();
 }
