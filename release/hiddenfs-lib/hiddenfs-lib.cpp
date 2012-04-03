@@ -148,6 +148,8 @@ int hiddenFs::fuse_getattr(const char* path, struct stat* stbuf) {
     vFile* file;
     hiddenFs* hfs = GET_INSTANCE;
 
+    cout << endl << "------------------------------------- \"" << path << "\" -- GET ATTR --" << endl;
+
     try {
         inode = hfs->ST->pathToInode(path);
         hfs->ST->findFileByInode(inode, &file);
@@ -155,7 +157,12 @@ int hiddenFs::fuse_getattr(const char* path, struct stat* stbuf) {
         return -ENOENT;
     }
 
-
+    cout << "-------------------------------------" << endl;
+    cout << print_vFile(file) << endl;
+    cout << "-------------------------------------" << endl;
+    hfs->ST->print();
+    cout << "-------------------------------------" << endl;
+    cout << "-------------------------------------" << endl;
 
     memset(stbuf, 0, sizeof(struct stat));
     stbuf->st_uid = getuid();
@@ -167,8 +174,6 @@ int hiddenFs::fuse_getattr(const char* path, struct stat* stbuf) {
         stbuf->st_mode |= S_IFREG;
         stbuf->st_size = file->size;
     }
-
-    cout << endl << "------------------------------------- \"" << path << "\" ---" << endl;
 
     return ret;
 }
@@ -201,6 +206,31 @@ int hiddenFs::fuse_create(const char* path, mode_t mode, struct fuse_file_info* 
 }
 
 int hiddenFs::fuse_mkdir(const char* path, mode_t mode) {
+    inode_t parent;
+    string pathStr = path;
+    string filename;
+    vFile* file;
+    hiddenFs* hfs = GET_INSTANCE;
+    cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+    cout << " << <<<<<<<<<" << path << "<<<<<<<<<< " << endl;
+    cout << " << mode: " << mode << endl;
+    cout << (mode|S_IFDIR) << endl;
+    cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+
+    hfs->ST->splitPathToFilename(pathStr, &parent, &filename);
+    hfs->ST->print();
+
+    file = new vFile;
+    file->flags |= vFile::FLAG_DIR;
+    file->filename = filename;
+    file->parent = parent;
+    hfs->ST->newFile(file);
+
+    cout << " <<<<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+    cout << " <<<<<<<<<<<" << path << "<<<<<<<<<< " << endl;
+    cout << "parent: " << parent << ", filename: " << filename << endl;
+    cout << " <<<<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+
     return 0;
 }
 
@@ -256,7 +286,7 @@ int hiddenFs::fuse_read(const char* path, char* buffer, size_t size, off_t offse
     size = str.str().length();
     memcpy(buffer, str.str().c_str(), size);
     cout << "buffer: -" << buffer << "-" << endl;
-    
+
     return size;
 
 
@@ -316,6 +346,16 @@ int hiddenFs::fuse_rename(const char* from, const char* to) {
     vFile* fileFrom;
     vFile* fileTo;
 
+    // Rozfázování jednotlivých operací:
+
+    // 1) vyhledat "from"
+    // 2) vyhledat "to"
+    // 2a) pokud "to" EXISTUJE
+    //     - ST->removeFile(from) -- pouze obsah, cestu budeme pořebovat
+    //     - ST->moveFile(from(inode), to(inode) parent)
+    // 2b) pokud "to" NEEXISTUJE
+    //     - ST->moveFile(from(inode), to(inode) parent)
+
     inode = hfs->ST->pathToInode(from);
     hfs->ST->findFileByInode(inode, &fileFrom);
 
@@ -331,18 +371,6 @@ int hiddenFs::fuse_rename(const char* from, const char* to) {
 
     fileFrom->filename = filenameTo;
 
-    // Přesouváme:
-
-    // 1) vyhledat "from"
-    // 2) vyhledat "to"
-    // 2a) pokud "to" EXISTUJE
-    //     - ST->removeFile(from) -- pouze obsah, cestu budeme pořebovat
-    //     - ST->moveFile(from(inode), to(inode) parent)
-    // 2b) pokud "to" NEEXISTUJE
-    //     - ST->moveFile(from(inode), to(inode) parent)
-
-    // přejmenování
-
     return 0;
 }
 
@@ -351,15 +379,17 @@ int hiddenFs::fuse_rmdir(const char* path) {
 }
 
 int hiddenFs::fuse_write(const char* path, const char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i) {
-    //vFile* file;
+    vFile* file;
     inode_t inode;
     hiddenFs* hfs = GET_INSTANCE;
     vector<vBlock*> reserved;
 
-    inode = hfs->ST->pathToInode(path);
-
+    inode = hfs->ST->pathToInode(path, &file);
+    /// @todo fake hodnota!
+    file->size = 30;
 
     /// @todo toto už obstarává allocator, ne hiddenFS !!
+    //hfs->allocator->
     hfs->CT->getReservedBlocks(inode, &reserved);
 
     /// @todo vracet skutečný počet zapsaných bytů
@@ -435,8 +465,8 @@ int hiddenFs::run(int argc, char* argv[]) {
     fsOperations.write = this->fuse_write;
     fsOperations.create  = this->fuse_create;
     fsOperations.rename  = this->fuse_rename;
-    //fsOperations.mkdir  = this->fuse_mkdir;
-    //fsOperations.rmdir  = this->fuse_rmdir;
+    fsOperations.mkdir  = this->fuse_mkdir;
+    fsOperations.rmdir  = this->fuse_rmdir;
 
     //delete [] content;
 
