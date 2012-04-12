@@ -4,33 +4,35 @@
  * Created on 23. březen 2012
  */
 
-#include "hashTable.h"
 #include "exceptions.h"
+#include "hashTable.h"
 
-hashTable::hashTable() {
-}
-
-hashTable::hashTable(const hashTable& orig) {
-}
-
-hashTable::~hashTable() {
-}
-
-void hashTable::find(T_HASH hash, string* filename) {
-    map<T_HASH, string>::iterator it = this->table.find(hash);
-    if(it != this->table.end()) {
-        *filename = it->second;
-    } else {
-        stringstream ss;
-        ss << hash;
-        throw ExceptionFileNotFound(ss.str());
+namespace HiddenFS {
+    hashTable::hashTable() {
     }
-}
 
-void hashTable::add(T_HASH hash, string filename) {
-    this->table[hash] = filename;
-}
+    hashTable::hashTable(const hashTable& orig) {
+    }
 
-void hashTable::clear() {
-    this->table.clear();
+    hashTable::~hashTable() {
+    }
+
+    void hashTable::find(T_HASH hash, std::string* filename) {
+        std::map<T_HASH, std::string>::iterator it = this->table.find(hash);
+        if(it != this->table.end()) {
+            *filename = it->second;
+        } else {
+            std::stringstream ss;
+            ss << hash;
+            throw ExceptionFileNotFound(ss.str());
+        }
+    }
+
+    void hashTable::add(T_HASH hash, std::string filename) {
+        this->table[hash] = filename;
+    }
+
+    void hashTable::clear() {
+        this->table.clear();
+    }
 }

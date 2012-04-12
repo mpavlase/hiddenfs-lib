@@ -4,11 +4,12 @@
  * Created on 14. březen 2012
  */
 
-#include <iostream>
+#include <dirent.h>
 #include <fstream>
+#include <iostream>
+#include <math.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <math.h>
 
 #include <cryptopp/sha.h>
 #include <cryptopp/filters.h>
@@ -20,12 +21,13 @@
 #include <taglib/generalencapsulatedobjectframe.h>
 #include <taglib/urllinkframe.h>
 
+
 #include "hiddenfs-lib.h"
 #include <stdexcept>
 
-class mp3fs : public hiddenFs {
+class mp3fs : public HiddenFS::hiddenFs {
 public:
-    typedef vector<string> dirlist_t;
+    typedef std::vector<std::string> dirlist_t;
     /** množství skrytých dat na jeden fyzický soubor */
     static const float STEGO_RATIO = 0.1;
     static const char PATH_DELIMITER = '/';
@@ -39,8 +41,8 @@ public:
 protected:
     virtual size_t readBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length);
     virtual void writeBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length);
-    virtual void storageRefreshIndex(string filename);
-    virtual void* createContext(string filename);
+    virtual void storageRefreshIndex(std::string filename);
+    virtual void* createContext(std::string filename);
     virtual void listAvaliableBlocks(void* context, std::set<T_BLOCK_NUMBER>* blocks);
     virtual void freeContext(void* context);
     virtual void removeBlock(void* context, T_BLOCK_NUMBER block);
@@ -68,8 +70,8 @@ private:
      * @param input input strint
      * @return lowercase string
      */
-    string toLowerString(string input) {
-        string output = input;
+    std::string toLowerString(std::string input) {
+        std::string output = input;
 
         for(unsigned int i = 0; i < output.length(); i++) {
             output[i] = tolower(output[i]);
@@ -84,7 +86,7 @@ private:
      * @param filterParam find files only matching for this extensions
      * @param output list of found files
      */
-    void scanDir(string path, vector<string> &filter, dirlist_t &output);
+    void scanDir(std::string path, std::vector<std::string> &filter, dirlist_t &output);
 
 };
 
@@ -93,7 +95,7 @@ void mp3fs::listAvaliableBlocks(void* contextParam, std::set<T_BLOCK_NUMBER>* bl
     *blocks = context->avaliableBlocks;
 }
 
-void* mp3fs::createContext(string filename) {
+void* mp3fs::createContext(std::string filename) {
     context_t* context = new context_t;
 
     context->file = new TagLib::MPEG::File(filename.c_str());
@@ -111,7 +113,7 @@ void* mp3fs::createContext(string filename) {
     context->maxBlocks = floor(pureContentLength * STEGO_RATIO / BLOCK_MAX_LENGTH);
 
     std::cout << "max blocks [" << filename << "] = " << context->maxBlocks;
-    std::cout << ", stat.len=" << stBuff.st_size << ", pure len=" << pureContentLength << "poč. GEOB:" << flm.size() << std::endl;
+    std::cout << ", stat.len=" << stBuff.st_size << ", pure len=" << pureContentLength << "poč. GEOB:" << flm.size() << "\n";
 
     return (void*) context;
 }
@@ -126,7 +128,7 @@ void mp3fs::freeContext(void* contextParam) {
     delete context;
 }
 
-void mp3fs::scanDir(string path, vector<string> &filter, dirlist_t &output) {
+void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_t &output) {
     // cesta musí vždky končit lomítkem
     if(path[path.length() - 1] != PATH_DELIMITER) {
         path += PATH_DELIMITER;
@@ -135,13 +137,13 @@ void mp3fs::scanDir(string path, vector<string> &filter, dirlist_t &output) {
     DIR* d = opendir(path.c_str());
     struct dirent* item;
     size_t pos;
-    string filename, filepath;
-    string filterLower, filenameLower;
+    std::string filename, filepath;
+    std::string filterLower, filenameLower;
 
     //printf("aktualni dir: %s\n", path.c_str());
 
     while((item = readdir(d))) {
-        filename = string(item->d_name);
+        filename = std::string(item->d_name);
         filepath = path + filename;
 
         if(item->d_type == DT_DIR) {
@@ -160,13 +162,13 @@ void mp3fs::scanDir(string path, vector<string> &filter, dirlist_t &output) {
             filter.push_back("");
         }
 
-        for(vector<string>::iterator i = filter.begin(); i != filter.end(); i++) {
+        for(std::vector<std::string>::iterator i = filter.begin(); i != filter.end(); i++) {
             filterLower = toLowerString(*i);
             filenameLower = toLowerString(filename);
 
             pos = filenameLower.rfind(filterLower);
 
-            if(pos != string::npos && pos == (filename.length() - filterLower.length())) {
+            if(pos != std::string::npos && pos == (filename.length() - filterLower.length())) {
                 //cout << path  << filename << " ...ok" << endl;
                 output.push_back(filepath);
                 break;
@@ -225,7 +227,7 @@ size_t mp3fs::readBlock(void* contextParam, T_BLOCK_NUMBER block, char* buff, si
         }
     }
 
-    throw runtime_error("Block not found.");
+    throw ExceptionRuntimeError("Block not found.");
 
     /*
     FrameList::ConstIterator it;
@@ -277,15 +279,17 @@ void mp3fs::writeBlock(void* contextParam, T_BLOCK_NUMBER block, char* buff, siz
     // blok s tímto číslem ještě neexistuje, proto je nutné jej založit ručně
     newGeob->setFileName(filename);
     newGeob->setObject(bv);
+    context->tag->addFrame(newGeob);
 
+    // odstranit číslo tohoto bloku ze seznamu volných
     context->avaliableBlocks.erase(block);
 }
 
-void mp3fs::storageRefreshIndex(string filename) {
+void mp3fs::storageRefreshIndex(std::string filename) {
     dirlist_t l;
     ifstream f;
 
-    vector<string> filter;
+    std::vector<std::string> filter;
     filter.push_back(".mp3");
 
     this->scanDir(filename, filter, l);
@@ -296,7 +300,7 @@ void mp3fs::storageRefreshIndex(string filename) {
     long delka_sum = 0;
     char* blok = new char[N+1];
 
-    string source, value;
+    std::string source, value;
     CryptoPP::SHA1 hash;
 
     for(dirlist_t::iterator i = l.begin(); i != l.end(); i++) {

@@ -3,13 +3,13 @@
  *
  * Created on 24. březen 2012
  */
-
-#include "common.h"
 #include <sstream>
 #include <string>
 
-string print_vFile(vFile* f) {
-    stringstream ss;
+#include "common.h"
+
+std::string print_vFile(vFile* f) {
+    std::stringstream ss;
     ss << "inode: [" << f->inode << "], parent: [" << f->parent << "], fn: [" << f->filename << "], size: [" << f->size << "], flags: [";
 
     if(f->flags & vFile::FLAG_DIR) {
@@ -32,8 +32,8 @@ string print_vFile(vFile* f) {
     return ss.str();
 }
 
-string print_vBlock(vBlock* b) {
-    stringstream ss;
+std::string print_vBlock(vBlock* b) {
+    std::stringstream ss;
     ss << "(";
     if(b->used == BLOCK_IN_USE) {
         ss << "[U]";

@@ -7,92 +7,81 @@
 #ifndef EXCEPTIONS_H
 #define	EXCEPTIONS_H
 
+#include <exception>
+#include <stdexcept>
 #include <string>
 #include <sstream>
-#include <exception>
+
 #include "types.h"
 
-using namespace std;
+#ifndef _E
+/*
+#define _E _eXc(__FILE__, __LINE__, __FUNCTION__)
+std::string _eXc(std::string file, int l, std::string fn) {
+    std::stringstream ss;
+    ss << fn << "() -> " << file << ":" << l << " ";
+    return ss.str();
+}
+*/
+#endif
 
-class ExceptionBase {
+
+class ExceptionFileNotFound: public std::runtime_error {
 public:
-    const char* what() {
-        return this->msg.c_str();
-    }
-    //virtual ~ExceptionBase() throw() = 0;
-
-protected:
-    string msg;
-};
-
-class ExceptionFileNotFound: public ExceptionBase {
-public:
-    ExceptionFileNotFound(inode_t inode) {
-        stringstream s;
+    ExceptionFileNotFound(inode_t inode) : std::runtime_error("ExceptionFileNotFound") {
+        std::stringstream s;
         s << "Soubor s inode " << inode << " nenalezen";
 
-        this->msg = s.str();
+        throw runtime_error(s.str());
     }
-    ExceptionFileNotFound(string filename) {
-        stringstream s;
+    ExceptionFileNotFound(std::string filename) : std::runtime_error("ExceptionFileNotFound") {
+        std::stringstream s;
         s << "Soubor s názvem" << filename << " nenalezen";
 
-        this->msg = s.str();
+        throw runtime_error(s.str());
     }
 };
 
-class ExceptionNotImplemented: public ExceptionBase {
+class ExceptionNotImplemented: public std::runtime_error {
 public:
-    ExceptionNotImplemented(string msg) {
-        this->msg = msg;
-    }
+    ExceptionNotImplemented(std::string msg) : std::runtime_error(msg) {}
 };
 
-class ExceptionBlockNotFound: public ExceptionBase {
+class ExceptionBlockNotFound: public std::runtime_error {
 public:
-    ExceptionBlockNotFound(string msg) {
-        this->msg = msg;
-    }
-    ExceptionBlockNotFound() {
-        this->msg.clear();
-    }
+    ExceptionBlockNotFound(std::string msg) : std::runtime_error(msg) {}
+    ExceptionBlockNotFound() : std::runtime_error("ExceptionBlockNotFound") {}
 };
 
-class ExceptionInodeExists: public ExceptionBase {
+class ExceptionInodeExists: public std::runtime_error {
 public:
-    ExceptionInodeExists(inode_t inode) {
-        stringstream s;
+    ExceptionInodeExists(inode_t inode) : std::runtime_error("") {
+        std::stringstream s;
         s << "Inode " << inode << " již existuje!";
 
-        this->msg = s.str();
+        throw runtime_error(s.str());
     }
 };
 
-class ExceptionBlockOutOfRange: public ExceptionBase {
+class ExceptionBlockOutOfRange: public std::runtime_error {
 public:
-    ExceptionBlockOutOfRange(T_BLOCK_NUMBER b) {
-        stringstream s;
+    ExceptionBlockOutOfRange(T_BLOCK_NUMBER b) : std::runtime_error("") {
+        std::stringstream s;
         s << "Blok " << b << " je mimo rozsah aktuálního souboru!";
 
-        this->msg = s.str();
+        throw runtime_error(s.str());
     }
 };
 
-class ExceptionRuntimeError: public ExceptionBase {
+class ExceptionRuntimeError: public std::runtime_error {
 public:
-    ExceptionRuntimeError(string str) {
-        this->msg = str;
-    }
+    ExceptionRuntimeError(std::string str) : std::runtime_error(str) {}
 };
 
-class ExceptionDiscFull: public ExceptionBase {
+class ExceptionDiscFull: public std::runtime_error {
 public:
-    ExceptionDiscFull(string str) {
-        this->msg = str;
-    }
-    ExceptionDiscFull() {
-        this->msg.clear();
-    }
+    ExceptionDiscFull(std::string str) : std::runtime_error(str) {}
+    ExceptionDiscFull() : std::runtime_error("ExceptionDiscFull") {}
 };
 
 

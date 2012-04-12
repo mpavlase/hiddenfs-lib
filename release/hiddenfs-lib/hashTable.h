@@ -7,41 +7,42 @@
 #ifndef HASHTABLE_H
 #define	HASHTABLE_H
 
-#include <string>
 #include <map>
+#include <string>
+
 #include "types.h"
 
-using namespace std;
-
-/**
- * Bidirectional mapping real file path and its uniqe hash string
- */
-class hashTable {
-public:
-    hashTable();
-    hashTable(const hashTable& orig);
-
+namespace HiddenFS {
     /**
-     * Vyhledání v tabulce (mapování hash -> název souboru)
-     * @param hash hash řetězec souboru
-     * @param path umístění skutečného souboru
+     * Bidirectional mapping real file path and its uniqe hash string
      */
-    void find(T_HASH hash, string* filename);
+    class hashTable {
+    public:
+        hashTable();
+        hashTable(const hashTable& orig);
 
-    /**
-     * Vloží nový záznam do hash tabulky
-     * @param hash vypočítaný hash z obsahu souboru
-     * @param filename umístění skutečného souboru
-     */
-    void add(T_HASH hash, string filename);
+        /**
+         * Vyhledání v tabulce (mapování hash -> název souboru)
+         * @param hash hash řetězec souboru
+         * @param path umístění skutečného souboru
+         */
+        void find(T_HASH hash, std::string* filename);
 
-    /**
-     * Remove all items from table
-     */
-    void clear();
-    virtual ~hashTable();
-private:
-    map<T_HASH, string> table;
+        /**
+         * Vloží nový záznam do hash tabulky
+         * @param hash vypočítaný hash z obsahu souboru
+         * @param filename umístění skutečného souboru
+         */
+        void add(T_HASH hash, std::string filename);
+
+        /**
+         * Remove all items from table
+         */
+        void clear();
+        virtual ~hashTable();
+    private:
+        std::map<T_HASH, std::string> table;
+    };
 };
 
 #endif	/* HASHTABLE_H */

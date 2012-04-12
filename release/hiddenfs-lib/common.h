@@ -7,13 +7,14 @@
 #ifndef COMMON_H
 #define	COMMON_H
 
-#include <string>
-#include <iostream>
-#include "types.h"
-#include "exceptions.h"
 #include <errno.h>
+#include <iostream>
+#include <string>
 
-#define _D(f) std::cerr << "DEBUG: " << f << std::endl;
+#include "exceptions.h"
+#include "types.h"
+
+#define _D(f) std::cerr << "DEBUG: " << f << "\n";
 
 std::string print_vFile(vFile* f);
 
