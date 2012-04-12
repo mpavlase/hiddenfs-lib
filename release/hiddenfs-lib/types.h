@@ -11,16 +11,14 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 /** data type of number of block inside real storage item */
 typedef unsigned int T_BLOCK_NUMBER;
 typedef int inode_t;
 typedef char flags_t;
-typedef string T_HASH;
+typedef std::string T_HASH;
 
-const int BLOCK_IN_USE = 1;
-const int BLOCK_RESERVED = 0;
+const int BLOCK_IN_USE = true;
+const int BLOCK_RESERVED = false;
 
 /**
  * Reprezentace virtuálního souboru - skrývaného souboru
@@ -59,7 +57,7 @@ struct vFile {
     size_t size;
 
     /** název skrývaného souboru */
-    string filename;
+    std::string filename;
 
     /** příznaky souboru (D, RWX) */
     flags_t flags;
@@ -77,7 +75,7 @@ struct vBlock {
     int fragment;
 
     /** příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED) */
-    int used;
+    bool used;
 
     /** délka využité části bloku (délka blockContent.content) */
     size_t length;

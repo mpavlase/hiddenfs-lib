@@ -11,11 +11,9 @@
 #include <map>
 #include <set>
 #include <vector>
-
-using namespace std;
+#include <exception>
 
 #include "types.h"
-#include <exception>
 #include "exceptions.h"
 
 
@@ -53,14 +51,14 @@ public:
      * @param parent inode nadřazeného adresáře
      * @param file podrobnosti o souboru
      */
-    void findFileByName(string filename, inode_t parent, vFile** file) throw (ExceptionFileNotFound);
+    void findFileByName(std::string filename, inode_t parent, vFile** file);
 
     /**
      * Vyhledá soubor na základě inode, jinak vyhazuje výjimku "FileNotFound"
      * @param inode identifikátor souboru
      * @param file file podrobnosti o souboru
      */
-    void findFileByInode(inode_t inode, vFile** file) throw (ExceptionFileNotFound);
+    void findFileByInode(inode_t inode, vFile** file);
 
 
     /**
@@ -68,7 +66,7 @@ public:
      * @param path absolutní cesta ve virtuálním systému souborů
      * @return inode cílového adresáře
      */
-    inode_t pathToInode(string path);
+    inode_t pathToInode(std::string path);
     /**
      * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
      * @param path absolutní cesta ve virtuálním systému souborů
@@ -81,7 +79,7 @@ public:
      * @param retFile naplní ukazatel na cílový soubor
      * @return inode cílového adresáře
      */
-    inode_t pathToInode(string path, vFile** retFile);
+    inode_t pathToInode(std::string path, vFile** retFile);
     /**
      * Překlad cesty ("/dir1/dir2/dir3") na inode (dir3)
      * @param path absolutní cesta ve virtuálním systému souborů
@@ -96,14 +94,16 @@ public:
      * @param parent vrací inode rodiče po překladu základu cesty
      * @param filename vrací zbylý název souboru z konce cesty
      */
-    void splitPathToFilename(string path, inode_t* parent, string* filename);
+    void splitPathToFilename(std::string path, inode_t* parent, std::string* filename);
 
     /**
      * Vrací iterátor na obsah virtuálního adresáře
      * @param inode inode adresáře
      * @return iterátor na seznam inode vnořených souborů
      */
-    table_content_t::iterator directoryContent(inode_t inode);
+    table_content_t::iterator directoryContent(inode_t inode) {
+        return this->tableDirContent.find(inode);
+    }
 
     /**
      * Změní atribut 'parent' od inode na jiný. Funkce volající tuto metodu MUSÍ ZAJISTIT,

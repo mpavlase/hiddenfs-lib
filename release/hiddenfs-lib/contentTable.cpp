@@ -63,6 +63,10 @@ void contentTable::getMetadata(inode_t inode, tableItem* content) {
 
 void contentTable::newEmptyContent(inode_t inode) throw (ExceptionInodeExists) {
     tableItem ti;
+    ti.reservedBytes = 0;
+    ti.content.clear();
+    ti.reserved.clear();
+
     table_t::iterator iter = this->table.find(inode);
 
     if(iter == table.end()) {

@@ -48,6 +48,16 @@ public:
     }
 };
 
+class ExceptionBlockNotFound: public ExceptionBase {
+public:
+    ExceptionBlockNotFound(string msg) {
+        this->msg = msg;
+    }
+    ExceptionBlockNotFound() {
+        this->msg.clear();
+    }
+};
+
 class ExceptionInodeExists: public ExceptionBase {
 public:
     ExceptionInodeExists(inode_t inode) {
@@ -72,6 +82,16 @@ class ExceptionRuntimeError: public ExceptionBase {
 public:
     ExceptionRuntimeError(string str) {
         this->msg = str;
+    }
+};
+
+class ExceptionDiscFull: public ExceptionBase {
+public:
+    ExceptionDiscFull(string str) {
+        this->msg = str;
+    }
+    ExceptionDiscFull() {
+        this->msg.clear();
     }
 };
 

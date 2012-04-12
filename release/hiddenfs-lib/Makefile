@@ -2,16 +2,14 @@
 # @author Martin Pavlásek (xpavla07@stud.fit.vutbr.cz)
 #
 
-INCLUDE=-Itaglib-1.7/include -Itaglib-1.7/taglib -Itaglib-1.7
 INCLUDE=
 
 PROJECT=mp3fs
 OUTPUT=$(PROJECT).bin
 
-CXX=g++
+CXX=gcc
 CXXFLAGS=-g -Wall -pedantic
-CXXFLAGS=-g -std=c++98 -Wall
-OBJFILES=taglib-1.7/taglib/libtag.so
+CXXFLAGS=-g -std=c++0x -Wall
 OBJFILES=structTable.o contentTable.o hiddenfs-lib.o hashTable.o common.o
 
 .PHONY: all valgrind clean mount umount doc
@@ -20,10 +18,7 @@ all: $(PROJECT)
 
 # taglib:
 #	cmake taglib-1.7/
-#	cd taglib-1.7; make
-
-#hiddenfs-lib.a: hiddenfs-lib.cpp
-#	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o hiddenfs-lib.a hiddenfs-lib.cpp
+#	make -f taglib-1.7/Makefile
 
 structTable.o: structTable.h structTable.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o structTable.o structTable.cpp
@@ -40,9 +35,6 @@ common.o: common.h common.cpp
 hiddenfs-lib.o: hiddenfs-lib.h hiddenfs-lib.cpp
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o hiddenfs-lib.o hiddenfs-lib.cpp
 
-taglib:
-	cd taglib-1.7; cmake -DBUILD_SHARED_LIBS=OFF taglib-1.7/; make
-
 $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o $(PROJECT).o $(PROJECT).cpp
 
@@ -50,7 +42,7 @@ $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 #	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` -lcrypto++ $(INCLUDE) $(PROJECT).o $(OBJFILES) -o $(OUTPUT)
 
 $(PROJECT): $(PROJECT).cpp $(OBJFILES)
-	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
+	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ `pkg-config taglib --libs` `pkg-config taglib --cflags` -lm $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
 	@echo "---"
 	@echo "Kompilace je OK."
 ###############################################

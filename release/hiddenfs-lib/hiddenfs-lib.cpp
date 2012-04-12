@@ -63,70 +63,164 @@ struct fuse_file_info {
 
 using namespace std;
 
-allocatorEngine::allocatorEngine(contentTable* CT) {
-    this->CT = CT;
+void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock* block, T_HASH hash) {
+    /// @todo doimplementovat!
+    throw ExceptionBlockNotFound();
 }
 
-void allocatorEngine::allocate(inode_t inode, char* content, size_t length) {
-    switch(this->strategy) {
-        /**
-         * Maximálně využít úložiště
-         */
-        case SPEED: {
+void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock* block, T_HASH exclude) {
+    /// @todo doimplementovat!
+    throw ExceptionBlockNotFound();
+}
 
+void hiddenFs::allocatorFindFreeBlock_any(vBlock* block) {
+    /// @todo doimplementovat!
+    throw ExceptionBlockNotFound();
+}
 
-            break;
-        }
-
-        /**
-         * Do jednoho fyzického souboru alokovat max. jeden virtuální soubor
-         */
-        case SECURITY: {
-
-            break;
-        }
-
-        /**
-         * Jeden blok ukládat do více fragmentů
-         */
-        case REDUNDANCY: {
-
-            break;
+// hotovo
+void hiddenFs::allocatorFindFreeBlock_any(vBlock* block, T_HASH prefered) {
+    try {
+        this->allocatorFindFreeBlock_sameHash(block, prefered);
+    } catch(ExceptionBlockNotFound) {
+        // i tato metoda může vyhazovat výjimku ExceptionBlockNotFound,
+        // což je v pořádku akorát to znamená, že v systému se už nenacházejí žádné volné bloky.
+        try {
+             this->allocatorFindFreeBlock_differentHash(block, prefered);
+        } catch (ExceptionBlockNotFound) {
+            throw ExceptionDiscFull();
         }
     }
 }
 
-void allocatorEngine::setStrategy(ALLOC_METHOD strategy) throw (ExceptionNotImplemented) {
-    switch(strategy) {
-        case SPEED:
-        case SECURITY:
-        case REDUNDANCY: {
-            break;
+size_t hiddenFs::allocatorAllocate(inode_t inode, const char* buffer, size_t lengthParam, off_t offsetParam) {
+    vFile* file;
+    size_t length;
+    unsigned int redundancyCompleted;
+    off_t offset;
+    string filePath;
+    vBlock block;
+
+    map<int, vector<vBlock*> >::iterator mapit;
+    vector<vBlock*>::iterator vectit;
+    contentTable::tableItem cTableItem;
+
+    this->ST->findFileByInode(inode, &file);
+
+    // len(CRC) = 4B
+    // len(BLOK) = 100B
+    // len(fragment) = len(BLOK) - len(CRC)
+    // BLOK = fragment + CRC
+
+    // 1) rozdělit celý soubor na fragmenty
+    // 2) vypočítat počet bloků (myslet na redundanci!)
+    // 3) načíst stávající obsah do bufferu pro případ obnovy
+    // 4) v cyklu uložit fragmenty do bloků
+    // - pokud se něco pokazí vrátit chybovou ERRNO
+
+    /*
+    /// Maximálně využít úložiště - do jednoho fyzického souboru ukládat bloky více virtuálních souborů
+    if((this->allocatorFlags & ALLOCATOR_SPEED) != 0) {
+            // size = požadovaná délka pro uložení
+            // 1) if size > allocated + reserved
+            this->CT->getMetadata(inode, &cTableItem);
+
+            // pro uložení nového obsahu máme k dispozici dostatek místa
+            if(cTableItem.reservedBytes + file->size <= lengthParam) {
+                offset = 0;
+
+                // průchod přes všechny již obsazené bloky
+                for(mapit = cTableItem.content.begin(); mapit != cTableItem.content.end(); mapit++) {
+                       redundancyCompleted = 0;
+                    for(vectit = mapit->second.begin(); vectit != mapit->second.end(); vectit++) {
+
+                        // omezení počtu kopií (=množství redundance)
+                        if(redundancyCompleted >= this->allocatorRedundancy) {
+                            break;
+                        }
+
+                        try {
+                            this->allocatorFindFreeBlock_any(&block, (*vectit)->hash);
+                        } catch(ExceptionDiscFull) {
+                            /// @todo doimplementovat!
+                        }
+
+                        this->HT->find(block.hash, &filePath);
+                        /// @todo dump vBlock do bufferu
+                        //this->writeBlock(filePath, block.block, buff, length);
+                        redundancyCompleted++;
+                    } // konec vectit
+
+                    //offset += délka zapsaného bloku
+
+                } // konec mapit
+            } // konec eventuality, pokud máme k dispozici dost rezervovaných bloků
+    }
+    */
+
+        /** security
+         * Do jednoho fyzického souboru alokovat max. jeden virtuální soubor
+         */
+         /// @todo doimplementovat!
+
+        /** redundant
+         * Jeden blok ukládat do více fragmentů
+         */
+        /// @todo doimplementovat!
+
+    // "Na disku není dostatek místa"
+    throw ExceptionDiscFull();
+}
+
+void hiddenFs::allocatorSetStrategy(unsigned char strategy, unsigned int redundancy = 1) throw (ExceptionNotImplemented) {
+    this->allocatorFlags = 0;
+    unsigned int defaultRedundancy = 1;
+
+    // příznaky ALLOCATOR_SECURITY a ALLOCATOR_SPEED jsou navzájem výlučné
+    if((strategy & ALLOCATOR_SECURITY) > 0) {
+        this->allocatorFlags = (this->allocatorFlags & ~ALLOCATOR_SPEED) | ALLOCATOR_SECURITY;
+    }
+
+    if((strategy & ALLOCATOR_SPEED) > 0) {
+        this->allocatorFlags = (this->allocatorFlags & ~ALLOCATOR_SECURITY) | ALLOCATOR_SPEED;
+    }
+
+    if((strategy & ALLOCATOR_REDUNDANCY) > 0) {
+        this->allocatorFlags = this->allocatorFlags | ALLOCATOR_REDUNDANCY;
+        if(redundancy > 0) {
+            this->allocatorRedundancy = redundancy;
+        } else {
+            _D("hiddenFs::allocatorSetStrategy - množství redundance musí být > 0 (nastavuji na " << defaultRedundancy << ").");
+            this->allocatorRedundancy = defaultRedundancy;
         }
+    } else {
+        this->allocatorRedundancy = defaultRedundancy;
+    }
+
+        /*
         default: {
             stringstream ss;
             ss << "allocatorEngine::allocate - strategy '";
-            ss << this->strategy;
+            ss << this->allocatorStrategy;
             ss << "' is not implemented.";
 
             throw ExceptionNotImplemented(ss.str());
         }
-    }
-
-    this->strategy = strategy;
+        */
 }
 
-allocatorEngine::ALLOC_METHOD allocatorEngine::getStrategy() {
-    return this->strategy;
+/*
+hiddenFs::ALLOC_METHOD hiddenFs::allocatorGetStrategy() {
+    return this->allocatorStrategy;
 }
+*/
 
 hiddenFs::hiddenFs() {
     this->HT = new hashTable();
     this->ST = new structTable();
     this->CT = new contentTable();
-    this->allocator = new allocatorEngine(this->CT);
 
-    this->setAllocationMethod(allocatorEngine::SPEED);
+    this->allocatorSetStrategy(ALLOCATOR_SPEED);
     this->cacheHashTable = true;
 
     /** výchozí délka bloku: 4kB */
@@ -138,7 +232,6 @@ hiddenFs::~hiddenFs() {
     delete this->CT;
     delete this->HT;
     delete this->ST;
-    delete this->allocator;
 }
 
 /** do stbuf nastavit délku souboru */
@@ -235,20 +328,7 @@ int hiddenFs::fuse_mkdir(const char* path, mode_t mode) {
 }
 
 int hiddenFs::fuse_open(const char* path, struct fuse_file_info* file_i) {
-    /*
-    int ret = 0;
-    inode_t inode;
-    vFile* file;
-    hiddenFs* hfs = GET_INSTANCE;
-
-    try {
-        inode = hfs->ST->pathToInode(path);
-        hfs->ST->findFileByInode(inode, &file);
-    } catch (ExceptionFileNotFound) {
-        return -ENOENT;
-    }
-    */
-
+    // povolit otevření souboru
     return 0;
 
     // nemáme oprávnění pro čtení tohoto souboru
@@ -318,7 +398,12 @@ int hiddenFs::fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t fille
     hiddenFs* hfs = GET_INSTANCE;
     map<inode_t, set<inode_t> >::iterator it;
 
+    /// @todo přidání následujících dvou řádek způsobuje SEGFAULT - jak je to možně?
+    //filler(buffer, ".", NULL, 0);
+    //filler(buffer, "..", NULL, 0);
+
     try {
+
         inode = hfs->ST->pathToInode(path);
         hfs->ST->findFileByInode(inode, &file);
 
@@ -375,6 +460,11 @@ int hiddenFs::fuse_rename(const char* from, const char* to) {
 }
 
 int hiddenFs::fuse_rmdir(const char* path) {
+    cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+    cout << " << <<<<<<<<<" << path << "<<<<<<<<<< " << endl;
+    cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< " << endl;
+    throw "hiddenFs::fuse_rmdir ještě není implementované!";
+
     return 0;
 }
 
@@ -382,15 +472,17 @@ int hiddenFs::fuse_write(const char* path, const char* buffer, size_t size, off_
     vFile* file;
     inode_t inode;
     hiddenFs* hfs = GET_INSTANCE;
-    vector<vBlock*> reserved;
+    size_t writeSize = 0;
 
     inode = hfs->ST->pathToInode(path, &file);
     /// @todo fake hodnota!
     file->size = 30;
 
-    /// @todo toto už obstarává allocator, ne hiddenFS !!
-    //hfs->allocator->
-    hfs->CT->getReservedBlocks(inode, &reserved);
+    try {
+        writeSize = hfs->allocatorAllocate(inode, buffer, size, offset);
+    } catch (ExceptionDiscFull) {
+        return -ENOSPC;
+    }
 
     /// @todo vracet skutečný počet zapsaných bytů
     return size;
@@ -406,6 +498,8 @@ int hiddenFs::run(int argc, char* argv[]) {
     } else {
         path.assign("../../mp3_examples");
     }
+
+    this->readBlock("funnyman.mp3", 3, NULL, 0);
 
     //this->storageRefreshIndex(path);
 
@@ -480,20 +574,18 @@ void hiddenFs::enableCacheHashTable(bool cache) {
     this->cacheHashTable = cache;
 }
 
-void hiddenFs::setAllocationMethod(allocatorEngine::ALLOC_METHOD method) {
-    this->allocator->setStrategy(method);
-}
-
-/*
-void hiddenFs::setBlockMaxLength(int length) {
-    this->BLOCK_MAX_LENGTH = length;
-}
-*/
-
 bool hiddenFs::checkSum(char* content, size_t contentLength, checksum_t checksum) {
     /** @todo implementova CRC nebo jiný součtový algoritmus */
     cout << "implementovat hiddenFs::checkSum!" << endl;
     return true;
+}
+
+void hiddenFs::reconstructBlock(vBlock** block, char* buffer, size_t length) {
+
+}
+
+void hiddenFs::dumpBlock(vBlock* block, char* buffer, size_t length) {
+
 }
 
 void hiddenFs::getContent(inode_t inode, char** buffer, size_t* length) {
@@ -573,4 +665,26 @@ void hiddenFs::getContent(inode_t inode, char** buffer, size_t* length) {
     }
 
     *length = len;
+}
+
+
+size_t hiddenFs::readBlock(string filename, T_BLOCK_NUMBER block, char* buff, size_t length) {
+    void* context;
+    size_t ret;
+
+    context = this->createContext(filename);
+    ret = this->readBlock(context, block, buff, length);
+    this->flushContext(context);
+    this->freeContext(context);
+
+    return ret;
+}
+
+void hiddenFs::writeBlock(string filename, T_BLOCK_NUMBER block, char* buff, size_t length) {
+    void* context;
+
+    context = this->createContext(filename);
+    this->writeBlock(context, block, buff, length);
+    this->flushContext(context);
+    this->freeContext(context);
 }

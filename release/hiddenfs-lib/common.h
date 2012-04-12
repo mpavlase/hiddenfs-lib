@@ -10,14 +10,14 @@
 #include <string>
 #include <iostream>
 #include "types.h"
+#include "exceptions.h"
 #include <errno.h>
 
-using namespace std;
-#define _D(f) cerr << "DEBUG: " << f << endl;
+#define _D(f) std::cerr << "DEBUG: " << f << std::endl;
 
-string print_vFile(vFile* f);
+std::string print_vFile(vFile* f);
 
-string print_vBlock(vBlock* b);
+std::string print_vBlock(vBlock* b);
 
 #endif	/* COMMON_H */
 

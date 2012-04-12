@@ -5,6 +5,7 @@
  */
 
 #include "hashTable.h"
+#include "exceptions.h"
 
 hashTable::hashTable() {
 }
@@ -15,8 +16,15 @@ hashTable::hashTable(const hashTable& orig) {
 hashTable::~hashTable() {
 }
 
-string hashTable::find(T_HASH hash) {
-    return this->table[hash];
+void hashTable::find(T_HASH hash, string* filename) {
+    map<T_HASH, string>::iterator it = this->table.find(hash);
+    if(it != this->table.end()) {
+        *filename = it->second;
+    } else {
+        stringstream ss;
+        ss << hash;
+        throw ExceptionFileNotFound(ss.str());
+    }
 }
 
 void hashTable::add(T_HASH hash, string filename) {

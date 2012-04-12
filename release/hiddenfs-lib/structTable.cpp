@@ -43,7 +43,7 @@ structTable::~structTable() {
 
 
 
-void structTable::findFileByInode(inode_t inode, vFile** file) throw (ExceptionFileNotFound)  {
+void structTable::findFileByInode(inode_t inode, vFile** file) {
     table_t::iterator i = table.find(inode);
 
     if(i == table.end()) {
@@ -53,7 +53,7 @@ void structTable::findFileByInode(inode_t inode, vFile** file) throw (ExceptionF
     *file = i->second;
 }
 
-void structTable::findFileByName(string filename, inode_t parent, vFile** file) throw (ExceptionFileNotFound)  {
+void structTable::findFileByName(string filename, inode_t parent, vFile** file) {
     set<inode_t> dirContent = this->tableDirContent[parent];
     vFile* tmpFile = NULL;
 
@@ -204,10 +204,6 @@ inode_t structTable::pathToInode(string path, vFile** retFile) {
     }
 
     return inode;
-}
-
-map<inode_t, set<inode_t> >::iterator structTable::directoryContent(inode_t inode) {
-    return this->tableDirContent.find(inode);
 }
 
 void structTable::splitPathToFilename(string path, inode_t* parent, string* filename) {

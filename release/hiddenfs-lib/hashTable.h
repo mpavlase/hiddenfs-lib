@@ -22,18 +22,17 @@ public:
     hashTable(const hashTable& orig);
 
     /**
-     * Mapping hash to real file
-     * @param hash hash of file
-     * @return path to real file
+     * Vyhledání v tabulce (mapování hash -> název souboru)
+     * @param hash hash řetězec souboru
+     * @param path umístění skutečného souboru
      */
-    string find(T_HASH hash);
+    void find(T_HASH hash, string* filename);
 
     /**
-     * Insert new item to hash table
-     * @param hash calculated hash
-     * @param filename path of real file
+     * Vloží nový záznam do hash tabulky
+     * @param hash vypočítaný hash z obsahu souboru
+     * @param filename umístění skutečného souboru
      */
-    //void add(T_HASH hash, string& filename);
     void add(T_HASH hash, string filename);
 
     /**

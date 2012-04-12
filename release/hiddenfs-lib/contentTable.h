@@ -7,7 +7,6 @@
 #ifndef CONTENTTABLE_H
 #define	CONTENTTABLE_H
 
-#include <map>
 #include "types.h"
 #include "exceptions.h"
 #include "structTable.h"
@@ -20,7 +19,13 @@ using namespace std;
 class contentTable {
 public:
     typedef struct {
+        /** množina rezervovaných bloků nad rámec bloků v atributu content */
         set<vBlock*> reserved;
+
+        /** součet délek všech rezervovaných bloků */
+        size_t reservedBytes;
+
+        /** množina obsazených bloků; mapování: číslo fragmentu -> pole bloků, které uchovávají obsah fragmentu */
         map<int, vector<vBlock*> > content;
     } tableItem;
 
