@@ -38,9 +38,6 @@ hiddenfs-lib.o: hiddenfs-lib.h hiddenfs-lib.cpp
 $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o $(PROJECT).o $(PROJECT).cpp
 
-# $(PROJECT): $(PROJECT).o $(OBJFILES)
-#	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` -lcrypto++ $(INCLUDE) $(PROJECT).o $(OBJFILES) -o $(OUTPUT)
-
 $(PROJECT): $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ `pkg-config taglib --libs` `pkg-config taglib --cflags` -lm $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
 	@echo "---"

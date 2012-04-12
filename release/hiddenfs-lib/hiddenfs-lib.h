@@ -166,7 +166,14 @@ protected:
      * @param filename adresa ke skutečnému souboru, odkud se má blok smazat
      * @param block číslo bloku ke smazání
      */
-    virtual void removeBlock(string filename, T_BLOCK_NUMBER block) = 0;
+    void removeBlock(string filename, T_BLOCK_NUMBER block);
+
+    /**
+     * Pokusí se zcela odstranit zadaný blok z fyzického souboru
+     * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
+     * @param block číslo bloku ke smazání
+     */
+    virtual void removeBlock(void* context, T_BLOCK_NUMBER block) = 0;
 
     /**
      * Uvolní naalokované prostředky pro skutečný soubor

@@ -181,9 +181,20 @@ void mp3fs::scanDir(string path, vector<string> &filter, dirlist_t &output) {
 
 void mp3fs::removeBlock(void* contextParam, T_BLOCK_NUMBER block) {
     context_t* context = (context_t*) contextParam;
+    TagLib::ID3v2::GeneralEncapsulatedObjectFrame* geob;
+    std::string filename = this->genFilenameByBlock(block);
+    TagLib::ID3v2::FrameList flm = context->tag->frameListMap()["GEOB"];
+
+    for(TagLib::ID3v2::FrameList::Iterator i = flm.begin(); i != flm.end(); i++) {
+        geob = (TagLib::ID3v2::GeneralEncapsulatedObjectFrame*) (*i);
+
+        if(geob->fileName() == filename) {
+            context->tag->removeFrame(geob, true);
+            break;
+        }
+    }
 
     context->avaliableBlocks.insert(block);
-
 }
 
 size_t mp3fs::readBlock(void* contextParam, T_BLOCK_NUMBER block, char* buff, size_t length) {

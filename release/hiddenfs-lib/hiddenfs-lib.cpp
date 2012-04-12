@@ -7,7 +7,6 @@
 
 #include "hiddenfs-lib.h"
 #include "common.h"
-//#include <fuse/fuse_common.h>
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -685,6 +684,15 @@ void hiddenFs::writeBlock(string filename, T_BLOCK_NUMBER block, char* buff, siz
 
     context = this->createContext(filename);
     this->writeBlock(context, block, buff, length);
+    this->flushContext(context);
+    this->freeContext(context);
+}
+
+void hiddenFs::removeBlock(string filename, T_BLOCK_NUMBER block) {
+    void* context;
+
+    context = this->createContext(filename);
+    this->removeBlock(context, block);
     this->flushContext(context);
     this->freeContext(context);
 }
