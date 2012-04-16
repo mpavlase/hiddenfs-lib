@@ -8,39 +8,84 @@
 
 #include "common.h"
 
-std::string print_vFile(vFile* f) {
-    std::stringstream ss;
-    ss << "inode: [" << f->inode << "], parent: [" << f->parent << "], fn: [" << f->filename << "], size: [" << f->size << "], flags: [";
+namespace HiddenFS {
 
-    if(f->flags & vFile::FLAG_DIR) {
-        ss << "D";
+    std::string print_vFile(vFile* f) {
+        std::stringstream ss;
+
+        ss << "inode: [" << f->inode << "], parent: [" << f->parent << "], fn: [" << f->filename << "], size: [" << f->size << "], flags: [";
+
+        if(f->flags & vFile::FLAG_DIR) {
+            ss << "D";
+        }
+
+        if(f->flags & vFile::FLAG_READ) {
+            ss << "R";
+        }
+
+        if(f->flags & vFile::FLAG_WRITE) {
+            ss << "W";
+        }
+
+        if(f->flags & vFile::FLAG_EXECUTE) {
+            ss << "X";
+        }
+
+        ss<< "]";
+
+        return ss.str();
     }
 
-    if(f->flags & vFile::FLAG_READ) {
-        ss << "R";
+    std::string print_vBlock(vBlock* b) {
+        std::stringstream ss;
+        ss << "(";
+
+        if(b->used == BLOCK_IN_USE) {
+            ss << "[U]";
+        } else {
+            ss << "[R]";
+        }
+
+        ss << ", " << b->hash << ", b: " << b->block << ", f#: " << b->fragment << ")";
+
+        return ss.str();
     }
 
-    if(f->flags & vFile::FLAG_WRITE) {
-        ss << "W";
+    CRC::CRC() {
+        this->make_crc_table();
     }
 
-    if(f->flags & vFile::FLAG_EXECUTE) {
-        ss << "X";
+    void CRC::make_crc_table(void) {
+        unsigned long c;
+        int n, k;
+
+        for (n = 0; n < 256; n++) {
+            c = (unsigned long) n;
+
+            for (k = 0; k < 8; k++) {
+                if (c & 1) {
+                    c = 0xedb88320L ^ (c >> 1);
+                } else {
+                    c = c >> 1;
+                }
+            }
+
+            crc_table[n] = c;
+        }
     }
-    ss<< "]";
 
-    return ss.str();
-}
+    CRC::CRC_t CRC::update_crc(CRC_t crc, unsigned char *buf, int len) {
+        CRC_t c = crc ^ 0xffffffffL;
+        int n;
 
-std::string print_vBlock(vBlock* b) {
-    std::stringstream ss;
-    ss << "(";
-    if(b->used == BLOCK_IN_USE) {
-        ss << "[U]";
-    } else {
-        ss << "[R]";
+        for (n = 0; n < len; n++) {
+            c = crc_table[(c ^ buf[n]) & 0xff] ^ (c >> 8);
+        }
+
+        return c ^ 0xffffffffL;
     }
-    ss << ", " << b->hash << ", b: " << b->block << ", f#: " << b->fragment << ")";
 
-    return ss.str();
+    CRC::CRC_t CRC::calculate(unsigned char *buf, int len) {
+        return this->update_crc(0L, buf, len);
+    }
 }

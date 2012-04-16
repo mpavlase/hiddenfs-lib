@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <string.h>
 
 #include "common.h"
 #include "contentTable.h"
@@ -31,6 +32,57 @@ namespace HiddenFS {
                 }
             }
         }
+    }
+
+    void contentTable::serialize(unsigned char** ouputParam, size_t* sizeParam) {
+        size_t itemLength;
+
+        std::stringbuf stream;
+        itemLength = sizeof(vBlock);
+        const size_t chunkSize = itemLength * 500;
+        size_t offset = 0;
+        unsigned char* buff = new unsigned char[chunkSize];
+
+        // zjištění počtu dále zpracovaných bloků
+        // iterace přes všechny soubory
+        for(table_t::const_iterator i = this->table.begin(); i != this->table.end(); i++) {
+            // iterace přes všechny fragmenty souboru
+            for(std::map<int, std::vector<vBlock*> >::const_iterator j = i->second.content.begin(); j != i->second.content.begin(); j++) {
+                // iterace přes všechny bloky fragmentů
+                for(std::vector<vBlock*>::const_iterator k = j->second.begin(); k != j->second.end(); k++) {
+                    // hrubá kopie struktury
+                    memcpy(buff + offset, (void*) &((*k)->hash), (*k)->hash.length());
+                    offset += (*k)->hash.length();
+                    memcpy(buff + offset, (void*) &((*k)->block), sizeof(T_BLOCK_NUMBER));
+                    offset += sizeof(T_BLOCK_NUMBER);
+                    memcpy(buff + offset, (void*) &((*k)->fragment), sizeof(size_t));
+                    offset += sizeof(size_t);
+                    memcpy(buff + offset, (void*) &((*k)->used), sizeof(bool));
+                    offset += sizeof(bool);
+                    memcpy(buff + offset, (void*) &((*k)->length), sizeof(size_t));
+                    offset += sizeof(size_t);
+                    //stream.sputn((const char*) (*j), itemLength);
+                }
+            }
+        }
+
+        if(true) {
+            // výpočet délky a alokace bufferu
+            /*
+            stream.seekg(std::ios::end);
+            *sizeParam = stream.tellg();
+            *ouputParam = new unsigned char[*sizeParam];
+
+            stream.seekg(std::ios::end);
+            stream.read(*ouputParam, *sizeParam);
+            */
+        } else {
+            //throw ExceptionRuntimeError("");
+        }
+    }
+
+    void contentTable::deserialize(unsigned char* input, size_t size) {
+
     }
 
     void contentTable::getReservedBlocks(inode_t inode, std::vector<vBlock*>* reserved) {

@@ -11,6 +11,7 @@
 
 #include "types.h"
 #include "contentTable.h"
+#include "common.h"
 #include "structTable.h"
 #include "hashTable.h"
 
@@ -41,16 +42,15 @@ private:
  */
 
 namespace HiddenFS {
-    
+
     class hiddenFs {
     public:
         hiddenFs();
         virtual ~hiddenFs();
 
-        typedef int checksum_t;
         struct blockContent {
-            checksum_t checksum;
-            char* content[BLOCK_MAX_LENGTH];
+            CRC::CRC_t checksum;
+            unsigned char content[BLOCK_MAX_LENGTH];
         };
 
         /** maximální využití každého fyzického souboru (více virtuálních souborů v rámci jednoho fyzického) */
@@ -61,6 +61,8 @@ namespace HiddenFS {
 
         /** uložení jednoho bloku se provede několikanásobně do různých fyzických souborů */
         static const char ALLOCATOR_REDUNDANCY = 1 << 7;
+
+
 
         /**
          * Nastaví preferovanou strategii pro alokování nových bloků
@@ -93,6 +95,18 @@ namespace HiddenFS {
         void enableCacheHashTable(bool);
 
     protected:
+        contentTable* CT;
+        structTable* ST;
+        hashTable* HT;
+        unsigned char allocatorFlags;
+
+        /** množství duplikace dat */
+        unsigned int allocatorRedundancy;
+
+        /** instance objektu pro výpočet kontrolního součtu */
+        CRC* checksum;
+
+        bool cacheHashTable;
 
         /**
          * Vyhledá (=naalokuje) vhodný počet bloků a zapíše do nich obsah jednotlivých fragmentů
@@ -160,7 +174,7 @@ namespace HiddenFS {
          * Naplní parametr blocks seznamem čísel bloků, které je možné použít pro nové bloky
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          */
-        virtual void listAvaliableBlocks(void* context, std::set<T_BLOCK_NUMBER>* blocks) = 0;
+        virtual void listAvaliableBlocks(void* context, std::set<T_BLOCK_NUMBER>* blocks) const = 0;
 
         /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
@@ -206,7 +220,7 @@ namespace HiddenFS {
          * @param length maximální délka bloku
          * @return skutečně načtená délka bloku
          */
-        virtual size_t readBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length) = 0;
+        virtual size_t readBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length) const = 0;
 
         /**
          * Provádí zápis bloku do skutečného souboru
@@ -246,8 +260,9 @@ namespace HiddenFS {
          * @param lengthConten délka dat ke kontrole
          * @param checksum referenční kontrolní součet
          * @return blok je/není v pořádku
+         * @deprecated
          */
-        virtual bool checkSum(char* content, size_t contentLength, checksum_t checksum);
+        //virtual bool checkSum(char* content, size_t contentLength, checksum_t checksum);
 
         /**
          * Provádí dump struktury vBlock do bufferu
@@ -265,13 +280,24 @@ namespace HiddenFS {
          */
         void reconstructBlock(vBlock** block, char* buffer, size_t length);
 
-        contentTable* CT;
-        structTable* ST;
-        hashTable* HT;
-        unsigned char allocatorFlags;
-        unsigned int allocatorRedundancy;
+        /**
+         * Obecné rozhraní pro šifrování "čehokoli"
+         * @param input vstup pro zašifrování
+         * @param length délka vstupu, pokud je nutné ji předat samostatně
+         * @return zašifrovaný vstup
+         */
+        virtual std::string encrypt(std::string input) {
+            return "#" + input + "|";
+        };
 
-        bool cacheHashTable;
+        /**
+         * Obecné rozhraní pro dešifrování řetězce
+         * @param input zašifrovaný řetězec
+         * @return původní řetězec
+         */
+        virtual std::string decrypt(std::string input) {
+            return input.substr(1, input.size() - 2);
+        };
 
         static int fuse_getattr(const char* path, struct stat* stbuf);
         static int fuse_open(const char* path, struct fuse_file_info* file_i);

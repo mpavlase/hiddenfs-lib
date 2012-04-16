@@ -38,8 +38,9 @@ hiddenfs-lib.o: hiddenfs-lib.h hiddenfs-lib.cpp
 $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o $(PROJECT).o $(PROJECT).cpp
 
+# `pkg-config taglib --libs` `pkg-config taglib --cflags` 
 $(PROJECT): $(PROJECT).cpp $(OBJFILES)
-	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ `pkg-config taglib --libs` `pkg-config taglib --cflags` -lm $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
+	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ -lid3 -lm $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
 	@echo "---"
 	@echo "Kompilace je OK."
 ###############################################

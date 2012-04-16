@@ -9,6 +9,7 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <assert.h>
 #include <errno.h>
@@ -219,19 +220,19 @@ namespace HiddenFS {
         this->HT = new hashTable();
         this->ST = new structTable();
         this->CT = new contentTable();
+        this->checksum = new CRC;
+
+        std::cout << sizeof(vBlock) << std::endl;
 
         this->allocatorSetStrategy(ALLOCATOR_SPEED);
         this->cacheHashTable = true;
-
-        /** výchozí délka bloku: 4kB */
-        //BLOCK_MAX_LENGTH = (1 << 12);
-        //this->BLOCK_LENGH = (1 << 10);
     }
 
     hiddenFs::~hiddenFs() {
-        delete this->CT;
         delete this->HT;
         delete this->ST;
+        delete this->CT;
+        delete this->checksum;
     }
 
     /** do stbuf nastavit délku souboru */
@@ -360,7 +361,7 @@ namespace HiddenFS {
         } catch (ExceptionFileNotFound) {
             std::cout << " ## " << "path se nepodařilo přeložit na inode..." << " ##\n";
             /** @todo po doladění fuse_read odkomentovat! */
-            //return -ENOENT;
+            return -ENOENT;
         }
         std::cout << "Obsah souboru: -" << str.str() << "-\n";
         size = str.str().length();
@@ -491,22 +492,65 @@ namespace HiddenFS {
     int hiddenFs::run(int argc, char* argv[]) {
         std::string path;
 
-
-
         if(argc == 2) {
             path.assign(argv[1]);
         } else {
             path.assign("../../mp3_examples");
         }
 
-        /*
         std::string st;
-        st = "abced";
-        this->writeBlock("funnyman.mp3", 3, (char *)st.c_str(), st.length() + 1);
-        char* buf = new char[500];
-        this->readBlock("funnyman.mp3", 3, buf, 500);
-        std::cout << "Obsah načteného bloku: " << buf << "\n";
+        st = "NetBeans";
+        size_t tt = 2000;
+        char* buf = new char[tt];
+
+        /*
+        this->writeBlock("funnyman.mp3", 16, (char *)st.c_str(), 500);
+        this->writeBlock("funnyman.mp3", 21, (char *)st.c_str(), 500);
+        this->writeBlock("funnyman.mp3", 71, (char *)st.c_str(), 500);
+        this->readBlock("funnyman.mp3", 15, buf, 500);
+        this->writeBlock("funnyman.mp3", 15, (char *)st.c_str(), st.length() + 1);
+
+        st = "blabol";
+        this->writeBlock("funnyman.mp3", 110, (char *)st.c_str(), st.length() + 1);
+
+        st = "LTD-ESP";
+        this->writeBlock("funnyman.mp3", 4, (char *)st.c_str(), st.length() + 1);
         */
+        //this->readBlock("funnyman.mp3", 15, buf, 500);
+        //std::cout << "Obsah načteného bloku: " << buf << "\n";
+
+        /*
+        this->writeBlock("funnyman.mp3", 15, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 16, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 20, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 21, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 70, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 71, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 80, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 81, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 82, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 83, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 84, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 85, (char *)st.c_str(), tt);
+        this->writeBlock("funnyman.mp3", 86, (char *)st.c_str(), tt);
+        //this->removeBlock("funnyman.mp3", 4);
+        //this->removeBlock("funnyman.mp3", 15);
+        //this->removeBlock("funnyman.mp3", 110);
+
+        //this->readBlock("funnyman.mp3", 13, buf, 500);
+        //std::cout << "Obsah načteného bloku: " << buf << "\n";
+        //this->createContext("funnyman.mp3");
+        throw ExceptionRuntimeError("ruční konec...");
+        */
+
+        vBlock* bl = new vBlock;
+        bl->block = 3;
+        bl->fragment = 1;
+        bl->hash = "hashString";
+        bl->length = 4096;
+        bl->used = true;
+
+        //assert(false);
 
         //this->storageRefreshIndex(path);
 
@@ -581,18 +625,37 @@ namespace HiddenFS {
         this->cacheHashTable = cache;
     }
 
+    /*
     bool hiddenFs::checkSum(char* content, size_t contentLength, checksum_t checksum) {
-        /** @todo implementova CRC nebo jiný součtový algoritmus */
+        / ** @todo implementova CRC nebo jiný součtový algoritmus * /
         std::cout << "implementovat hiddenFs::checkSum!\n";
         return true;
     }
+    */
 
     void hiddenFs::reconstructBlock(vBlock** block, char* buffer, size_t length) {
+        blockContent* contentBlock = new blockContent;
+        vBlock* testBlock;
 
+        // délka čistého obsahu (tzn. bez CRC)
+        size_t size = length - sizeof(CRC::CRC_t);
+
+        memcpy(contentBlock, buffer, length);
+
+        CRC::CRC_t orig = this->checksum->calculate(contentBlock->content, size);
+        if(contentBlock->checksum != orig) {
+            throw ExceptionRuntimeError("Nesouhlasí kontrolní CRC bloku!");
+        }
+
+        testBlock = new vBlock;
+        memcpy(testBlock, contentBlock->content, size);
+        *block = testBlock;
     }
 
     void hiddenFs::dumpBlock(vBlock* block, char* buffer, size_t length) {
-
+        blockContent* contentBlock = new blockContent;
+        //contentBlock->checksum
+        //block->
     }
 
     void hiddenFs::getContent(inode_t inode, char** buffer, size_t* length) {
@@ -622,11 +685,10 @@ namespace HiddenFS {
             }
 
             // nalezení prvního nepoškozeného bloku a připojení ke zbytku skutečného souboru
-            for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++)
-            {
+            for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++) {
                 blockLenRet = 0;
                 fragmentContentLen = (*j)->length;
-                blockLen = fragmentContentLen + sizeof(checksum_t);
+                blockLen = fragmentContentLen + sizeof(CRC::CRC_t);
 
                 blockLenRet = this->readBlock((*j)->hash, (*j)->block, fragmentBuffer, blockLen);
 
@@ -645,6 +707,8 @@ namespace HiddenFS {
                 memcpy(block, fragmentBuffer, blockLen);
 
                 // není obsah poškozený?
+                /** @todo this->checksum je už deprecated a nebude se vůbec používat */
+                /*
                 if(!this->checkSum(fragmentBuffer, fragmentContentLen, block->checksum)) {
                     if(j == i->second.end()) {
                         std::stringstream ss;
@@ -655,6 +719,7 @@ namespace HiddenFS {
                     // pokusit se načíst další z kopie bloku
                     continue;
                 }
+                */
 
                 /** @todo spojit dohromady */
                 memcpy(*buffer + len, block->content, fragmentContentLen);

@@ -70,6 +70,7 @@ namespace HiddenFS {
 
         if(tmpFile == NULL) {
             throw ExceptionFileNotFound(filename);
+            std::cout << "toto by se nemělo nikdy zobrazit!!";
         }
     }
 
@@ -183,7 +184,10 @@ namespace HiddenFS {
 
         pos = 0;
         parent_inode = structTable::ROOT_INODE;
+
+        /*
         try {
+        */
             // průchod přes všechny adresáře cesty
             while((pos = path.find_first_of(PATH_DELIM)) != std::string::npos) {
                 dirname = path.substr(0, pos);
@@ -199,9 +203,11 @@ namespace HiddenFS {
             this->findFileByName(path, parent_inode, &file);
             inode = file->inode;
             *retFile = file;
+        /*
         } catch(ExceptionFileNotFound) {
             throw ExceptionFileNotFound(path);
         }
+        */
 
         return inode;
     }

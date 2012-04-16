@@ -11,75 +11,68 @@
 #include <string>
 #include <sstream>
 
-/** data type of number of block inside real storage item */
-typedef unsigned int T_BLOCK_NUMBER;
-typedef int inode_t;
-typedef char flags_t;
-typedef std::string T_HASH;
+namespace HiddenFS {
+    /** data type of number of block inside real storage item */
+    typedef unsigned int T_BLOCK_NUMBER;
+    typedef int inode_t;
+    typedef char flags_t;
+    typedef std::string T_HASH;
 
-const int BLOCK_IN_USE = true;
-const int BLOCK_RESERVED = false;
+    const int BLOCK_IN_USE = true;
+    const int BLOCK_RESERVED = false;
 
-/**
- * Reprezentace virtuálního souboru - skrývaného souboru
- */
-struct vFile {
-    static const flags_t FLAG_NONE      = 0;
-    static const flags_t FLAG_READ      = 1 << 0;
-    static const flags_t FLAG_WRITE     = 1 << 1;
-    static const flags_t FLAG_EXECUTE   = 1 << 2;
-    static const flags_t FLAG_DIR       = 1 << 3;
+    /**
+     * Reprezentace virtuálního souboru - skrývaného souboru
+     */
+    struct vFile {
+        static const flags_t FLAG_NONE      = 0;
+        static const flags_t FLAG_READ      = 1 << 0;
+        static const flags_t FLAG_WRITE     = 1 << 1;
+        static const flags_t FLAG_EXECUTE   = 1 << 2;
+        static const flags_t FLAG_DIR       = 1 << 3;
 
-    vFile() {
-        flags = FLAG_NONE;
-        size = 0;
-        filename = "";
-        inode = -1;
-    }
-    /*
-    vFile(const vFile& f) {
-        inode = f.inode;
-        parent = f.parent;
-        size = f.size;
-        cout << "---------#######x--------" << endl;
-        cout << f.filename << endl;
-        filename.assign(f.filename);
-        flags = f.flags;
-    }
-    */
-    /** i-node identifikátor soboru */
-    inode_t inode;
+        vFile() {
+            flags = FLAG_NONE;
+            size = 0;
+            filename = "";
+            inode = -1;
+        }
 
-    /** číslo inode rodiče */
-    inode_t parent;
+        /** i-node identifikátor soboru */
+        inode_t inode;
 
-    /** délka souboru v bytech */
-    size_t size;
+        /** číslo inode rodiče */
+        inode_t parent;
 
-    /** název skrývaného souboru */
-    std::string filename;
+        /** délka souboru v bytech */
+        size_t size;
 
-    /** příznaky souboru (D, RWX) */
-    flags_t flags;
-};
+        /** název skrývaného souboru */
+        std::string filename;
 
-/** abstrakce datového bloku obsahující právě jeden fragment */
-struct vBlock {
-    /** identifikace skutečného souboru */
-    T_HASH hash;
+        /** příznaky souboru (D, RWX) */
+        flags_t flags;
+    };
 
-    /** pořadové číslo bloku ve skutečném souboru (nesmí se opakovat v rámci vBlock) */
-    T_BLOCK_NUMBER block;
+    /** abstrakce datového bloku obsahující právě jeden fragment */
+    struct vBlock {
+        /** identifikace skutečného souboru */
+        T_HASH hash;
 
-    /** číslo fragmentu virtuálního souboru (může se opakovat v rámci vFile) */
-    int fragment;
+        /** pořadové číslo bloku ve skutečném souboru (nesmí se opakovat v rámci vBlock) */
+        T_BLOCK_NUMBER block;
 
-    /** příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED) */
-    bool used;
+        /** číslo fragmentu virtuálního souboru (může se opakovat v rámci vFile) */
+        size_t fragment;
 
-    /** délka využité části bloku (délka blockContent.content) */
-    size_t length;
-};
+        /** příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED) */
+        bool used;
+
+        /** délka využité části bloku (délka blockContent.content) */
+        size_t length;
+    };
+
+}
 
 #endif	/* TYPES_H */
 

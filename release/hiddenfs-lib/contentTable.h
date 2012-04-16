@@ -19,13 +19,17 @@ namespace HiddenFS {
     class contentTable {
     public:
         typedef struct {
-            /** množina rezervovaných bloků nad rámec bloků v atributu content */
+            /** množina rezervovaných bloků nad rámec bloků ve složce "content"
+             * této struktury je pouze pomocným seznamem, resp. jiným
+             * pohledem na tabulku content */
             std::set<vBlock*> reserved;
 
-            /** součet délek všech rezervovaných bloků */
+            /** součet délek všech rezervovaných bloků, lze odvodit z průchodu
+             * složkou struktury "content" */
             size_t reservedBytes;
 
-            /** množina obsazených bloků; mapování: číslo fragmentu -> pole bloků, které uchovávají obsah fragmentu */
+            /** množina obsazených bloků; mapování: číslo fragmentu -> pole bloků,
+             * které uchovávají obsah fragmentu */
             std::map<int, std::vector<vBlock*> > content;
         } tableItem;
 
@@ -34,6 +38,15 @@ namespace HiddenFS {
         contentTable();
         contentTable(const contentTable& orig);
         virtual ~contentTable();
+
+        /**
+         * Provede dump hlavní tabulky do podoby řetězce
+         * @param ouput výstupní serializovaný obsah, metoda sama alokuje tento ukazatel
+         * @param size délka výsledného serializovaného obsahu
+         */
+        void serialize(unsigned char** ouput, size_t* size);
+
+        void deserialize(unsigned char* input, size_t size);
 
         /**
          * user-friendly obsah tabulky

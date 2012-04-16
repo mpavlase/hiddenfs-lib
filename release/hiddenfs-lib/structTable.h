@@ -126,7 +126,8 @@ namespace HiddenFS {
         table_t table;
 
         /**
-         * Pomocná tabulka pro rychlejší vyhledávání v adresářích podle názvu
+         * Pomocná tabulka pro rychlejší vyhledávání v adresářích podle názvu,
+         * která je jen jiným pohledem na hlavní tabulku a proto ji nikdy neukládat.
          * mapování: parent inode -> inodes (inode souborů uvnitř rodiče)
          */
         table_content_t tableDirContent;
