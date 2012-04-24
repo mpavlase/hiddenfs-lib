@@ -4,6 +4,8 @@
  * Created on 23. březen 2012
  */
 
+#include <iostream>
+
 #include "exceptions.h"
 #include "hashTable.h"
 
@@ -17,8 +19,8 @@ namespace HiddenFS {
     hashTable::~hashTable() {
     }
 
-    void hashTable::find(T_HASH hash, std::string* filename) {
-        std::map<T_HASH, std::string>::iterator it = this->table.find(hash);
+    void hashTable::find(hash_t hash, std::string* filename) const {
+        std::map<hash_t, std::string>::const_iterator it = this->table.find(hash);
         if(it != this->table.end()) {
             *filename = it->second;
         } else {
@@ -28,11 +30,37 @@ namespace HiddenFS {
         }
     }
 
-    void hashTable::add(T_HASH hash, std::string filename) {
-        this->table[hash] = filename;
+    void hashTable::add(hash_t hash, std::string filename) {
+        std::string findFilename;
+
+        try {
+            this->find(hash, &findFilename);
+
+            // pokud se pokusíme přidat vícekrát ten samý soubor, ničemu to nevadí.
+            if(findFilename == filename) {
+                return;
+            }
+
+            /* protože nemusíme mít jistoru, že se budou soubory přidávat do hashTable
+             * vždy ve stejném pořadí, smažeme i už dříve přidaný hash patřící jinému souboru */
+            this->table.erase(hash);
+
+            throw ExceptionRuntimeError("Soubor již existuje, pro jistotu mažu i dříve přidaný hash.");
+        } catch (ExceptionFileNotFound) {
+            this->table[hash] = filename;
+        }
     }
 
     void hashTable::clear() {
         this->table.clear();
+    }
+
+    void hashTable::print() const {
+        std::cout << "== hashTable.table (hash -> adresa k fyzickému souboru) ==\n";
+        std::cout << "počet záznamů: " << this->table.size() << "\n";
+
+        for(table_t_constiterator it = this->table.begin(); it != this->table.end(); it++) {
+            std::cout << it->first << "\t" << it->second << "\n";
+        }
     }
 }

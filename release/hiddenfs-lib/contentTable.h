@@ -11,8 +11,10 @@
 #include <set>
 #include <vector>
 
-#include "exceptions.h"
+#include "common.h"
+//#include "hiddenfs-lib.h"
 #include "types.h"
+#include "exceptions.h"
 #include "structTable.h"
 
 namespace HiddenFS {
@@ -28,25 +30,26 @@ namespace HiddenFS {
              * složkou struktury "content" */
             size_t reservedBytes;
 
-            /** množina obsazených bloků; mapování: číslo fragmentu -> pole bloků,
+            /** množina obsazených bloků \
+             * mapování: číslo fragmentu -> pole bloků,
              * které uchovávají obsah fragmentu */
-            std::map<int, std::vector<vBlock*> > content;
+            std::map<fragment_t, std::vector<vBlock*> > content;
         } tableItem;
 
+        /** datový typ pro mapování pomocných dat k souboru určeným inode */
         typedef std::map<inode_t, tableItem> table_t;
 
         contentTable();
-        contentTable(const contentTable& orig);
+        //contentTable(const contentTable& orig);
         virtual ~contentTable();
 
         /**
          * Provede dump hlavní tabulky do podoby řetězce
-         * @param ouput výstupní serializovaný obsah, metoda sama alokuje tento ukazatel
-         * @param size délka výsledného serializovaného obsahu
+         * @param ouput metoda naplní seznam entitami pro pozdější uložení
          */
-        void serialize(unsigned char** ouput, size_t* size);
+        void serialize(chainList_t* output);
 
-        void deserialize(unsigned char* input, size_t size);
+        void deserialize(chainList_t input);
 
         /**
          * user-friendly obsah tabulky
@@ -72,7 +75,35 @@ namespace HiddenFS {
          */
         void newEmptyContent(inode_t inode);
 
-        //void
+        void addContent(inode_t inode, vBlock* block) {
+            if(block->used) {
+                try {
+                    this->newEmptyContent(inode);
+                } catch (ExceptionInodeExists) { }
+
+                // zde to padá, protože přistupuju do nezinicializvaného pole!
+                // špatně deserializovaná složka .block v vBlock
+                //this->table[inode].content[block->fragment].push_back(block);
+                //tableItem ti = this->table[inode];
+                //std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
+                this->table[inode].content[block->fragment].push_back(block);
+                /*
+                std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
+                for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = this->table[inode].content.begin(); i != this->table[inode].content.end(); i++) {
+                    std::cout << "fragment = " << i->first << ", ";
+                    for(std::vector<vBlock*>::iterator j = i->second.begin(); j != i->second.end(); j++) {
+                        std::cout << print_vBlock(*j);
+                    }
+                    std::cout << "\n";
+                }
+                std::cout << "............................\n";
+                this->print();
+                */
+            } else {
+                this->table[inode].reserved.insert(block);
+                this->table[inode].reservedBytes += block->length;
+            }
+        }
 
         void getReservedBlocks(inode_t inode, std::vector<vBlock*>* reserved);
     private:

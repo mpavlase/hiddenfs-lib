@@ -9,49 +9,35 @@
 #include <fuse.h>
 #include <string>
 
-#include "types.h"
-#include "contentTable.h"
 #include "common.h"
-#include "structTable.h"
+#include "contentTable.h"
 #include "hashTable.h"
+#include "structTable.h"
+#include "superBlock.h"
+#include "types.h"
 
 #define GET_INSTANCE (hiddenFs*) fuse_get_context()->private_data
 
-#define BLOCK_MAX_LENGTH (1 << 12)
 //#define BLOCK_LENGH (1 << 10)
-
-//struct fuse_file_info;
-
-/**
- * Dohlíží nad alokací bloků
- */
-/*
-class allocatorEngine {
-public:
-
-    allocatorEngine(hiddenFs* hfs);
-
-
-
-private:
-    contentTable* CT;
-    structTable* ST;
-    hashTable* HT;
-    hiddenFs* hfs;
-};
- */
 
 namespace HiddenFS {
 
     class hiddenFs {
     public:
-        hiddenFs();
+        /**
+         * Umožňuje nastavit vlastní implementaci šifrování
+         * @param instance instance objektu implementující rozhraní IEncryption
+         */
+        hiddenFs(IEncryption* instance);
         virtual ~hiddenFs();
 
-        struct blockContent {
-            CRC::CRC_t checksum;
-            unsigned char content[BLOCK_MAX_LENGTH];
-        };
+        /** datový typ kontrolního součtu */
+        typedef CRC::CRC_t checksum_t;
+
+        typedef bytestream_t blockContent[BLOCK_MAX_LENGTH];
+        static const size_t BLOCK_USABLE_LENGTH = BLOCK_MAX_LENGTH - sizeof(checksum_t) - sizeof(id_byte_t);
+
+        block_number_t FIRST_BLOCK_NO;
 
         /** maximální využití každého fyzického souboru (více virtuálních souborů v rámci jednoho fyzického) */
         static const char ALLOCATOR_SPEED = 1 << 0;
@@ -62,6 +48,7 @@ namespace HiddenFS {
         /** uložení jednoho bloku se provede několikanásobně do různých fyzických souborů */
         static const char ALLOCATOR_REDUNDANCY = 1 << 7;
 
+        //smartConst<size_t> hash_t_sizeof;
 
 
         /**
@@ -98,6 +85,7 @@ namespace HiddenFS {
         contentTable* CT;
         structTable* ST;
         hashTable* HT;
+        superBlock* SB;
         unsigned char allocatorFlags;
 
         /** množství duplikace dat */
@@ -106,6 +94,14 @@ namespace HiddenFS {
         /** instance objektu pro výpočet kontrolního součtu */
         CRC* checksum;
 
+        IEncryption* encryption;
+
+        /**
+         * @deprecated
+         * Při true se knihovna pokusí nejdříve načíst hashTable ze superbloku,
+         * ale pokud selže, provede se indexace zcela nová. Je to začarovaný kruh:
+         * Pro nalezení cacheHT je třeba znát pozici SB. Pro nalezení SB je nuzné znát obsah HT.
+         *  */
         bool cacheHashTable;
 
         /**
@@ -124,7 +120,7 @@ namespace HiddenFS {
          * @param block metoda naplní údaje o nalezeném bloku
          * @param hash nový blok hledat v tomto souboru
          */
-        void allocatorFindFreeBlock_sameHash(vBlock* block, T_HASH hash);
+        void allocatorFindFreeBlock_sameHash(vBlock* block, hash_t hash);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok na základě kritéra:
@@ -132,7 +128,7 @@ namespace HiddenFS {
          * @param block metoda naplní údaje o nalezeném bloku
          * @param exclude při vyhledávání vhodného bloku přeskočit tento soubor
          */
-        void allocatorFindFreeBlock_differentHash(vBlock* block, T_HASH exclude);
+        void allocatorFindFreeBlock_differentHash(vBlock* block, hash_t exclude);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok (jakýkoli volný blok).
@@ -147,7 +143,7 @@ namespace HiddenFS {
          * @param block metoda naplní údaje o nalezeném bloku
          * @param prefered hledání se spouští nejprve na souboru určeném tímto hash
          */
-        void allocatorFindFreeBlock_any(vBlock* block, T_HASH prefered);
+        void allocatorFindFreeBlock_any(vBlock* block, hash_t prefered);
 
         /**
          * Vyhledá volný blok v částečně obsazeném fyzickém souboru.
@@ -174,21 +170,22 @@ namespace HiddenFS {
          * Naplní parametr blocks seznamem čísel bloků, které je možné použít pro nové bloky
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          */
-        virtual void listAvaliableBlocks(void* context, std::set<T_BLOCK_NUMBER>* blocks) const = 0;
+        virtual void listAvaliableBlocks(void* context, std::set<block_number_t>* blocks) const = 0;
 
         /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
-         * @param filename adresa ke skutečnému souboru, odkud se má blok smazat
+         * @param hash jednoznačná identifikace souboru, ve kterém se nachází
+         * blok pro mazání
          * @param block číslo bloku ke smazání
          */
-        void removeBlock(std::string filename, T_BLOCK_NUMBER block);
+        void removeBlock(hash_t hash, block_number_t block);
 
         /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          * @param block číslo bloku ke smazání
          */
-        virtual void removeBlock(void* context, T_BLOCK_NUMBER block) = 0;
+        virtual void removeBlock(void* context, block_number_t block) = 0;
 
         /**
          * Uvolní naalokované prostředky pro skutečný soubor
@@ -203,42 +200,45 @@ namespace HiddenFS {
         virtual void flushContext(void* context) = 0;
 
         /**
-         * Provádí zápis bloku do skutečného souboru
-         * @param filename adresa ke skutečnému souboru, ze kterého se má blok načíst
-         * @param block pořadové číslo bloku v rámci souboru
-         * @param buff obsah bloku
-         * @param length maximální délka bloku
-         * @return skutečně načtená délka bloku
+         * Zabezpečuje přečtení bloku obsahující fragment souboru
+         * @param hash identifikace souboru
+         * @param block pořadové číslo bloku v rámci skutečného souboru
+         * @param buff užitný obsah bloku, metoda sama alokuje dostatečnou délku
+         * @param length maximální délka bloku, která se má načíst
+         * @param idByte metoda naplní tento parametr hodnotou rozlišovacího byte
+         * @return počet skutečně naštených dat
          */
-        size_t readBlock(std::string filename, T_BLOCK_NUMBER block, char* buff, size_t length);
+        size_t readBlock(hash_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte);
 
         /**
-         * Provádí zápis bloku do skutečného souboru
+         * Provádí zápis bloku do skutečného souboru,
+         * jeho implementace je na uživateli knihovny
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          * @param block pořadové číslo bloku v rámci souboru
          * @param buff obsah bloku
          * @param length maximální délka bloku
          * @return skutečně načtená délka bloku
          */
-        virtual size_t readBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length) const = 0;
+        virtual size_t readBlock(void* context, block_number_t block, bytestream_t* buff, size_t length) const = 0;
 
         /**
          * Provádí zápis bloku do skutečného souboru
-         * @param filename adresa ke skutečnému souboru, do kterého se má blok schovat
+         * @param hash hash skutečného souboru, do kterého se má blok schovat
          * @param block pořadové číslo bloku v rámci souboru
          * @param buff obsah bloku
          * @param length délka zapisovaného bloku
          */
-        void writeBlock(std::string filename, T_BLOCK_NUMBER block, char* buff, size_t length);
+        void writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte);
 
         /**
-         * Provádí zápis bloku do skutečného souboru
+         * Provádí zápis bloku do skutečného souboru,
+         * jeho implementace je na uživateli knihovny
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          * @param block pořadové číslo bloku v rámci souboru
          * @param buff obsah bloku
          * @param length délka zapisovaného bloku
          */
-        virtual void writeBlock(void* context, T_BLOCK_NUMBER block, char* buff, size_t length) = 0;
+        virtual void writeBlock(void* context, block_number_t block, bytestream_t* buff, size_t length) = 0;
 
         /**
          * Naplní hash tabulku (mapování cesty skutečného souboru na jednoznačný řetězec)
@@ -252,52 +252,51 @@ namespace HiddenFS {
          * @param buffer obsah souboru (metoda sama alokuje obsah)
          * @param length délka souboru v bytech
          */
-        void getContent(inode_t inode, char** buffer, size_t* length);
+        void getContent(inode_t inode, bytestream_t** buffer, size_t* length);
 
         /**
-         * Vypočítá kontrolní součet a vrací výsledek porovnání s referenčním
-         * @param content zkoumaná data
-         * @param lengthConten délka dat ke kontrole
-         * @param checksum referenční kontrolní součet
-         * @return blok je/není v pořádku
-         * @deprecated
+         * Provede "zabalení" bloku dat a výpočet CRC
+         * @param input vstupní buffer
+         * @param inputSize délka vstupního bufferu
+         * @param output výstupní buffer, metoda sama alokuje potřebnou délku
+         * @param outputSize délka výstupního bufferu
+         * @param id_byte identifikační byte (pro odlišení superbloku od běžného)
          */
-        //virtual bool checkSum(char* content, size_t contentLength, checksum_t checksum);
+        void packData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t id_byte);
 
         /**
-         * Provádí dump struktury vBlock do bufferu
-         * @param block vstupní blok ke zpracování
-         * @param buffer výsledek po dumpu
-         * @param length délka bufferu
+         * Vstupní data rozdělí na CRC část a zbytek, porovná kontrolní součty
+         * (v případě nesrovnalostí vyhazuje výjimku XYZ) a výsledek předá
+         * do výstupného bufferu
+         * @param input vstupní buffer
+         * @param inputSize délka vstupního bufferu
+         * @param output výstupní buffer, metoda sama alokuje potřebnou délku
+         * @param outputSize délka výstupního bufferu
+         * @param id_byte metoda naplní tento parametr hodnotou identifikačního byte
+         * @throw ExceptionRuntimeError
          */
-        void dumpBlock(vBlock* block, char* buffer, size_t length);
+        void unpackData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t* id_byte);
 
-        /**
-         * Rekonstruuje vBlock z dumpu uloženém v bufferu. Metoda sama alokuje strukturu bloku.
-         * @param block rekonstruovaný blok
-         * @param buffer vstupní dump bloku
-         * @param length délka bufferu
-         */
-        void reconstructBlock(vBlock** block, char* buffer, size_t length);
+        void chainAddEntity(bytestream_t* input, size_t inputLength);
 
-        /**
-         * Obecné rozhraní pro šifrování "čehokoli"
-         * @param input vstup pro zašifrování
-         * @param length délka vstupu, pokud je nutné ji předat samostatně
-         * @return zašifrovaný vstup
-         */
-        virtual std::string encrypt(std::string input) {
-            return "#" + input + "|";
-        };
+        //HiddenFS::hash_t_sizeof_t& hash_t_sizeof;
 
-        /**
-         * Obecné rozhraní pro dešifrování řetězce
-         * @param input zašifrovaný řetězec
-         * @return původní řetězec
-         */
-        virtual std::string decrypt(std::string input) {
-            return input.substr(1, input.size() - 2);
-        };
+      /*
+    class chainManager {
+    public:
+        void addEntitiy(bytestream_t* input, size_t inputLength);
+
+
+        typedef std::vector<chainItem> table_t;
+    private:
+        table_t table;
+
+    };
+    */
+
+        // ---------------------------------------------------------------------
+        // -----------------------     FUSE     --------------------------------
+        // ---------------------------------------------------------------------
 
         static int fuse_getattr(const char* path, struct stat* stbuf);
         static int fuse_open(const char* path, struct fuse_file_info* file_i);

@@ -3,10 +3,12 @@
  *
  * Created on 24. březen 2012
  */
+#include <math.h>
 #include <sstream>
 #include <string>
 
 #include "common.h"
+//#include "hiddenfs-lib.h"
 
 namespace HiddenFS {
 
@@ -46,7 +48,11 @@ namespace HiddenFS {
             ss << "[R]";
         }
 
-        ss << ", " << b->hash << ", b: " << b->block << ", f#: " << b->fragment << ")";
+        ss << ", " << b->hash;
+        ss << ", b: ";
+        ss << b->block;
+        ss << ", f#: " << b->fragment;
+        ss << ", size: " << b->length << ")";
 
         return ss.str();
     }
@@ -74,7 +80,7 @@ namespace HiddenFS {
         }
     }
 
-    CRC::CRC_t CRC::update_crc(CRC_t crc, unsigned char *buf, int len) {
+    CRC::CRC_t CRC::update_crc(CRC_t crc, __u_char *buf, int len) {
         CRC_t c = crc ^ 0xffffffffL;
         int n;
 
@@ -85,7 +91,98 @@ namespace HiddenFS {
         return c ^ 0xffffffffL;
     }
 
-    CRC::CRC_t CRC::calculate(unsigned char *buf, int len) {
+    CRC::CRC_t CRC::calculate(__u_char *buf, int len) {
         return this->update_crc(0L, buf, len);
     }
+
+    bool idByteIsSuperBlock(id_byte_t b) {
+        return (b > ID_BYTE_BOUNDARY);
+    };
+
+    bool idByteIsDataBlock(id_byte_t b) {
+        return !idByteIsSuperBlock(b);
+    };
+
+    id_byte_t idByteMaxValue() {
+        /* Protože je datový typ id_byte_t bezznaménkový, lze pro nejvyšší
+         * dosažitelnou hodotu jednoduše využít podtečení */
+        return -1;
+    };
+
+    id_byte_t idByteGenDataBlock() {
+        // <0; ID_BYTE_BOUNDARY)
+
+        return (rand() % ID_BYTE_BOUNDARY);
+    }
+
+    id_byte_t idByteGenSuperBlock() {
+        // <ID_BYTE_BOUNDARY; idByteMaxValue()>
+
+        return ID_BYTE_BOUNDARY + (rand() % (idByteMaxValue() - ID_BYTE_BOUNDARY));
+    }
+
+    void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size) {
+        size_t rawItemSize = SIZEOF_vBlock;
+
+        assert(input != NULL);
+        assert(size != NULL);
+
+        size_t offset = 0;
+        *output = new bytestream_t[rawItemSize];
+
+        // kopírování složky 'block'
+        memcpy(*output + offset, &(input->block), sizeof(input->block));
+        offset += sizeof(input->block);
+
+        // kopírování složky 'fragment'
+        memcpy(*output + offset, &(input->fragment), sizeof(input->fragment));
+        offset += sizeof(input->fragment);
+
+        // kopírování složky 'hash'
+        memcpy(*output + offset, input->hash.c_str(), hash_t_sizeof);
+        offset += hash_t_sizeof;
+
+        // kopírování složky 'length'
+        memcpy(*output + offset, &(input->length), sizeof(input->length));
+        offset += sizeof(input->length);
+
+        // kopírování složky 'used'
+        memcpy(*output + offset, &(input->used), sizeof(input->used));
+        offset += sizeof(input->used);
+
+        *size = offset;
+    };
+
+    void unserialize_vBlock(bytestream_t* input, size_t size, vBlock** output) {
+        size_t rawItemSize = SIZEOF_vBlock;
+
+        assert(output != NULL);
+        assert(input != NULL);
+
+        *output = new vBlock;
+        memset(*output, '\0', sizeof(vBlock));
+        size_t offset = 0;
+
+        assert(size = rawItemSize);
+
+        // kopírování složky 'block'
+        memcpy(&((*output)->block), input + offset, sizeof((*output)->block));
+        offset += sizeof((*output)->block);
+
+        // kopírování složky 'fragment'
+        memcpy(&((*output)->fragment), input + offset, sizeof((*output)->fragment));
+        offset += sizeof((*output)->fragment);
+
+        // kopírování složky 'hash'
+        (*output)->hash.assign((const char*) (input + offset), hash_t_sizeof);
+        offset += hash_t_sizeof;
+
+        // kopírování složky 'length'
+        memcpy(&((*output)->length), input + offset, sizeof((*output)->length));
+        offset += sizeof((*output)->length);
+
+        // kopírování složky 'used'
+        memcpy(&((*output)->used), input + offset, sizeof((*output)->used));
+        offset += sizeof((*output)->used);
+    };
 }

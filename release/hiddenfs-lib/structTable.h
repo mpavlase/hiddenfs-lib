@@ -28,7 +28,7 @@ namespace HiddenFS {
         typedef std::map<inode_t, std::set<inode_t> > table_content_t;
 
         /**
-         * user-friendly obsah tabulek
+         * user-friendly obsah tabulek, používat pouze pro ladění!
          */
         void print(void);
 

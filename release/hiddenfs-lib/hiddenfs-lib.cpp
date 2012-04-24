@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #include <assert.h>
 #include <errno.h>
@@ -18,7 +19,6 @@
 #include <unistd.h>
 
 #include "hiddenfs-lib.h"
-#include "common.h"
 
 /*
 struct fuse_file_info {
@@ -64,12 +64,12 @@ struct fuse_file_info {
 
 namespace HiddenFS {
 
-    void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock* block, T_HASH hash) {
+    void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock* block, hash_t hash) {
         /// @todo doimplementovat!
         throw ExceptionBlockNotFound();
     }
 
-    void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock* block, T_HASH exclude) {
+    void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock* block, hash_t exclude) {
         /// @todo doimplementovat!
         throw ExceptionBlockNotFound();
     }
@@ -80,7 +80,7 @@ namespace HiddenFS {
     }
 
     // hotovo
-    void hiddenFs::allocatorFindFreeBlock_any(vBlock* block, T_HASH prefered) {
+    void hiddenFs::allocatorFindFreeBlock_any(vBlock* block, hash_t prefered) {
         try {
             this->allocatorFindFreeBlock_sameHash(block, prefered);
         } catch(ExceptionBlockNotFound) {
@@ -95,12 +95,17 @@ namespace HiddenFS {
     }
 
     size_t hiddenFs::allocatorAllocate(inode_t inode, const char* buffer, size_t lengthParam, off_t offsetParam) {
-        vFile* file;
-        size_t length;
-        unsigned int redundancyAmount;
-        off_t offset;
-        std::string filePath;
+        vFile* file = NULL;
+        size_t length = 0;
+        unsigned int redundancyAmount = 0;
+        off_t offset = 0;
+        std::string filePath = "";
         vBlock block;
+
+        // fake!
+        length = 0;
+        redundancyAmount = 0;
+        offset = 0;
 
         std::map<int, std::vector<vBlock*> >::iterator mapit;
         std::vector<vBlock*>::iterator vectit;
@@ -216,16 +221,52 @@ namespace HiddenFS {
     }
     */
 
-    hiddenFs::hiddenFs() {
+    hiddenFs::hiddenFs(IEncryption* instance = NULL) {
+        srand(time(NULL));
+
         this->HT = new hashTable();
         this->ST = new structTable();
         this->CT = new contentTable();
+        this->SB = new superBlock();
         this->checksum = new CRC;
+        if(instance == NULL) {
+            instance = new DefaultEncryption();
+        }
+        this->encryption = instance;
 
-        std::cout << sizeof(vBlock) << std::endl;
+        this->SB = new superBlock();
+        this->SB->setEncryptionInstance(this->encryption);
+
+        this->FIRST_BLOCK_NO = 1;
+
+        /*
+        std::stringbuf s;
+        s.sputn("abc", 3);
+        s.sputc(0);
+        s.sputc('d');
+        //std::cout << sizeof(vBlock) << std::endl;
+        int si = 5;
+        si = sizeof(vFile);
+        si = sizeof(vBlock);
+        si = sizeof(hash_t);
+        si = sizeof(HiddenFS::superBlock::tableItem);
+        char* bf = new char[si];
+        char c;
+        s.sgetn(bf, si);
+
+        for(int i = 0; i < si; i++) {
+            std::cout.flags(std::stringstream::hex | std::stringstream::showbase);
+            std::cout.setf(std::ios::hex | std::ios::showbase);
+            c = bf[i];
+            std::cout << (unsigned char)c << " ";
+            //printf("%X ", bf[i]);
+        }
+        int si = sizeof(blockContent);
+        throw ExceptionRuntimeError("...");
+        */
 
         this->allocatorSetStrategy(ALLOCATOR_SPEED);
-        this->cacheHashTable = true;
+        //this->cacheHashTable = true;
     }
 
     hiddenFs::~hiddenFs() {
@@ -233,6 +274,8 @@ namespace HiddenFS {
         delete this->ST;
         delete this->CT;
         delete this->checksum;
+        delete this->encryption;
+        delete this->SB;
     }
 
     /** do stbuf nastavit délku souboru */
@@ -373,7 +416,7 @@ namespace HiddenFS {
 
 
         // 2) načíst obsah
-        char* bufferContent;
+        bytestream_t* bufferContent;
         size_t sizeContent;
 
         hfs->getContent(file->inode, &bufferContent, &sizeContent);
@@ -491,6 +534,7 @@ namespace HiddenFS {
 
     int hiddenFs::run(int argc, char* argv[]) {
         std::string path;
+        //HiddenFS::hash_t_sizeof.set(20);
 
         if(argc == 2) {
             path.assign(argv[1]);
@@ -498,10 +542,18 @@ namespace HiddenFS {
             path.assign("../../mp3_examples");
         }
 
-        std::string st;
-        st = "NetBeans";
-        size_t tt = 2000;
-        char* buf = new char[tt];
+        //std::cout << "hash_sizeof: " << this->hash_t_sizeof() << std::endl;
+        /*
+        smartConst<int> smart;
+        smart.set(14);
+        std::cout << "hash_sizeof: " << smart.get() << std::endl;
+        assert(false);
+        */
+
+        //std::string st;
+        //st = "NetBeans";
+        //size_t tt = 2000;
+        //char* buf = new char[tt];
 
         /*
         this->writeBlock("funnyman.mp3", 16, (char *)st.c_str(), 500);
@@ -550,19 +602,123 @@ namespace HiddenFS {
         bl->length = 4096;
         bl->used = true;
 
+
+        this->storageRefreshIndex(path);
+        this->HT->print();
+
+        if(this->HT->size() == 0) {
+            std::cerr << "Úložiště neobsahuje žádné dostupné soubory.\n";
+
+            /// @todo 1 nahradit konstantou
+            return 1;
+        }
+
+        // 1) nalezení boot-block
+        bytestream_t* bufferBlock;
+        id_byte_t idByte;
+
+        for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
+            std::cout << "V souboru: " << i->second << " hledám superblock...\n";
+            try {
+                this->readBlock((hash_t)i->first, FIRST_BLOCK_NO, &bufferBlock, BLOCK_MAX_LENGTH, &idByte);
+                this->SB->deserialize(bufferBlock, BLOCK_MAX_LENGTH);
+                break;
+            } catch (...) {
+                std::cout << "SB nenalezen.\n\n";
+                continue;
+            }
+        }
+
+        //bytestream_t* ctBuf = NULL;
+        //size_t ctBufSize = 0;
+
+        std::cout << "=====================================\n";
+        std::cout << "=====================================\n";
+        std::cout << "=====================================\n";
+
+        inode_t inode_ret;
+
+        vFile* file;
+        file = new vFile;
+        file->filename = "soubor2.txt";
+        file->flags = vFile::FLAG_NONE;
+        file->parent = 1;
+        file->size = 37;
+        this->ST->newFile(file);
+
+        this->CT->newEmptyContent(file->inode);
+
+        vBlock* vb= new vBlock();
+        vb->block = 123;
+        vb->fragment = 4;
+        vb->hash = "hahsXXXXXXXXXXXXXXXX";
+        vb->length = 14;
+        vb->used = true;
+        this->CT->addContent(file->inode, vb);
+
         //assert(false);
 
-        //this->storageRefreshIndex(path);
+        //this->allocator->allocate(file->inode, content, length);
 
-        // 1) find boot-block
+        std::cout << "\n";
+        this->CT->print();
+
+        chainList_t chainCT;
+        this->CT->serialize(&chainCT);
+        std::cout << "Počet entit v CT: " << chainCT.size() << "\n";
+        std::cout.write((char*) chainCT[0].content, chainCT[0].length);
+        std::cout << "---" << std::endl;
+
+        delete this->CT;
+        this->CT = new contentTable();
+        this->CT->deserialize(chainCT);
+        this->CT->print();
+
+
+        assert(false);
+
+        // první spuštění - super block zatím neexistuje, bude nutné jej vytvořit.
+        if(!this->SB->isLoaded()) {
+            // hlavní záznam uložit do prvního souboru (prvního z pohledu seřazených hash
+            hashTable::table_t_constiterator i;
+            bytestream_t* sbBuffer;
+            size_t sbBufferLen = 0;
+            idByte = idByteGenSuperBlock();
+
+            // serializovat ST
+            // serializovat CT
+
+            for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
+                try {
+                    this->readBlock(i->first, FIRST_BLOCK_NO, &sbBuffer, BLOCK_MAX_LENGTH, &idByte);
+                } catch (ExceptionBlockNotUsed) {
+                    this->SB->serialize(&sbBuffer, &sbBufferLen);
+
+                    if(sbBufferLen > BLOCK_MAX_LENGTH) {
+                        std::cerr << "Superblok se nevejde do jediného bloku!\n";
+                        return 0;
+                    }
+
+                    this->writeBlock(i->first, FIRST_BLOCK_NO, sbBuffer, sbBufferLen, idByte);
+                } /*catch (std::exception& e) {
+                    std::cerr << e.what() << "\n";
+                    continue;
+                }*/
+            }
+
+        }
 
         // 2) podle potřeby založit ST, CT, HT
 
         // 3) načíst ST, CT, HT
 
-        inode_t inode_ret;
+        // 3c) nové načtení obsahu hashTable
 
-        vFile* file;
+        assert(false);
+
+        //inode_t inode_ret;
+
+        //vFile* file;
         file = new vFile;
         file->filename = "soubor2.txt";
         file->flags = vFile::FLAG_NONE;
@@ -625,147 +781,227 @@ namespace HiddenFS {
         this->cacheHashTable = cache;
     }
 
-    /*
-    bool hiddenFs::checkSum(char* content, size_t contentLength, checksum_t checksum) {
-        / ** @todo implementova CRC nebo jiný součtový algoritmus * /
-        std::cout << "implementovat hiddenFs::checkSum!\n";
-        return true;
-    }
-    */
+    void hiddenFs::packData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t id_byte) {
+        size_t dataOffset;
+        checksum_t crc;
 
-    void hiddenFs::reconstructBlock(vBlock** block, char* buffer, size_t length) {
-        blockContent* contentBlock = new blockContent;
-        vBlock* testBlock;
-
-        // délka čistého obsahu (tzn. bez CRC)
-        size_t size = length - sizeof(CRC::CRC_t);
-
-        memcpy(contentBlock, buffer, length);
-
-        CRC::CRC_t orig = this->checksum->calculate(contentBlock->content, size);
-        if(contentBlock->checksum != orig) {
-            throw ExceptionRuntimeError("Nesouhlasí kontrolní CRC bloku!");
+        if(inputSize > BLOCK_USABLE_LENGTH) {
+            throw ExceptionRuntimeError("Vstupní data jsou delší, než je maximální dostupná délka jednoho bloku");
         }
 
-        testBlock = new vBlock;
-        memcpy(testBlock, contentBlock->content, size);
-        *block = testBlock;
+        // jednotlivé složky jsou uloženy v následujícím pořadí:
+        // | CRC | id_byte |     užitný obsah bloku     |
+        dataOffset = sizeof(checksum_t) + sizeof(id_byte_t);
+
+        *output = new blockContent;
+        *outputSize = sizeof(*output);
+
+        // uložení identifikačního byte
+        memcpy(*output + sizeof(checksum_t), &id_byte, sizeof(id_byte));
+
+        // uložení užitného obsahu bloku
+        memcpy(*output + dataOffset, input, inputSize);
+
+        // výpočet kontrolního součtu ze všech složek struktury, pochopitelně
+        // až na složku se součtem samotným
+        crc = this->checksum->calculate(((bytestream_t*) (*output) + sizeof(checksum_t)), *outputSize - sizeof(checksum_t));
+
+        // zápis kontrolního součtu
+        memcpy(*output, &crc, sizeof(checksum_t));
     }
 
-    void hiddenFs::dumpBlock(vBlock* block, char* buffer, size_t length) {
-        blockContent* contentBlock = new blockContent;
-        //contentBlock->checksum
-        //block->
+    void hiddenFs::unpackData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t* id_byte) {
+        checksum_t crcOrig, crcCalculated;
+        size_t dataOffset;
+
+        // extrakce kontrolního součtu
+        memcpy(&crcOrig, input, sizeof(checksum_t));
+        crcCalculated = this->checksum->calculate((input + sizeof(checksum_t)), inputSize - sizeof(checksum_t));
+
+        if(crcCalculated != crcOrig) {
+            throw ExceptionRuntimeError("Kontrolní součet bloku nesouhlasí!");
+        }
+
+        // extrakce identifikačního byte
+        memcpy(id_byte, input + sizeof(checksum_t), sizeof(id_byte_t));
+
+        dataOffset = sizeof(checksum_t) + sizeof(id_byte_t);
+        *outputSize = inputSize - dataOffset;
+
+        // extrakce užitné části
+        *output = new bytestream_t[*outputSize];
+        memcpy(output, input + dataOffset, *outputSize);
     }
 
-    void hiddenFs::getContent(inode_t inode, char** buffer, size_t* length) {
+    void hiddenFs::getContent(inode_t inode, bytestream_t** buffer, size_t* length) {
         contentTable::tableItem* ti = NULL;
         vFile* file = NULL;
-        char* fragmentBuffer = new char[BLOCK_MAX_LENGTH];
+        bytestream_t* fragmentBuffer;
+        bytestream_t* fragmentBufferPost;
         size_t len = 0;                     // pozice posledního zapsaného fragmentu
         *length = 0;
-        int counter = 0;                    // pořadové číslo posledního zapsaného fragmentu
-        size_t blockLenRet = 0;
+        unsigned int counter = 0;                    // pořadové číslo posledního zapsaného fragmentu
         size_t blockLen = 0;                // celková délka bloku (nejen jeho využitého obsahu)
-        size_t fragmentContentLen = 0;
-        blockContent* block = new blockContent;
+        size_t fragmentContentLen;
+        id_byte_t idByte;
 
         this->CT->getMetadata(inode, ti);
         this->ST->findFileByInode(inode, &file);
 
-        *buffer = new char[file->size];
+        // naalokování bufferu pro kompletní obsah souboru
+        std::stringbuf stream;
 
-        for(std::map<int, std::vector<vBlock*> >::iterator i = ti->content.begin(); i !=  ti->content.end(); i++) {
-
+        // iterace přes všechny fragmenty souboru
+        for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = ti->content.begin(); i !=  ti->content.end(); i++) {
             // detekce chybějícího fragmentu
             if(counter != i->first) {
                 std::stringstream ss;
+
                 ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
                 throw ExceptionRuntimeError(ss.str());
             }
 
-            // nalezení prvního nepoškozeného bloku a připojení ke zbytku skutečného souboru
+            // nalezení prvního nepoškozeného bloku a připojení fragmentu ke zbytku skutečného souboru
             for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++) {
-                blockLenRet = 0;
-                fragmentContentLen = (*j)->length;
-                blockLen = fragmentContentLen + sizeof(CRC::CRC_t);
+                /**
+                 * 1) v try {} načíst blok podle hashe přes blockRead
+                 * 2) unpackData
+                 * 3)
+                 */
 
-                blockLenRet = this->readBlock((*j)->hash, (*j)->block, fragmentBuffer, blockLen);
+                try {
+                    fragmentContentLen = this->readBlock((*j)->hash, (*j)->block, &fragmentBuffer, BLOCK_MAX_LENGTH, &idByte);
+                    //this->unpackData(fragmentBuffer, fragmentContentLen, &fragmentBufferPost, &blockLen, &identifyByte);
 
-                // podařilo se načíst fragment celý?
-                if(blockLenRet != blockLen) {
-                    if(j == i->second.end()) {
-                        std::stringstream ss;
-                        ss << "Blok č. " << (*j)->block << " v souboru s hash " << (*j)->hash << " se nepodařilo načíst celý!";
-                        throw ExceptionRuntimeError(ss.str());
-                    }
+                    // dokončit!
+                    assert(false);
+                    //stream.sputn((const char*) fragmentBufferPost, blockLen);
+                    //memcpy(*buffer + len, fragmentBufferPost, blockLen);
 
-                    // pokusit se načíst další z kopie bloku
+                    // uvolnění alokovaných prostředků
+                    delete fragmentBuffer;
+                    delete fragmentBufferPost;
+                } catch(...) {
+                    /* při načítání bloku něco nebylo v pořádku - nezkoumáme dál
+                     * co se stalo, protože stejně se vždy pokusíme načíst další
+                     * kopii bloku, pokud nějaká existuje */
                     continue;
                 }
 
-                memcpy(block, fragmentBuffer, blockLen);
-
-                // není obsah poškozený?
-                /** @todo this->checksum je už deprecated a nebude se vůbec používat */
-                /*
-                if(!this->checkSum(fragmentBuffer, fragmentContentLen, block->checksum)) {
-                    if(j == i->second.end()) {
-                        std::stringstream ss;
-                        ss << "Blok č. " << (*j)->block << " v souboru s hash " << (*j)->hash << " je poškozený!";
-                        throw ExceptionRuntimeError(ss.str());
-                    }
-
-                    // pokusit se načíst další z kopie bloku
-                    continue;
-                }
-                */
-
-                /** @todo spojit dohromady */
-                memcpy(*buffer + len, block->content, fragmentContentLen);
-
+                // počítadlo fragmentů
                 counter++;
-                len += fragmentContentLen;
+
+                // celková délka streamu
+                len += blockLen;
+
                 break;
             }
         }
 
-        if(len != file->size) {
+        *buffer = new bytestream_t[len];
+
+        //dešifrování obsahu
+        this->encryption->decrypt(*buffer, len, &fragmentBuffer, &blockLen);
+
+        if(blockLen != file->size) {
             std::stringstream ss;
             ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
+
             throw ExceptionRuntimeError(ss.str());
         }
 
-        *length = len;
+        *length = blockLen;
     }
 
 
-    size_t hiddenFs::readBlock(std::string filename, T_BLOCK_NUMBER block, char* buff, size_t length) {
-        void* context;
+    size_t hiddenFs::readBlock(hash_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte) {
+        void* context = NULL;
         size_t ret;
+        std::string filename;
 
+        bytestream_t* buff2 = NULL;
+
+        this->HT->find(hash, &filename);
         context = this->createContext(filename);
-        ret = this->readBlock(context, block, buff, length);
-        this->flushContext(context);
-        this->freeContext(context);
+        buff2 = new bytestream_t[length];
+        *buff = NULL;
+
+        try {
+            ret = this->readBlock(context, block, buff2, length);
+        } catch (ExceptionBlockNotFound& bnf) {
+            // uklidit po sobě...
+            if(buff2 != NULL) {
+                delete buff2;
+            }
+
+            // distribuovat výjimku výše, protože zde ještě nevíme jak s ní naložit
+            throw bnf;
+        } catch (ExceptionBlockNotUsed& bnu) {
+            // uklidit po sobě...
+            if(buff2 != NULL) {
+                delete buff2;
+            }
+
+            // distribuovat výjimku výše, protože zde ještě nevíme jak s ní naložit
+            throw bnu;
+        }
+
+        try {
+            this->unpackData(buff2, length, buff, &ret, idByte);
+
+            this->flushContext(context);
+            this->freeContext(context);
+        } catch (ExceptionRuntimeError& e) {
+            delete buff2;
+
+            throw e;
+        }
 
         return ret;
     }
 
-    void hiddenFs::writeBlock(std::string filename, T_BLOCK_NUMBER block, char* buff, size_t length) {
+    void hiddenFs::writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte) {
         void* context;
+        std::string filename;
+        bytestream_t* buff2 = NULL;
+        size_t length2;
 
-        context = this->createContext(filename);
-        this->writeBlock(context, block, buff, length);
-        this->flushContext(context);
-        this->freeContext(context);
+        try {
+            this->HT->find(hash, &filename);
+            context = this->createContext(filename);
+
+            this->packData(buff, length, &buff2, &length2, idByte);
+
+            if(length2 > BLOCK_MAX_LENGTH) {
+                throw ExceptionRuntimeError("Pokus o zapsání bloku dat, který je delší, než maximální povolená délka.");
+            }
+
+            this->writeBlock(context, block, buff2, length2);
+
+            this->flushContext(context);
+            this->freeContext(context);
+        } catch (std::exception& e) {
+            // uklidit po sobě...
+            if(buff2 != NULL) {
+                delete buff2;
+            }
+
+            // distribuovat výjimku výše, protože zde ještě nevíme jak s ní naložit
+            std::cerr << "" << e.what() << std::endl;
+            throw e;
+        }
     }
 
-    void hiddenFs::removeBlock(std::string filename, T_BLOCK_NUMBER block) {
+    void hiddenFs::removeBlock(hash_t hash, block_number_t block) {
         void* context;
+        std::string filename;
+
+        this->HT->find(hash, &filename);
 
         context = this->createContext(filename);
+
         this->removeBlock(context, block);
+
         this->flushContext(context);
         this->freeContext(context);
     }

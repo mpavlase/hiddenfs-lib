@@ -17,6 +17,10 @@ namespace HiddenFS {
      * Bidirectional mapping real file path and its uniqe hash string
      */
     class hashTable {
+    private:
+        typedef std::map<hash_t, std::string> table_t;
+
+        table_t table;
     public:
         hashTable();
         hashTable(const hashTable& orig);
@@ -24,24 +28,41 @@ namespace HiddenFS {
         /**
          * Vyhledání v tabulce (mapování hash -> název souboru)
          * @param hash hash řetězec souboru
-         * @param path umístění skutečného souboru
+         * @param filename skrze tento parametr metoda vrací umístění skutečného souboru
          */
-        void find(T_HASH hash, std::string* filename);
+        void find(hash_t hash, std::string* filename) const;
 
         /**
          * Vloží nový záznam do hash tabulky
          * @param hash vypočítaný hash z obsahu souboru
          * @param filename umístění skutečného souboru
          */
-        void add(T_HASH hash, std::string filename);
+        void add(hash_t hash, std::string filename);
+
+        /**
+         * User friendly zobrazení obsahu tabulky - používat pouze pro ladění!
+         */
+        void print() const;
 
         /**
          * Remove all items from table
          */
         void clear();
         virtual ~hashTable();
-    private:
-        std::map<T_HASH, std::string> table;
+
+        typedef table_t::const_iterator table_t_constiterator;
+
+        table_t_constiterator begin() const {
+            return this->table.begin();
+        }
+
+        table_t_constiterator end() const {
+            return this->table.end();
+        }
+
+        unsigned int size() const {
+            return this->table.size();
+        }
     };
 };
 

@@ -56,23 +56,27 @@ namespace HiddenFS {
         ExceptionBlockNotFound() : std::runtime_error("ExceptionBlockNotFound") {}
     };
 
+    class ExceptionBlockNotUsed: public std::runtime_error {
+    public:
+        ExceptionBlockNotUsed(std::string msg) : std::runtime_error(msg) {}
+        ExceptionBlockNotUsed() : std::runtime_error("ExceptionBlockNotFound") {}
+    };
+
     class ExceptionInodeExists: public std::runtime_error {
     public:
         ExceptionInodeExists(inode_t inode) : std::runtime_error("") {
             std::stringstream s;
             s << "Inode " << inode << " již existuje!";
-
-            throw runtime_error(s.str());
+            //throw runtime_error(s.str());
         }
     };
 
     class ExceptionBlockOutOfRange: public std::runtime_error {
     public:
-        ExceptionBlockOutOfRange(T_BLOCK_NUMBER b) : std::runtime_error("") {
+        ExceptionBlockOutOfRange(block_number_t b) : std::runtime_error("") {
             std::stringstream s;
             s << "Blok " << b << " je mimo rozsah aktuálního souboru!";
-
-            throw runtime_error(s.str());
+            //throw runtime_error(s.str());
         }
     };
 

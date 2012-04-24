@@ -14,15 +14,9 @@
 
 #include <cryptopp/sha.h>
 #include <cryptopp/filters.h>
+#include <cryptopp/aes.h>
+#include <cryptopp/modes.h>
 #include <cryptopp/hex.h>
-
-/*
-#include <taglib/mpegfile.h>
-#include <taglib/id3v2tag.h>
-#include <taglib/id3v2frame.h>
-#include <taglib/generalencapsulatedobjectframe.h>
-#include <taglib/urllinkframe.h>
-*/
 
 #include <id3/id3lib_frame.h>
 #include <id3/tag.h>
@@ -34,27 +28,41 @@
 class mp3fs : public HiddenFS::hiddenFs {
 public:
     typedef std::vector<std::string> dirlist_t;
+    //HiddenFS::hash_t_sizeof_t& htsot = HiddenFS::hash_t_sizeof;
+
+    void init() {
+        //this->htsot.set(CryptoPP::SHA1::DIGESTSIZE);
+    }
+
+    mp3fs(HiddenFS::IEncryption* i) : HiddenFS::hiddenFs(i) {
+        this->init();
+   //     this->FIRST_BLOCK_NO = HiddenFS::hiddenFs::FIRST_BLOCK_NO;
+    };
+    mp3fs() : HiddenFS::hiddenFs(NULL) {
+        this->init();
+ //       this->FIRST_BLOCK_NO = HiddenFS::hiddenFs::FIRST_BLOCK_NO;
+    };
 
     /** množství skrytých dat na jeden fyzický soubor */
     static const float STEGO_RATIO = 0.1;
     static const char PATH_DELIMITER = '/';
-    static const HiddenFS::T_BLOCK_NUMBER FIRST_BLOCK_NO = 1;
+    //static HiddenFS::block_number_t FIRST_BLOCK_NO;
     typedef struct {
         ID3_Tag* tag;
         unsigned int maxBlocks;
-        std::set<HiddenFS::T_BLOCK_NUMBER> avaliableBlocks;
-        std::set<HiddenFS::T_BLOCK_NUMBER> usedBlocks;
+        std::set<HiddenFS::block_number_t> avaliableBlocks;
+        std::set<HiddenFS::block_number_t> usedBlocks;
     } context_t;
 
 protected:
-    virtual size_t readBlock(void* context, HiddenFS::T_BLOCK_NUMBER block, char* buff, size_t length) const;
-    virtual void writeBlock(void* context, HiddenFS::T_BLOCK_NUMBER block, char* buff, size_t length);
-    virtual void storageRefreshIndex(std::string filename);
-    virtual void* createContext(std::string filename);
-    virtual void listAvaliableBlocks(void* context, std::set<HiddenFS::T_BLOCK_NUMBER>* blocks) const;
-    virtual void freeContext(void* context);
-    virtual void removeBlock(void* context, HiddenFS::T_BLOCK_NUMBER block);
-    virtual void flushContext(void* contextParam) {
+    size_t readBlock(void* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const;
+    void writeBlock(void* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length);
+    void storageRefreshIndex(std::string filename);
+    void* createContext(std::string filename);
+    void listAvaliableBlocks(void* context, std::set<HiddenFS::block_number_t>* blocks) const;
+    void freeContext(void* context);
+    void removeBlock(void* context, HiddenFS::block_number_t block);
+    void flushContext(void* contextParam) {
         context_t* context = (context_t*) contextParam;
         context->tag->Update();
     }
@@ -64,7 +72,7 @@ protected:
      * @param block identifikátor bloku
      * @return řetězec pro název souboru v mezi ID3 tagy
      */
-    std::string genFilenameByBlock(HiddenFS::T_BLOCK_NUMBER block) {
+    std::string genFilenameByBlock(HiddenFS::block_number_t block) {
         std::stringstream ss;
         ss << "B_";
         ss << block;
@@ -98,7 +106,80 @@ private:
 
 };
 
-void mp3fs::listAvaliableBlocks(void* contextParam, std::set<HiddenFS::T_BLOCK_NUMBER>* blocks) const {
+class MyEncryption : public HiddenFS::IEncryption {
+public:
+    byte encKey[CryptoPP::AES::DEFAULT_KEYLENGTH];
+    byte encIv[CryptoPP::AES::BLOCKSIZE];
+
+    MyEncryption() : HiddenFS::IEncryption() {
+        //this->encKey;
+        //this->encIv[CryptoPP::AES::BLOCKSIZE];
+
+        assert((unsigned size_t)this->keySize <= (unsigned size_t)CryptoPP::AES::DEFAULT_KEYLENGTH);
+
+        memset(this->encKey, '\0', sizeof(this->encKey));
+        memcpy(this->encKey, this->key, this->keySize);
+        //prng.GenerateBlock(key, sizeof(key));
+
+        memset(this->encIv, '\0', sizeof(this->encIv));
+        //prng.GenerateBlock(iv, sizeof(iv));
+    }
+
+    void encrypt(HiddenFS::bytestream_t* input, size_t inputSize, HiddenFS::bytestream_t** output, size_t* outputSize) {
+        std::string cipher;
+
+        assert(input != NULL);
+        assert(outputSize != NULL);
+
+        try {
+            CryptoPP::OFB_Mode< CryptoPP::AES >::Encryption e;
+            e.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
+
+            // OFB mode must not use padding. Specifying
+            //  a scheme will result in an exception
+            CryptoPP::StringSource((const byte*) input, inputSize, true,
+                new CryptoPP::StreamTransformationFilter(e,
+                    new CryptoPP::StringSink(cipher)
+                ) // StreamTransformationFilter
+            ); // StringSource
+
+            *outputSize = cipher.length();
+            *output = new HiddenFS::bytestream_t[*outputSize];
+            cipher.copy((char*)*output, *outputSize, 0);
+            //memcpy(*output, cipher.data(), *outputSize);
+        } catch(const CryptoPP::Exception& e) {
+            std::cerr << e.what() << std::endl;
+            exit(1);
+        }
+    };
+
+    void decrypt(HiddenFS::bytestream_t* input, size_t inputSize, HiddenFS::bytestream_t** output, size_t* outputSize) {
+        std::string recovered;
+
+        try {
+            CryptoPP::OFB_Mode< CryptoPP::AES >::Decryption d;
+            d.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
+
+            // The StreamTransformationFilter removes
+            //  padding as required.
+            CryptoPP::StringSource s((const byte*) input, inputSize, true,
+                new CryptoPP::StreamTransformationFilter(d,
+                    new CryptoPP::StringSink(recovered)
+                ) // StreamTransformationFilter
+            ); // StringSource
+
+            *outputSize = recovered.length();
+            *output = new HiddenFS::bytestream_t[*outputSize];
+            recovered.copy((char*)*output, *outputSize, 0);
+            //memcpy(*output, recovered.data(), *outputSize);
+        } catch(const CryptoPP::Exception& e) {
+            std::cerr << e.what() << std::endl;
+            exit(1);
+        }
+    };
+};
+
+void mp3fs::listAvaliableBlocks(void* contextParam, std::set<HiddenFS::block_number_t>* blocks) const {
     context_t* context = (context_t*) contextParam;
     *blocks = context->avaliableBlocks;
 }
@@ -112,8 +193,8 @@ void* mp3fs::createContext(std::string filename) {
     struct stat stBuff;
     int counter = 0;
     ID3_Frame* first;
-    HiddenFS::T_BLOCK_NUMBER lastBlock;
-    HiddenFS::T_BLOCK_NUMBER actBlock, diffBlock, iterBlock;
+    HiddenFS::block_number_t lastBlock;
+    HiddenFS::block_number_t actBlock, diffBlock, iterBlock;
     ID3_Frame* frame;
     ID3_Frame* frameX;
     unsigned int usedSize;
@@ -140,36 +221,37 @@ void* mp3fs::createContext(std::string filename) {
 
     // průchod přes všechny ID3 tagy typu Global Enculapsed Object pro nalezení
     // rámců obsahující fragmenty tohoto FS
-    while(true) {
-        frame = context->tag->Find(ID3FID_GENERALOBJECT);
+    if(sumGEOB > 0) {
+        while(true) {
+            frame = context->tag->Find(ID3FID_GENERALOBJECT);
 
-        if(counter == 0) {
-            first = frame;
-        } else if(first == frame) {
-            break;
+            if(counter == 0) {
+                first = frame;
+            } else if(first == frame) {
+                break;
+            }
+
+            counter++;
+
+            // patří nalezený rámec do tohoto FS?
+            tagFilename = frame->GetField(ID3FN_FILENAME)->GetRawText();
+            if(tagFilename == "") {
+                continue;
+            }
+
+            std::istringstream(tagFilename) >> blok;
+            context->usedBlocks.insert(blok);
+            //std::cout << "GEOB[" << blok << "]: " << frame->GetField(ID3FN_FILENAME)->GetRawText() << ", " << frame->GetField(ID3FN_DATA)->GetRawBinary() << "\n";
+            //std::cout << "a_" << tagFilename << "\n";
         }
-
-        counter++;
-
-        // patří nalezený rámec do tohoto FS?
-        tagFilename = frame->GetField(ID3FN_FILENAME)->GetRawText();
-        if(tagFilename == "") {
-            continue;
-        }
-
-        std::istringstream(tagFilename) >> blok;
-        context->usedBlocks.insert(blok);
-        //std::cout << "GEOB[" << blok << "]: " << frame->GetField(ID3FN_FILENAME)->GetRawText() << ", " << frame->GetField(ID3FN_DATA)->GetRawBinary() << "\n";
-        //std::cout << "a_" << tagFilename << "\n";
     }
 
-
     if(!context->usedBlocks.empty()) {
-        lastBlock = FIRST_BLOCK_NO;
+        lastBlock = this->FIRST_BLOCK_NO;
         usedSize = context->usedBlocks.size();
 
         // vyhledání "děr" v číslování, začínat až od dalšího prvku, protože první jsme načetli ručně
-        for(std::set<HiddenFS::T_BLOCK_NUMBER>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
+        for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
             actBlock = *setIt;
             diffBlock = actBlock - lastBlock;
 
@@ -198,7 +280,7 @@ void* mp3fs::createContext(std::string filename) {
             lastBlock = actBlock;
         }
     } else {
-        lastBlock = FIRST_BLOCK_NO;
+        lastBlock = this->FIRST_BLOCK_NO;
     }
 
     // máme k dispozici více čísel bloků, než obsahují "díry", takže je dopočítáme ručně
@@ -210,18 +292,18 @@ void* mp3fs::createContext(std::string filename) {
         }
     }
 
-    std::cout << "\n\nfile size: " << stBuff.st_size << ", sum geob: " << sumGEOB << ", blockLen = " << BLOCK_MAX_LENGTH;
+    std::cout << "file size: " << stBuff.st_size << ", sum geob: " << sumGEOB << ", blockLen = " << BLOCK_MAX_LENGTH;
     std::cout << ", poč.avaliable: " << context->avaliableBlocks.size();
-    std::cout << ", max bloku: " << context->maxBlocks << ", poč. volných bloků:" << context->avaliableBlocks.size() << " <----------\n";
+    std::cout << ", max bloku: " << context->maxBlocks << ", poč. volných bloků:" << context->avaliableBlocks.size() << "\n";
 
     std::cout << "used = ";
-    for(std::set<HiddenFS::T_BLOCK_NUMBER>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
+    for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
         std::cout << *setIt << ", ";
     }
 
     std::cout << "\navaliable = ";
 
-    for(std::set<HiddenFS::T_BLOCK_NUMBER>::iterator setIt = context->avaliableBlocks.begin(); setIt != context->avaliableBlocks.end(); setIt++) {
+    for(std::set<HiddenFS::block_number_t>::iterator setIt = context->avaliableBlocks.begin(); setIt != context->avaliableBlocks.end(); setIt++) {
         std::cout << *setIt << ", ";
     }
 
@@ -291,7 +373,7 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
     closedir(d);
 }
 
-void mp3fs::removeBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block) {
+void mp3fs::removeBlock(void* contextParam, HiddenFS::block_number_t block) {
     context_t* context = (context_t*) contextParam;
     std::stringstream ss;
 
@@ -318,21 +400,22 @@ void mp3fs::removeBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block) {
     context->usedBlocks.erase(block);
 }
 
-size_t mp3fs::readBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block, char* buff, size_t length) const {
+size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const {
     context_t* context = (context_t*) contextParam;
     std::stringstream ss;
     size_t size = 0;
 
     ss << block;
 
+    assert(buff != NULL);
+
     if(context->usedBlocks.find(block) == context->usedBlocks.end()) {
-        /// @todo opravdu to je tak významná chyba?
-        throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze přečíst, není obsazen.");
+        throw HiddenFS::ExceptionBlockNotUsed("Blok " + ss.str() + " nelze přečíst, není obsazen (jiný FS?).");
     }
 
     ID3_Frame* frame = context->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
     if(frame == NULL) {
-        throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze přečíst, nebyl nalezen.");
+        throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze přečíst, nebyl ve fyzickém souboru nalezen.");
     }
 
     size = (frame->Field(ID3FN_DATA).BinSize() > length) ? length : frame->Field(ID3FN_DATA).BinSize();
@@ -341,7 +424,7 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block, char
     return size;
 }
 
-void mp3fs::writeBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block, char* buff, size_t length) {
+void mp3fs::writeBlock(void* contextParam, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) {
     context_t* context = (context_t*) contextParam;
     std::stringstream ss;
 
@@ -378,47 +461,102 @@ void mp3fs::writeBlock(void* contextParam, HiddenFS::T_BLOCK_NUMBER block, char*
     context->usedBlocks.insert(block);
 }
 
-void mp3fs::storageRefreshIndex(std::string filename) {
-    dirlist_t l;
+void mp3fs::storageRefreshIndex(std::string path) {
+    dirlist_t listOfFiles;
     std::ifstream f;
+    unsigned int fileLength;
 
+    // pro blok pro výpočet hash použít posledních 'blockOffset' bytů od konce MP3 souboru
+    const unsigned int blockOffset = 300*1024;
+
+    // počet bytů, ze kterých se následně počítá hash
+    const unsigned int blockAmount = 1*1024;
+    //const unsigned int blockAmount = 10;
+
+    // = 2MB
+    const unsigned int fileMinLength = 2*1024*1024 + blockOffset;
+
+    // konstanty pro detekci a následné přeskočení ID3v1 tagů
+    const unsigned int ID3v1_offset = 128;
+    const char* ID3v1_identification = "TAG";
+    const size_t ID3v1_identificationLen = strlen(ID3v1_identification);
+    char id3v1_buffer[3];
+
+    // při nalezení ID3v1 tagů se rovná 128, jinak 0
+    unsigned int offsetFromEnd;
+
+    // vyhledání všech souborů s požadovanou příponou
     std::vector<std::string> filter;
     filter.push_back(".mp3");
 
-    this->scanDir(filename, filter, l);
-    const int N = 500;
-    const int offset = 5000;
+    this->scanDir(path, filter, listOfFiles);
 
-    int delka;
-    long delka_sum = 0;
-    char* blok = new char[N+1];
+    char* blok = new char[blockAmount+1];
 
-    std::string source, value;
+    std::string hashOutput, encoded;
     CryptoPP::SHA1 hash;
 
-    for(dirlist_t::iterator i = l.begin(); i != l.end(); i++) {
+    for(dirlist_t::iterator i = listOfFiles.begin(); i != listOfFiles.end(); i++) {
         f.open(i->c_str(), ifstream::binary);
+        offsetFromEnd = 0;
 
         if(f.fail()) {
             printf(" - problém!!\n");
             continue;
         }
-        //f.seekg(ifstream::end);
+
+        // přečtení celkové délky souboru
         f.seekg(0, ifstream::end);
-        delka = f.tellg();
+        fileLength = f.tellg();
+        f.seekg(0, ifstream::beg);
 
-        delka_sum += delka;
 
-        if(delka > (offset + N)) {
-            //f.seekg(fstream::beg + offset);
-            value.clear();
-            f.seekg(offset);
-            f.read(blok, N);
+        f.seekg(fileLength - ID3v1_offset);
+        f.read(id3v1_buffer, ID3v1_identificationLen);
 
-            source = *i;
-            //StringSource(source, true, new HashFilter(hash, new HexEncoder(new StringSink(value))));
+        //std::cout << "ok2? " << f.good() << "\n";
+        if(memcmp(id3v1_buffer, ID3v1_identification, ID3v1_identificationLen) == 0) {
+            offsetFromEnd = ID3v1_offset;
+            //std::cout << *i << " obsahuje ID3v1 tagy.\n";
+        }
 
-            this->HT->add(source, value);
+        //std::cout << "ok3? " << f.good() << "\ndélka: " << fileLength << "\n";
+
+        if(fileLength > fileMinLength) {
+            hashOutput.clear();
+
+            //std::cout << "pozice1x: " << f.tellg() << "\n";
+            f.seekg(0, ifstream::beg);
+            f.seekg(fileLength - blockOffset - offsetFromEnd);
+            memset(blok, '\0', blockAmount);
+            //std::cout << "pozice2: " << f.tellg() << "\n";
+            f.read(blok, blockAmount);
+
+            encoded.clear();
+            CryptoPP::StringSource(
+                (const byte*)blok,
+                blockAmount,
+                true,
+                new CryptoPP::HexEncoder(
+                    new CryptoPP::StringSink(encoded)
+                ) // HexEncoder
+            ); // StringSource
+
+            CryptoPP::StringSource(
+                (const byte*)blok,
+                blockAmount,
+                true,
+                new CryptoPP::HashFilter(
+                    hash,
+//                    new CryptoPP::HexEncoder(
+                        new CryptoPP::StringSink(hashOutput)
+//                    )
+                )
+            );
+
+            this->HT->add(hashOutput, *i);
+         } else {
+            std::cout << "Soubor " << *i << " je moc krátký (délka < " << fileMinLength << " Bytes)!\n";
          }
 
         f.close();
@@ -429,7 +567,8 @@ void mp3fs::storageRefreshIndex(std::string filename) {
 
 int main(int argc, char* argv[]) {
     int ret;
-    mp3fs* fs = new mp3fs;
+    mp3fs* fs = new mp3fs(new MyEncryption());
+    //mp3fs* fs = new mp3fs();
 
     if(false) {
         std::string a[2];

@@ -7,9 +7,13 @@
 #ifndef COMMON_H
 #define	COMMON_H
 
+#include <assert.h>
+#include <cstdlib>
+#include <cstring>
 #include <errno.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "exceptions.h"
 #include "types.h"
@@ -22,16 +26,32 @@ namespace HiddenFS {
     std::string print_vBlock(vBlock* b);
 
     /**
+     * Převod struktury vBlock na blok bytů
+     * @param input zpracovávaný vBlock
+     * @param output výstupní buffer, metoda sama alokuje dostatečný prostor
+     * @param size délka výstupního bufferu
+     */
+    void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size);
+
+    /**
+     * Provádí převod binárního bloku dat zpět na strukturu vBlock
+     * @param input vstupní buffer
+     * @param size délka vstupního bufferu
+     * @param output výstupní rekonstruovaný vBlock, metoda sama alokuje tento ukazatel
+     */
+    void unserialize_vBlock(bytestream_t* input, size_t size, vBlock** output);
+
+    /**
      * Objekt zastřešující výpočet kontrolního CRC součtu
      * Implementace převzata z RFC 1952
      * @see http://tools.ietf.org/html/rfc1952#section-8
      */
     class CRC {
     public:
-        typedef unsigned long CRC_t;
+        typedef __uint32_t CRC_t;
 
         /* Return the CRC of the bytes buf[0..len-1]. */
-        CRC_t calculate(unsigned char *buf, int len);
+        CRC_t calculate(__u_char *buf, int len);
 
         CRC();
 
@@ -57,6 +77,135 @@ namespace HiddenFS {
         */
         CRC_t update_crc(CRC_t crc, unsigned char *buf, int len);
     };
+
+    class IEncryption {
+    public:
+        //IEncryption();
+        virtual ~IEncryption() {
+            delete this->key;
+        };
+        /**
+         * Uložení šifrovacího klíče do nitra objektu
+         */
+        virtual void setKey(bytestream_t* key, size_t keySize) {
+            this->key = new bytestream_t[keySize];
+            this->keySize = keySize;
+            memcpy(this->key, key, this->keySize);
+        };
+
+        /**
+         * Obecné rozhraní pro šifrování bloku dat
+         * @param input vstupní buffer
+         * @param inputSize délka vstupního bufferu
+         * @param output výstupní buffer, metoda si sama alokuje dostatečný prostor
+         * @param outputSize délka výstupního bufferu
+         */
+        virtual void encrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) = 0;
+
+        /**
+         * Obecné rozhraní pro dešifrování bloku dat
+         * @param input zašifrovaný blok dat
+         * @param inputSize délka bufferu input
+         * @param output dešifrovaný vstup, metoda si sama alokuje dostatečný prostor
+         * @param outputSize délka výstupního bufferu
+         */
+        virtual void decrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) = 0;
+
+    protected :
+        bytestream_t* key;
+        size_t keySize;
+    };
+
+
+    class DefaultEncryption : public IEncryption {
+    public:
+        void setKey(bytestream_t* key, size_t keySize) {
+            this->key = new bytestream_t[keySize];
+
+            memcpy(this->key, key, keySize);
+        };
+
+        /**
+         * Vstup beze změny převede na výstup
+         */
+        void encrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
+            *output = new bytestream_t[inputSize];
+
+            memcpy(*output, input, inputSize);
+
+            *outputSize = inputSize;
+        };
+
+        /**
+         * Vstup beze změny převede na výstup
+         */
+        void decrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
+            *output = new bytestream_t[inputSize];
+
+            memcpy(*output, input, inputSize);
+
+            *outputSize = inputSize;
+        };
+    };
+
+    /**
+     * Jedna složka spojového seznamu pro uložení serializovaných entit (=řádků)
+     * tabulek
+     */
+    struct chainOfEntities {
+        /** Počet entit v aktuálním článku řetězu */
+        __uint32_t count;
+
+        /** Umístění následujícího článku řetězu, pokud je celý nastaven na '\0',
+         * Aktuální článek je poslední v řadě. */
+        vBlock next;
+
+        /** Ukazatel na dump entit. Jejich délka nemusí být konstantní a je na metodě,
+         * která řetěz zpracovává, aby obsah korektně interpretovala */
+        __u_char* entities;
+    };
+
+    /**
+     * Převod struktury vBlock na blok dat
+     * @param input vBlock pro serializaci
+     * @param output výstupní buffer, metoda sama alokuje dostatečnou délku
+     * @param size délka výsledného bloku dat
+     */
+    void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size);
+
+
+    /**
+     * Metoda rekonstruuje strukturu vBlock ze serializovaného bloku dat
+     * @param input blok dat pro rekonstrukci
+     * @param size délka vstupního bufferu (složka input)
+     * @param output rekonstruovaný vBlock, metoda sama alokuje tuto proměnnou
+     */
+    void unserialize_vBlock(bytestream_t* input, size_t size, vBlock** output);
+
+    /**
+     * Funkce testuje hodnotu parametru, zda je v rozsahu pro superblock
+     */
+    bool idByteIsSuperBlock(id_byte_t b);
+
+    /**
+     * Funkce testuje hodnotu parametru, zda je v rozsahu pro běžný datový blok
+     */
+    bool idByteIsDataBlock(id_byte_t b);
+
+    /**
+     * Vrací nejvyšší dosažitelnou hodnotu dle datového typu
+     */
+    id_byte_t idByteMaxValue();
+
+    /**
+     * Generuje hodnotu platnou pro běžný datový blok
+     */
+    id_byte_t idByteGenDataBlock();
+
+    /**
+     * Generuje hodnotu v rozsahu platném pro superblock
+     */
+    id_byte_t idByteGenSuperBlock();
 }
 
 #endif	/* COMMON_H */
