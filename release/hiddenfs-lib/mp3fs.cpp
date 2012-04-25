@@ -28,10 +28,8 @@
 class mp3fs : public HiddenFS::hiddenFs {
 public:
     typedef std::vector<std::string> dirlist_t;
-    //HiddenFS::hash_t_sizeof_t& htsot = HiddenFS::hash_t_sizeof;
 
     void init() {
-        //this->htsot.set(CryptoPP::SHA1::DIGESTSIZE);
     }
 
     mp3fs(HiddenFS::IEncryption* i) : HiddenFS::hiddenFs(i) {
@@ -246,9 +244,10 @@ void* mp3fs::createContext(std::string filename) {
         }
     }
 
+    usedSize = context->usedBlocks.size();
+
     if(!context->usedBlocks.empty()) {
         lastBlock = this->FIRST_BLOCK_NO;
-        usedSize = context->usedBlocks.size();
 
         // vyhledání "děr" v číslování, začínat až od dalšího prvku, protože první jsme načetli ručně
         for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
@@ -257,13 +256,13 @@ void* mp3fs::createContext(std::string filename) {
 
             std::cout << "#[" << actBlock << "]\t";
 
-            if(diffBlock != 1) {
-                assert(diffBlock > 0);
+            if(diffBlock > 1) {
+                //assert(diffBlock > 0);
 
                 // dopočítání čísel bloků v mezeře (jsou volnými bloky)
                 for(iterBlock = lastBlock; iterBlock != actBlock; iterBlock++) {
                     // nesmíme překročit maximální počet bloků na soubor
-                    if(context->avaliableBlocks.size() + usedSize >= context->maxBlocks) {
+                    if(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks) {
                         break;
                     }
 
@@ -272,7 +271,7 @@ void* mp3fs::createContext(std::string filename) {
                 }
 
                 // nesmíme překročit maximální počet bloků na soubor
-                if(context->avaliableBlocks.size() + usedSize >= context->maxBlocks) {
+                if(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks) {
                     break;
                 }
             }
@@ -281,14 +280,21 @@ void* mp3fs::createContext(std::string filename) {
         }
     } else {
         lastBlock = this->FIRST_BLOCK_NO;
-    }
 
-    // máme k dispozici více čísel bloků, než obsahují "díry", takže je dopočítáme ručně
-    if(!(context->avaliableBlocks.size() + usedSize >= context->maxBlocks)) {
-        for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + usedSize >= context->maxBlocks); iterBlock++) {
+        for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
 
             std::cout << ".[" << iterBlock << "]\t";
             context->avaliableBlocks.insert(iterBlock);
+        }
+    }
+
+    // máme k dispozici více čísel bloků, než obsahují "díry", takže je dopočítáme ručně
+    if(!(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks)) {
+        for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
+            if(context->usedBlocks.find(iterBlock) == context->usedBlocks.end()) {
+                std::cout << ".[" << iterBlock << "]\t";
+                context->avaliableBlocks.insert(iterBlock);
+            }
         }
     }
 
@@ -410,6 +416,10 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, Hidd
     assert(buff != NULL);
 
     if(context->usedBlocks.find(block) == context->usedBlocks.end()) {
+        if(context->avaliableBlocks.find(block) != context->avaliableBlocks.end()) {
+            throw HiddenFS::ExceptionBlockNotUsed("Do bloku " + ss.str() + " nebylo dosud nic zapsáno, nelze jej proto přečíst.");
+        }
+        
         throw HiddenFS::ExceptionBlockNotUsed("Blok " + ss.str() + " nelze přečíst, není obsazen (jiný FS?).");
     }
 

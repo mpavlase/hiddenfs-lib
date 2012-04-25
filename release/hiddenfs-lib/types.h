@@ -17,7 +17,7 @@
 
 namespace HiddenFS {
     /** maximální délka obecně pro zápis dat do úložiště (implicitně 4kB) */
-    #define BLOCK_MAX_LENGTH (2 << 12)
+    #define BLOCK_MAX_LENGTH (1 << 12)
 
     /**
      * Objekt plní funkci chytré konstanty - lze ji číst bez omezení, ale nastavit právě jednou.
@@ -140,11 +140,12 @@ namespace HiddenFS {
 
     /** Součet jednotlivých délek složek struktury vBlock bez jakéhokoli zarovnávání,
      * používá se pouze pro práci s dumpem struktury vBlock! */
-    static const size_t SIZEOF_vBlock = sizeof(hash_t) \
+    static const size_t SIZEOF_vBlock = \
         + sizeof(block_number_t) \
         + sizeof(fragment_t) \
-        + sizeof(bool) \
-        + sizeof(size_t);
+        + sizeof(size_t)
+        + hash_t_sizeof \
+        + sizeof(bool);
 
     /**
      * Popis obsahu jedné entity

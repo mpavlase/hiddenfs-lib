@@ -34,7 +34,6 @@ namespace HiddenFS {
         /** datový typ kontrolního součtu */
         typedef CRC::CRC_t checksum_t;
 
-        typedef bytestream_t blockContent[BLOCK_MAX_LENGTH];
         static const size_t BLOCK_USABLE_LENGTH = BLOCK_MAX_LENGTH - sizeof(checksum_t) - sizeof(id_byte_t);
 
         block_number_t FIRST_BLOCK_NO;

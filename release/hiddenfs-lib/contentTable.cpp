@@ -45,7 +45,6 @@ namespace HiddenFS {
         // zjištění počtu dále zpracovaných bloků
         // iterace přes všechny soubory
         for(table_t::const_iterator i = this->table.begin(); i != this->table.end(); i++) {
-            memset(stream, '\0', sizeof(BLOCK_MAX_LENGTH));
             //std::cout << "table size: " << this->table.size() << std::endl;
             //std::cout << "content: " << i->second.content.size() << std::endl;
 
@@ -57,28 +56,32 @@ namespace HiddenFS {
                 for(std::vector<vBlock*>::const_iterator k = j->second.begin(); k != j->second.end(); k++) {
                     // hrubá kopie struktury
 
-                    //memset(&chain, '\0', sizeof(chain));
-                    chain.content = NULL;
-                    chain.length = 0;
-
+                    memset(&chain, '\0', sizeof(chain));
+                    memset(stream, '\0', sizeof(stream));
                     // # dump právě jedné složky do bufferu
                     size = 0;
 
                     // dump 'inode'
-                    memcpy(stream + size, (&i->first), sizeof(i->first));
+                    memcpy(stream + size, &(i->first), sizeof(i->first));
                     size += sizeof(i->first);
-
                     // dump 'vBlock'
                     serialize_vBlock(*k, &vBlockBuff, &vBlockBuffSize);
+
+                    //std::cout << "#:";
+                    //std::cout.write((char*) vBlockBuff, vBlockBuffSize);
+                    //std::cout << "\n";
+
                     memcpy(stream + size, vBlockBuff, vBlockBuffSize);
                     size += vBlockBuffSize;
 
                     // kopie obsahu
-                    //chain.content = new bytestream_t[size];
-                    //chain.length = size;
-                    //memcpy(chain.content, stream, size);
+                    chain.content = new bytestream_t[size];
+                    memset(chain.content, '\0', size);
 
-                    //delete [] vBlockBuff;
+                    chain.length = size;
+                    memcpy(chain.content, stream, size);
+
+                    delete [] vBlockBuff;
 
                     output->push_back(chain);
 
@@ -190,14 +193,24 @@ namespace HiddenFS {
         for(chainList_t::iterator i = input.begin(); i != input.end(); i++) {
             offset = 0;
 
-            memcpy(&inode, ((*i).content) + offset, sizeof(inode));
+            if(&((*i).content) == NULL) {
+                std::cout << "CT::deserializace.content == NULL!\n";
+                continue;
+            }
+
+                //std::cout << "CT::deserializace.content adredsa: " << (int) (i->content) << std::endl;
+                //std::cout << "CT::deserializace.content adredsa: " << (int) (i->content + offset) << std::endl;
+                //std::cout << "hodnota: " << (int) *(i->content + offset) << std::endl;
+                //inode = *(i->content + offset);
+            memcpy(&inode, (i->content), sizeof(inode));
             offset += sizeof(inode);
+                //std::cout << "CT::deserializace.content adredsa: " << (int) (((*i).content) + offset) << std::endl;
 
             // nalezli jsme prázdný blok, takže pouze zinicializujeme vnitřní struktury
-            if(memcmp(emptyBlock, (*i).content + offset, SIZEOF_vBlock) == 0) {
+            if(memcmp(emptyBlock, i->content + offset, SIZEOF_vBlock) == 0) {
                 this->newEmptyContent(inode);
             } else {
-                unserialize_vBlock((*i).content + offset, SIZEOF_vBlock, &block);
+                unserialize_vBlock(i->content + offset, SIZEOF_vBlock, &block);
                 this->addContent(inode, block);
             }
 
@@ -216,11 +229,11 @@ namespace HiddenFS {
         std::cout << std::setw(6) << std::left << "inode"
             << "|" << "content" << "\n";
         for(table_t::iterator it = this->table.begin(); it != this->table.end(); it++) {
-            std::cout << std::setw(6) << std::left << it->first << "|";
+            std::cout << std::setw(6) << std::left << it->first;
             //std::cout << "počet složek v sub-mapě: " << it->second.content.size() << std::endl;
             /// @todo tisknout i rezervované bloky
             for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = it->second.content.begin(); i !=  it->second.content.end(); i++) {
-                std::cout << " [#" << i->first << ": ";
+                std::cout << "\n       [#" << i->first << ": ";
                 for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++)
                 {
                     std::cout << print_vBlock(*j);

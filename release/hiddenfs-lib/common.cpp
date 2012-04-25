@@ -121,6 +121,22 @@ namespace HiddenFS {
         return ID_BYTE_BOUNDARY + (rand() % (idByteMaxValue() - ID_BYTE_BOUNDARY));
     }
 
+    void pBytes(bytestream_t* input, size_t len) {
+        std::cout << "printBytes, len=" << len << "\n";
+
+        for(unsigned int i = 0; i < len; i++) {
+            std::cout.width(2);
+            std::cout << std::hex << std::uppercase << (int)input[i];
+            if(i%2 == 1) {
+                std::cout << " ";
+            }
+        }
+        std::cout << "<--- HEX\n";
+
+        std::cout.write((const char*)input, len);
+        std::cout << "<--- ASCII\n";
+    }
+
     void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size) {
         size_t rawItemSize = SIZEOF_vBlock;
 
@@ -129,6 +145,8 @@ namespace HiddenFS {
 
         size_t offset = 0;
         *output = new bytestream_t[rawItemSize];
+        //pBytes(*output, rawItemSize);
+        //memset(*output, '\0', rawItemSize);
 
         // kopírování složky 'block'
         memcpy(*output + offset, &(input->block), sizeof(input->block));
@@ -160,10 +178,9 @@ namespace HiddenFS {
         assert(input != NULL);
 
         *output = new vBlock;
-        memset(*output, '\0', sizeof(vBlock));
         size_t offset = 0;
 
-        assert(size = rawItemSize);
+        assert(size == rawItemSize);
 
         // kopírování složky 'block'
         memcpy(&((*output)->block), input + offset, sizeof((*output)->block));
@@ -174,7 +191,7 @@ namespace HiddenFS {
         offset += sizeof((*output)->fragment);
 
         // kopírování složky 'hash'
-        (*output)->hash.assign((const char*) (input + offset), hash_t_sizeof);
+        (*output)->hash.assign((const char*)input + offset, 0, hash_t_sizeof);
         offset += hash_t_sizeof;
 
         // kopírování složky 'length'
