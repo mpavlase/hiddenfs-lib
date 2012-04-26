@@ -109,11 +109,13 @@ namespace HiddenFS {
         if(this->table.size() == 0) {
             ret_inode = ROOT_INODE;
         } else {
+            // nalezení posledního souboru a vypočtení nového (neobsazeného) inode.
             table_t::reverse_iterator rit = this->table.rbegin();
             ret_inode = rit->second->inode + 1;
         }
 
         file->inode = ret_inode;
+        this->maxInode = ret_inode;
 
         // vložení souboru do hlavní tabulky
         this->table[ret_inode] = file;
@@ -121,7 +123,6 @@ namespace HiddenFS {
         // vložení souboru do tabulky rodičů
         this->tableDirContent[file->parent].insert(ret_inode);
 
-        this->maxInode = ret_inode;
         return ret_inode;
     }
 

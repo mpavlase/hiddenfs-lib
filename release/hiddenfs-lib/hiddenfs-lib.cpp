@@ -19,6 +19,7 @@
 #include <unistd.h>
 
 #include "hiddenfs-lib.h"
+#include "common.h"
 
 /*
 struct fuse_file_info {
@@ -222,7 +223,8 @@ namespace HiddenFS {
     */
 
     hiddenFs::hiddenFs(IEncryption* instance = NULL) {
-        srand(time(NULL));
+        //srand(time(NULL));
+        srand(1);
 
         this->HT = new hashTable();
         this->ST = new structTable();
@@ -371,7 +373,7 @@ namespace HiddenFS {
     }
 
     int hiddenFs::fuse_open(const char* path, struct fuse_file_info* file_i) {
-        // povolit otevření souboru
+        // povolit otevření souboru bez dalších okolků
         return 0;
 
         // nemáme oprávnění pro čtení tohoto souboru
@@ -383,13 +385,9 @@ namespace HiddenFS {
     }
 
     int hiddenFs::fuse_read(const char* path, char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i) {
-
         // 1) překlad cesty na cílový i-node
-        inode_t inode;
         vFile* file;
         hiddenFs* hfs = GET_INSTANCE;
-
-
 
         std::cout << " <<<<<<<<<<<<<<<<<<<<<<<<<< \n";
         std::stringstream str;
@@ -398,20 +396,24 @@ namespace HiddenFS {
         str << "')\n";
 
         try {
-            inode = hfs->ST->pathToInode(path, &file);
+            hfs->ST->pathToInode(path, &file);
             str << "length: " << file->size << "\n";
         } catch (ExceptionFileNotFound) {
             std::cout << " ## " << "path se nepodařilo přeložit na inode..." << " ##\n";
             /** @todo po doladění fuse_read odkomentovat! */
             return -ENOENT;
         }
+
+        /*
         std::cout << "Obsah souboru: -" << str.str() << "-\n";
         size = str.str().length();
         memcpy(buffer, str.str().c_str(), size);
         std::cout << "buffer: -" << buffer << "-\n";
 
-        return size;
+        */
 
+        /// @todo odkomentovat!
+        return size;
 
 
         // 2) načíst obsah
@@ -541,7 +543,6 @@ namespace HiddenFS {
             path.assign("../../mp3_examples");
         }
 
-        //std::cout << "hash_sizeof: " << this->hash_t_sizeof() << std::endl;
         /*
         smartConst<int> smart;
         smart.set(14);
@@ -549,58 +550,14 @@ namespace HiddenFS {
         assert(false);
         */
 
-        //std::string st;
-        //st = "NetBeans";
-        //size_t tt = 2000;
-        //char* buf = new char[tt];
-
-        /*
-        this->writeBlock("funnyman.mp3", 16, (char *)st.c_str(), 500);
-        this->writeBlock("funnyman.mp3", 21, (char *)st.c_str(), 500);
-        this->writeBlock("funnyman.mp3", 71, (char *)st.c_str(), 500);
-        this->readBlock("funnyman.mp3", 15, buf, 500);
-        this->writeBlock("funnyman.mp3", 15, (char *)st.c_str(), st.length() + 1);
-
-        st = "blabol";
-        this->writeBlock("funnyman.mp3", 110, (char *)st.c_str(), st.length() + 1);
-
-        st = "LTD-ESP";
-        this->writeBlock("funnyman.mp3", 4, (char *)st.c_str(), st.length() + 1);
-        */
-        //this->readBlock("funnyman.mp3", 15, buf, 500);
-        //std::cout << "Obsah načteného bloku: " << buf << "\n";
-
-        /*
-        this->writeBlock("funnyman.mp3", 15, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 16, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 20, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 21, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 70, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 71, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 80, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 81, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 82, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 83, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 84, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 85, (char *)st.c_str(), tt);
-        this->writeBlock("funnyman.mp3", 86, (char *)st.c_str(), tt);
-        //this->removeBlock("funnyman.mp3", 4);
-        //this->removeBlock("funnyman.mp3", 15);
-        //this->removeBlock("funnyman.mp3", 110);
-
-        //this->readBlock("funnyman.mp3", 13, buf, 500);
-        //std::cout << "Obsah načteného bloku: " << buf << "\n";
-        //this->createContext("funnyman.mp3");
-        throw ExceptionRuntimeError("ruční konec...");
-        */
-
+/*
         vBlock* bl = new vBlock;
         bl->block = 3;
         bl->fragment = 1;
         bl->hash = "hashString";
         bl->length = 4096;
         bl->used = true;
-
+*/
 
         this->storageRefreshIndex(path);
         this->HT->print();
@@ -609,14 +566,14 @@ namespace HiddenFS {
             std::cerr << "Úložiště neobsahuje žádné dostupné soubory.\n";
 
             /// @todo 1 nahradit konstantou
-            return 1;
+            return EXIT_FAILURE;
         }
 
         // 1) nalezení boot-block
-        bytestream_t* bufferBlock;
         id_byte_t idByte;
 
         /*
+        bytestream_t* bufferBlock;
         for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
             std::cout << "V souboru: " << i->second << " hledám superblock...\n";
             try {
@@ -642,8 +599,10 @@ namespace HiddenFS {
         std::cout << "První položka z HT: " << this->HT->begin()->second << "\n";
         bytestream_t buffW[BLOCK_USABLE_LENGTH];
         memset(buffW, '\0', sizeof(buffW));
-        size_t len = 10;
+        size_t len;
+        /*
         memcpy(buffW, "abcdefghijklmnopq", len);
+        */
         /*
         len = 0
         while(len < BLOCK_USABLE_LENGTH) {
@@ -656,8 +615,8 @@ namespace HiddenFS {
         }
         */
 
+        /*
         block_number_t blockW = 1;
-        id_byte_t idb = idByteGenDataBlock();
         //std::cout << "write: ";
         //std::cout.write((const char*)buffW, len);
         //std::cout << std::endl;
@@ -690,29 +649,117 @@ namespace HiddenFS {
         this->removeBlock(h, 17);
 
         assert(false);
+        */
 
         inode_t inode_ret;
+        bytestream_t* encBuf;
+        bytestream_t* decBuf;
+        size_t encBufLen;
+        size_t decBufLen;
+
+
 
         vFile* file;
         file = new vFile;
         file->filename = "soubor2.txt";
         file->flags = vFile::FLAG_NONE;
         file->parent = 1;
-        file->size = 37;
+        file->size = 0;
         this->ST->newFile(file);
 
         this->CT->newEmptyContent(file->inode);
-        vBlock* vb;
+
+
+        id_byte_t idb;
+        unsigned int bl;
+        size_t lenBlock;
+        len = 10;
+        memcpy(buffW, "abcdefgijklMNOPQRSTUVWXYZ", len);
+        //this->encryption->encrypt(buffW, len, &encBuf, &encBufLen);
+
+        idb = idByteGenDataBlock();
+        idb = 36;
+        bl = 1;
+        lenBlock = 5;
         /*
-        vb = new vBlock();
-        vb->block = 97;
-        vb->fragment = 4;
-        vb->hash = "hahsXXXXXXXXXXXXXXXb";
-        vb->length = 14;
-        vb->used = true;
-        this->CT->addContent(file->inode, vb);
+        std::cout << "writeblock bl=" << bl << "\n";
+        this->writeBlock(h, bl, buffW + 0, lenBlock, idb);
         */
 
+        vBlock* vb;
+
+        vb = new vBlock();
+        vb->block = bl;
+        vb->fragment = FIRST_BLOCK_NO;
+        vb->hash = h;
+        vb->length = lenBlock;
+        vb->used = true;
+        this->CT->addContent(file->inode, vb);
+        file->size += vb->length;
+        // ------------------------------------
+        idb = idByteGenDataBlock();
+        idb = 49;
+        bl = 2;
+        lenBlock = 5;
+        /*
+        std::cout << "writeblock bl=" << bl << "\n";
+        this->writeBlock(h, bl, buffW + 5, lenBlock, idb);
+        */
+
+        //vBlock* vb;
+        vb = new vBlock();
+        vb->block = bl;
+        vb->fragment = FIRST_BLOCK_NO + 1;
+        vb->hash = h;
+        vb->length = lenBlock;
+        vb->used = true;
+        this->CT->addContent(file->inode, vb);
+        file->size += vb->length;
+        // ------------------------------------
+        this->CT->print();
+
+
+        bytestream_t* bufRet;
+        size_t bufRetLen;
+        size_t r;
+        // ====================================
+        std::cout << "run() read-bytes surové1: ";
+        r = this->readBlock(h, 1, &bufRet, BLOCK_USABLE_LENGTH, &idb);
+        std::cout << ", ret z readblock" << r << ", obsah: ";
+        //pBytes(bufRet, 30);
+        std::cout.write((const char*)bufRet, 5);
+        std::cout << std::endl;
+
+        std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+
+        std::cout << "run() read-bytes surové2: ";
+        r = this->readBlock(h, 2, &bufRet, BLOCK_USABLE_LENGTH, &idb);
+        std::cout << ", ret z readblock" << r << ", obsah: ";
+        //pBytes(bufRet, 30);
+        std::cout.write((const char*)bufRet, 5);
+        std::cout << std::endl;
+        //assert(false);
+        //std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+
+
+        std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+
+        // ====================================
+        this->getContent(file->inode, &bufRet, &bufRetLen);
+        std::cout << "Kompletní obsah: _";
+        std::cout.write((const char*)bufRet, bufRetLen);
+        std::cout << "_" << std::endl;
+        assert(false);
+
+        bytestream_t* bufRetDec;
+        size_t bufRetDecLen;
+        this->encryption->decrypt(bufRet, bufRetLen, &bufRetDec, &bufRetDecLen);
+
+        std::cout << "Dešifrovaný obsah, po slepení (getContent): _";
+        std::cout.write((const char*)bufRetDec, bufRetDecLen);
+        std::cout << "_" << std::endl;
+
+        /*
         for(int i = 0; i < 1000; i++) {
             vb= new vBlock();
             vb->block = 17 + i;
@@ -722,8 +769,9 @@ namespace HiddenFS {
             vb->used = true;
             this->CT->addContent(file->inode, vb);
         }
+        */
 
-        //assert(false);
+        assert(false);
 
         //this->allocator->allocate(file->inode, content, length);
 
@@ -815,6 +863,7 @@ namespace HiddenFS {
         vFile* ftest;
         this->ST->findFileByInode(1, &ftest);
 
+
         /*
         char* content = new char[file->size];
         string content_string = "obsah souboru";
@@ -857,8 +906,11 @@ namespace HiddenFS {
         size_t offset = 0;
         checksum_t crc;
 
+        bytestream_t* tmpOutput;
+        size_t tmpOutputSize;
+
         if(inputSize > BLOCK_USABLE_LENGTH) {
-            throw ExceptionRuntimeError("Vstupní data jsou delší, než je maximální dostupná délka jednoho bloku");
+            throw ExceptionRuntimeError("Vstupní data jsou delší, než je maximální dostupná délka jednoho bloku!");
         }
 
         // jednotlivé složky jsou uloženy v následujícím pořadí:
@@ -869,27 +921,32 @@ namespace HiddenFS {
         //memcpy(*output, &crc, sizeof(checksum_t));
         offset += sizeof(checksum_t);
 
-        *outputSize = BLOCK_MAX_LENGTH;
-        *output = new bytestream_t[*outputSize];
-        memset(*output, '\0', sizeof(output));
+        tmpOutputSize = BLOCK_MAX_LENGTH;
+        tmpOutput = new bytestream_t[tmpOutputSize];
+        memset(tmpOutput, '\0', tmpOutputSize);
 
         // uložení identifikačního byte
-        memcpy(*output + offset, &id_byte, sizeof(id_byte));
+        memcpy(tmpOutput + offset, &id_byte, sizeof(id_byte));
         offset += sizeof(id_byte);
 
         // uložení užitného obsahu bloku
-        memcpy(*output + offset, input, inputSize);
+        memcpy(tmpOutput + offset, input, inputSize);
         offset += inputSize;
 
-        assert(inputSize <= *outputSize);
+        assert(inputSize <= tmpOutputSize);
 
         // výpočet kontrolního součtu ze všech složek struktury, pochopitelně
         // až na složku se součtem samotným
-        size_t crc_len = *outputSize - sizeof(checksum_t);
-        crc = this->checksum->calculate((((bytestream_t*) (*output)) + sizeof(checksum_t)), crc_len);
+        size_t crc_len = tmpOutputSize - sizeof(checksum_t);
+        crc = this->checksum->calculate((((bytestream_t*) (tmpOutput)) + sizeof(checksum_t)), crc_len);
 
         // zápis kontrolního součtu
-        memcpy(*output, &crc, sizeof(checksum_t));
+        memcpy(tmpOutput, &crc, sizeof(checksum_t));
+        //std::cout << "\nPACKdata (s CRC): ";
+        //pBytes(tmpOutput, crc_len - 4050);
+
+        *output = tmpOutput;
+        *outputSize = tmpOutputSize;
     }
 
     void hiddenFs::unpackData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t* id_byte) {
@@ -901,9 +958,14 @@ namespace HiddenFS {
         // extrakce kontrolního součtu
         memcpy(&crcOrig, input, sizeof(checksum_t));
         size_t crc_len = inputSize - offset;
+        //std::cout << "\nUnpackdata (s CRC): ";
+        //pBytes(input, crc_len - 4050);
         crcCalculated = this->checksum->calculate(input + offset, crc_len);
+        //std::cout << "\n";
 
         if(crcCalculated != crcOrig) {
+            std::cout << " Nesouhlasí CRC! (orig " << crcOrig << " != calc " << crcCalculated << ") ";
+            /// @todo po odladění odkomentovat
             throw ExceptionRuntimeError("Kontrolní součet bloku nesouhlasí!");
         }
 
@@ -920,13 +982,13 @@ namespace HiddenFS {
     }
 
     void hiddenFs::getContent(inode_t inode, bytestream_t** buffer, size_t* length) {
-        contentTable::tableItem* ti = NULL;
+        contentTable::tableItem ti;
         vFile* file = NULL;
         bytestream_t* fragmentBuffer;
         bytestream_t* fragmentBufferPost;
         size_t len = 0;                     // pozice posledního zapsaného fragmentu
         *length = 0;
-        unsigned int counter = 0;                    // pořadové číslo posledního zapsaného fragmentu
+        unsigned int counter = FIRST_BLOCK_NO;                    // pořadové číslo posledního zapsaného fragmentu
         size_t blockLen = 0;                // celková délka bloku (nejen jeho využitého obsahu)
         size_t fragmentContentLen;
         id_byte_t idByte;
@@ -938,7 +1000,7 @@ namespace HiddenFS {
         std::stringbuf stream;
 
         // iterace přes všechny fragmenty souboru
-        for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = ti->content.begin(); i !=  ti->content.end(); i++) {
+        for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = ti.content.begin(); i != ti.content.end(); i++) {
             // detekce chybějícího fragmentu
             if(counter != i->first) {
                 std::stringstream ss;
@@ -956,21 +1018,44 @@ namespace HiddenFS {
                  */
 
                 try {
-                    fragmentContentLen = this->readBlock((*j)->hash, (*j)->block, &fragmentBuffer, BLOCK_MAX_LENGTH, &idByte);
-                    //this->unpackData(fragmentBuffer, fragmentContentLen, &fragmentBufferPost, &blockLen, &identifyByte);
+                    fragmentBuffer = NULL;
+                    fragmentBufferPost = NULL;
+                    //std::cout << "\tgetcontent: counter(fragment) = " << counter << ", block = " << (*j)->block << ", surový obsah po readblock(hash):\n";
+                    blockLen = this->readBlock((*j)->hash, (*j)->block, &fragmentBuffer, BLOCK_USABLE_LENGTH, &idByte);
+                    //pBytes(fragmentBuffer, 30);
+                    //this->unpackData(fragmentBuffer, BLOCK_MAX_LENGTH, &fragmentBufferPost, &blockLen, &idByte);
 
-                    // dokončit!
-                    assert(false);
-                    //stream.sputn((const char*) fragmentBufferPost, blockLen);
-                    //memcpy(*buffer + len, fragmentBufferPost, blockLen);
+                    if(!idByteIsDataBlock(idByte)) {
+                        // uvolnění alokovaných prostředků
+                        if(fragmentBuffer != NULL) {
+                            delete [] fragmentBuffer;
+                        }
+                        /*if(fragmentBufferPost != NULL) {
+                            delete [] fragmentBufferPost;
+                        }*/
+
+                        continue;
+                    }
+                    assert((*j)->length <= blockLen);
+                    stream.sputn((const char*) fragmentBuffer, (*j)->length);
 
                     // uvolnění alokovaných prostředků
-                    delete fragmentBuffer;
-                    delete fragmentBufferPost;
+                    if(fragmentBuffer != NULL) {
+                        delete [] fragmentBuffer;
+                    }
+                    /*if(fragmentBufferPost != NULL) {
+                        delete [] fragmentBufferPost;
+                    }*/
                 } catch(...) {
                     /* při načítání bloku něco nebylo v pořádku - nezkoumáme dál
                      * co se stalo, protože stejně se vždy pokusíme načíst další
                      * kopii bloku, pokud nějaká existuje */
+                    if(fragmentBuffer != NULL) {
+                        delete fragmentBuffer;
+                    }
+                    /*if(fragmentBufferPost != NULL) {
+                        delete [] fragmentBufferPost;
+                    }*/
                     continue;
                 }
 
@@ -978,25 +1063,31 @@ namespace HiddenFS {
                 counter++;
 
                 // celková délka streamu
-                len += blockLen;
+                len += (*j)->length;
 
+                // fragment jsme načetli korektně, není proto důvod zkoumat další
                 break;
             }
         }
 
-        *buffer = new bytestream_t[len];
-
-        //dešifrování obsahu
-        this->encryption->decrypt(*buffer, len, &fragmentBuffer, &blockLen);
-
-        if(blockLen != file->size) {
+        if(len != file->size) {
             std::stringstream ss;
             ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
 
             throw ExceptionRuntimeError(ss.str());
         }
 
-        *length = blockLen;
+        bytestream_t* decryptInputBuff = new bytestream_t[len];
+        memset(decryptInputBuff, '\0', len);
+        stream.sgetn((char*)decryptInputBuff, len);
+
+        //dešifrování obsahu
+        //this->encryption->decrypt(decryptInputBuff, len, buffer, &blockLen);
+        *buffer = decryptInputBuff;
+
+        //delete [] decryptInputBuff;
+
+        *length = len;
     }
 
 
@@ -1023,6 +1114,8 @@ namespace HiddenFS {
 
         try {
             ret = this->readBlock(context, block, buff2, length);
+            //std::cout << ", readblock(context): ";
+            //pBytes(buff2, 30);
         } catch (ExceptionBlockNotFound& bnf) {
             // uklidit po sobě...
             if(buff2 != NULL) {
@@ -1052,7 +1145,7 @@ namespace HiddenFS {
             throw e;
         }
 
-        return ret;
+        return ret;     /// @todo nevadí, že požaduju přečíst 5 a ve skutečnosti načtu 4092bytů?
     }
 
     void hiddenFs::writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte) {
