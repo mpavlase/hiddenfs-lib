@@ -66,7 +66,7 @@ namespace HiddenFS {
          * @param inode inode souboru
          * @param content metadata obsahu souboru
          */
-        void getMetadata(inode_t inode, tableItem* content);
+        void getMetadata(inode_t inode, tableItem& content);
 
         /**
          * Inicializuje vnitřní struktury pro ukložení fragmentů

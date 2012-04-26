@@ -6,6 +6,7 @@
 #include <math.h>
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 #include "common.h"
 //#include "hiddenfs-lib.h"
@@ -122,19 +123,18 @@ namespace HiddenFS {
     }
 
     void pBytes(bytestream_t* input, size_t len) {
-        std::cout << "printBytes, len=" << len << "\n";
+        std::cout << "\tprintBytes: len=" << len << "\nHEX --->";
 
         for(unsigned int i = 0; i < len; i++) {
             std::cout.width(2);
-            std::cout << std::hex << std::uppercase << (int)input[i];
+            std::cout << std::setfill('0') << std::hex << std::uppercase << (int)input[i];
             if(i%2 == 1) {
                 std::cout << " ";
             }
         }
-        std::cout << "<--- HEX\n";
-
+        std::cout << std::dec << "\nASCII --->";
         std::cout.write((const char*)input, len);
-        std::cout << "<--- ASCII\n";
+        std::cout << "\n";
     }
 
     void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size) {

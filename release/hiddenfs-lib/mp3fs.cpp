@@ -254,7 +254,7 @@ void* mp3fs::createContext(std::string filename) {
             actBlock = *setIt;
             diffBlock = actBlock - lastBlock;
 
-            std::cout << "#[" << actBlock << "]\t";
+            //std::cout << "#[" << actBlock << "]\t";
 
             if(diffBlock > 1) {
                 //assert(diffBlock > 0);
@@ -266,7 +266,7 @@ void* mp3fs::createContext(std::string filename) {
                         break;
                     }
 
-                   std::cout << ".[" << iterBlock << "]\t";
+                   //std::cout << ".[" << iterBlock << "]\t";
                     context->avaliableBlocks.insert(iterBlock);
                 }
 
@@ -283,7 +283,7 @@ void* mp3fs::createContext(std::string filename) {
 
         for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
 
-            std::cout << ".[" << iterBlock << "]\t";
+            //std::cout << ".[" << iterBlock << "]\t";
             context->avaliableBlocks.insert(iterBlock);
         }
     }
@@ -292,12 +292,13 @@ void* mp3fs::createContext(std::string filename) {
     if(!(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks)) {
         for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
             if(context->usedBlocks.find(iterBlock) == context->usedBlocks.end()) {
-                std::cout << ".[" << iterBlock << "]\t";
+                //std::cout << ".[" << iterBlock << "]\t";
                 context->avaliableBlocks.insert(iterBlock);
             }
         }
     }
 
+    /*
     std::cout << "file size: " << stBuff.st_size << ", sum geob: " << sumGEOB << ", blockLen = " << BLOCK_MAX_LENGTH;
     std::cout << ", poč.avaliable: " << context->avaliableBlocks.size();
     std::cout << ", max bloku: " << context->maxBlocks << ", poč. volných bloků:" << context->avaliableBlocks.size() << "\n";
@@ -314,6 +315,7 @@ void* mp3fs::createContext(std::string filename) {
     }
 
     std::cout << "\n";
+    */
 
     return (void*) context;
 }
@@ -419,7 +421,7 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, Hidd
         if(context->avaliableBlocks.find(block) != context->avaliableBlocks.end()) {
             throw HiddenFS::ExceptionBlockNotUsed("Do bloku " + ss.str() + " nebylo dosud nic zapsáno, nelze jej proto přečíst.");
         }
-        
+
         throw HiddenFS::ExceptionBlockNotUsed("Blok " + ss.str() + " nelze přečíst, není obsazen (jiný FS?).");
     }
 
@@ -430,6 +432,7 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, Hidd
 
     size = (frame->Field(ID3FN_DATA).BinSize() > length) ? length : frame->Field(ID3FN_DATA).BinSize();
     memcpy(buff, frame->Field(ID3FN_DATA).GetRawBinary(), size);
+    //std::cout.write((const char*) frame->Field(ID3FN_DATA).GetRawBinary(), size);
 
     return size;
 }

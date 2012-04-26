@@ -206,6 +206,9 @@ namespace HiddenFS {
      * Generuje hodnotu v rozsahu platném pro superblock
      */
     id_byte_t idByteGenSuperBlock();
+
+    
+    void pBytes(bytestream_t* input, size_t len);
 }
 
 #endif	/* COMMON_H */

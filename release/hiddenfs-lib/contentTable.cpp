@@ -244,8 +244,8 @@ namespace HiddenFS {
         }
     }
 
-    void contentTable::getMetadata(inode_t inode, tableItem* content) {
-        content = &this->table[inode];
+    void contentTable::getMetadata(inode_t inode, tableItem& content) {
+        content = this->table[inode];
     }
 
     void contentTable::newEmptyContent(inode_t inode) {
