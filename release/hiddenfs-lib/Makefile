@@ -12,13 +12,9 @@ CXXFLAGS=-g -Wall -pedantic
 CXXFLAGS=-g -std=c++0x -Wall
 OBJFILES=structTable.o contentTable.o hiddenfs-lib.o hashTable.o common.o superBlock.o
 
-.PHONY: all valgrind clean mount umount doc
+.PHONY: all valgrind clean mount umount doc ddd
 
 all: $(PROJECT)
-
-# taglib:
-#	cmake taglib-1.7/
-#	make -f taglib-1.7/Makefile
 
 structTable.o: structTable.h structTable.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o structTable.o structTable.cpp
@@ -55,6 +51,9 @@ mount: all
 
 debug: all umount
 	gdb -x list.gdb --args ./$(OUTPUT) -d ./vfs
+
+ddd: all umount
+	ddd ./$(OUTPUT)
 
 umount:
 	./umount.sh

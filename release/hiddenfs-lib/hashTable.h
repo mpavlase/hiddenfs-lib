@@ -118,6 +118,13 @@ namespace HiddenFS {
          */
         void setContext(hash_t hash, context_t* context) {
             this->table[hash].context = context;
+
+            // zařazení do do aux* pomocných seznamů
+            if(context->avaliableBlocks.size() == context->maxBlocks) {
+                this->auxList_unused.insert(hash);
+            } else if(context->usedBlocks.size() < context->maxBlocks) {
+                this->auxList_partlyUsed.insert(hash);
+            }
         }
 
         /**
@@ -136,7 +143,7 @@ namespace HiddenFS {
          */
         context_t* getContext(hash_t hash) {
             if(this->table[hash].context == NULL) {
-                throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl přiřazen.");
+                throw ExceptionRuntimeError2("Kontext k tomuto souboru nebyl přiřazen.");
             }
 
             return this->table[hash].context;

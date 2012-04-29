@@ -142,10 +142,14 @@ namespace HiddenFS {
         hash_t hash;
 
         if(this->HT->auxList_partlyUsed.empty()) {
-            throw ExceptionBlockNotFound();
-        } else {
-            hash = *(this->HT->auxList_partlyUsed.begin());
+            this->findPartlyUsedHash();
+
+            if(this->HT->auxList_partlyUsed.empty()) {
+                throw ExceptionBlockNotFound();
+            }
         }
+
+        hash = *(this->HT->auxList_partlyUsed.begin());
 
         this->allocatorFillFreeBlockByHash(hash, block);
     }
@@ -174,7 +178,7 @@ namespace HiddenFS {
         vFile* file = NULL;
 
         // počet fragmentů, nutných pro uložení celé délky souboru
-        block_number_t fragmentsCount;
+        unsigned int fragmentsCount;
         off_t offset;
         bytestream_t* buffToWrite;
         vBlock* block;
@@ -210,212 +214,168 @@ namespace HiddenFS {
 
         this->CT->getMetadata(inode, cTableItem);
 
-        // Případ a) Nová délka je <= původní (nejsnazší případ)
-        if(cTableItem.reservedBytes + file->size >= contentLength) {
-            assert(cTableItem.content.size() >= fragmentsCount);
-            offset = 0;
+        //assert(cTableItem.content.size() >= fragmentsCount);
+        offset = 0;
 
-            // iterace přes všechny fragmenty souboru
-            for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = cTableItem.content.begin(); i != cTableItem.content.end(); i++) {
+        // iterace přes všechny fragmenty souboru
 
-                // výpočet zbývající délky bloku namísto výchozí BLOCK_USABLE_LENGTH, pokud je to nutné
-                // záporná hodnota blockLength signalizuje přebytek naalokovaných bloků
-                if(offset + BLOCK_USABLE_LENGTH < contentLength) {
-                    // Offset ještě není takové délky, abychom museli zapsat jinou (=menší) délku, než je BLOCK_USABLE_LENGTH
-                    blockLength = BLOCK_USABLE_LENGTH;
-                } else {
-                    /* Zapisujeme buď:
-                     * a) poslední blok ze souboru, takže obsah je zbytek do BLOCK_USABLE_LENGTH
-                     * b) zapsali jsme již všechny bloky skutečným obsahem; nyní už jen označujeme zbývající fragmenty jako rezervované
-                     * **/
-                    blockLength = contentLength - offset;
-                }
+        //for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = cTableItem.content.begin(); i != cTableItem.content.end(); i++) {}
+        for(fragment_t f = FRAGMENT_FIRST; f < FRAGMENT_FIRST + fragmentsCount; f++) {
 
-                redundancyFinished = 0;
-
-                // uložení všech redundantních kopii jednoho fragmentu
-                for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++) {
-                    /* Soubor má naalokováno příliš mnoho bloků, takže všechny ty,
-                     * do kterých nebyl aktuálně proveden zápis označíme jako rezervované */
-                    if(offset > contentLength) {
-                        blockLength = BLOCK_USABLE_LENGTH;      // může být libovolné nezáporné číslo
-                        this->CT->setBlockAsReserved(file->inode, *j);
-
-                        continue;
-                    }
-
-                    // následuje klasický zápis obsahu
-                    idByte = idByteGenDataBlock();
-
-                    try {
-                        this->writeBlock((*j)->hash, (*j)->block, buffer + offset, blockLength, idByte);
-                        (*j)->length = blockLength;
-                        (*j)->used = true;
-                        this->CT->setBlockAsUsed(file->inode, *j);
-                        excludedHash.insert((*j)->hash);
-                        redundancyFinished++;
-                    } catch(...) {
-                        continue;
-                    }
-                }
-
-                // ještě nebyly zapsány všechny kopie souboru, zapsat je "ručně"
-                if(redundancyFinished < this->allocatorRedundancy) {
-
-                    // Maximálně využít úložiště - do jednoho fyzického souboru ukládat bloky více virtuálních souborů
-                    if((this->allocatorFlags & ALLOCATOR_SPEED) != 0) {
-                        while(redundancyFinished < this->allocatorRedundancy) {
-                            try {
-                                stealing = false;
-                                this->allocatorFindFreeBlock_partUsedPreferred(block, excludedHash);
-                            } catch(ExceptionDiscFull) {
-                                /* Všechny bloky v celém FS jsou již obsazené, zbývá proto
-                                 * jen "ukrást" jiným virt. souborům jejich rezervované bloky */
-                                stealing = true;
-
-                                try {
-                                    this->allocatorStealReservedBlock(robbedInode, block);
-                                } catch(ExceptionDiscFull) {
-                                    break;
-                                }
-                            }
-
-                            block->fragment = i->first;
-                            block->length = blockLength;
-                            block->used = true;
-
-                            idByte = idByteGenDataBlock();
-                            excludedHash.insert(block->hash);
-
-                            try {
-                                this->writeBlock(block->hash, block->block, buffer + offset, blockLength, idByte);
-                            } catch(...) {
-                                if(stealing) {
-                                    /// @todo vracet rezervovaný blok původnímu souboru? Možná nakonec ani ne...
-                                    ///this->CT->setBlockAsReserved(robbedInode, block);
-                                } else {
-                                    delete block;
-                                }
-
-                                continue;
-                            }
-
-                            this->CT->addContent(file->inode, block);
-                            redundancyFinished++;
-                        }
-                    }
-
-                    // Nemíchat více virtuálních souborů do jednoho fyzického
-                    if((this->allocatorFlags & ALLOCATOR_SECURITY) != 0) {
-                        while(redundancyFinished < this->allocatorRedundancy) {
-                            try {
-                                stealing = false;
-                                this->allocatorFindFreeBlock_unusedPreferred(block);
-                            } catch(ExceptionDiscFull) {
-                                /* Všechny bloky v celém FS jsou již obsazené, zbývá proto
-                                 * jen "ukrást" jiným virt. souborům jejich rezervované bloky */
-                                stealing = true;
-
-                                try {
-                                    this->allocatorStealReservedBlock(robbedInode, block);
-                                } catch(ExceptionDiscFull) {
-                                    break;
-                                }
-                            }
-
-                            block->fragment = i->first;
-                            block->length = blockLength;
-                            block->used = true;
-
-                            idByte = idByteGenDataBlock();
-                            excludedHash.insert(block->hash);
-
-                            try {
-                                this->writeBlock(block->hash, block->block, buffer + offset, blockLength, idByte);
-                            } catch(...) {
-                                if(stealing) {
-                                    /// @todo vracet rezervovaný blok původnímu souboru? Možná nakonec ani ne...
-                                    ///this->CT->setBlockAsReserved(robbedInode, block);
-                                } else {
-                                    delete block;
-                                }
-
-                                continue;
-                            }
-
-                            this->CT->addContent(file->inode, block);
-                            redundancyFinished++;
-                        }
-                    }
-                }
-
-                offset += blockLength;
-            } // iterace přes všechny již obsazené fragmenty
-
-
-            /* Obsah je už zapsán celý, nyní jen zkontrolujeme, zda soubor
-             * nemá zarezervováno příliš mnoho bloku */
-            std::set<vBlock*>::iterator setvBlockIterator;
-            while(cTableItem.reservedBytes > maxReservedLength) {
-                setvBlockIterator = cTableItem.reserved.begin();
-
-                // nejdříve fyzicky odstraníme blok ...
-                this->removeBlock((*setvBlockIterator)->hash, (*setvBlockIterator)->block);
-
-                // ... a až poté jej uvolníme i pomocných tabulek
-                this->CT->setBlockAsUnused(file->inode, *setvBlockIterator);
+            // výpočet zbývající délky bloku namísto výchozí BLOCK_USABLE_LENGTH, pokud je to nutné
+            // záporná hodnota blockLength signalizuje přebytek naalokovaných bloků
+            if(offset + BLOCK_USABLE_LENGTH < contentLength) {
+                // Offset ještě není takové délky, abychom museli zapsat jinou (=menší) délku, než je BLOCK_USABLE_LENGTH
+                blockLength = BLOCK_USABLE_LENGTH;
+            } else {
+                /* Zapisujeme buď:
+                 * a) poslední blok ze souboru, takže obsah je zbytek do BLOCK_USABLE_LENGTH
+                 * b) zapsali jsme již všechny bloky skutečným obsahem; nyní už jen označujeme zbývající fragmenty jako rezervované
+                 * **/
+                blockLength = contentLength - offset;
             }
 
-        // konec případu a) Nová délka je <= původní (nejsnazší případ)
-        } else {
-            // případ b) Nová délka > původní
+            redundancyFinished = 0;
 
-            // konec případu b) Nová délka > původní
-        }
+            // uložení všech redundantních kopii jednoho fragmentu
+            //std::cout << "cTableItem.content[f].size() = " << cTableItem.content[f].size() << std::endl;
+            //assert(false);
+            for(std::vector<vBlock*>::iterator j = cTableItem.content[f].begin() ; j != cTableItem.content[f].end(); j++) {
+                /* Soubor má naalokováno příliš mnoho bloků, takže všechny ty,
+                 * do kterých nebyl aktuálně proveden zápis označíme jako rezervované */
+                if(offset > contentLength) {
+                    blockLength = BLOCK_USABLE_LENGTH;      // může být libovolné nezáporné číslo
+                    this->CT->setBlockAsReserved(file->inode, *j);
 
-        /*
-        /// Maximálně využít úložiště - do jednoho fyzického souboru ukládat bloky více virtuálních souborů
-        if((this->allocatorFlags & ALLOCATOR_SPEED) != 0) {
-                // size = požadovaná délka pro uložení
-                // 1) if size > allocated + reserved
-                this->CT->getMetadata(inode, &cTableItem);
+                    continue;
+                }
 
-                // pro uložení nového obsahu máme k dispozici dostatek místa
-                if(cTableItem.reservedBytes + file->size <= lengthParam) {
-                    offset = 0;
+                // následuje klasický zápis obsahu
+                idByte = idByteGenDataBlock();
 
-                    // průchod přes všechny již obsazené bloky
-                    for(mapit = cTableItem.content.begin(); mapit != cTableItem.content.end(); mapit++) {
-                           redundancyCompleted = 0;
-                        for(vectit = mapit->second.begin(); vectit != mapit->second.end(); vectit++) {
+                try {
+                    this->writeBlock((*j)->hash, (*j)->block, buffer + offset, blockLength, idByte);
+                    (*j)->length = blockLength;
+                    (*j)->used = true;
+                    this->CT->setBlockAsUsed(file->inode, *j);
+                    excludedHash.insert((*j)->hash);
+                    redundancyFinished++;
+                } catch(...) {
+                    continue;
+                }
+            }
 
-                            // omezení počtu kopií (=množství redundance)
-                            if(redundancyCompleted >= this->allocatorRedundancy) {
-                                break;
-                            }
+            // ještě nebyly zapsány všechny kopie souboru, zapsat je "ručně"
+            if(redundancyFinished < this->allocatorRedundancy) {
+
+                // Maximálně využít úložiště - do jednoho fyzického souboru ukládat bloky více virtuálních souborů
+                if((this->allocatorFlags & ALLOCATOR_SPEED) != 0) {
+                    while(redundancyFinished < this->allocatorRedundancy) {
+                        try {
+                            stealing = false;
+                            this->allocatorFindFreeBlock_partUsedPreferred(block, excludedHash);
+                        } catch(ExceptionDiscFull) {
+                            /* Všechny bloky v celém FS jsou již obsazené, zbývá proto
+                             * jen "ukrást" jiným virt. souborům jejich rezervované bloky */
+                            stealing = true;
 
                             try {
-                                this->allocatorFindFreeBlock_any(&block, (*vectit)->hash);
+                                this->allocatorStealReservedBlock(robbedInode, block);
                             } catch(ExceptionDiscFull) {
-                                /// @todo doimplementovat!
+                                break;
+                            }
+                        }
+
+                        block->fragment = f;
+                        block->length = blockLength;
+                        block->used = true;
+
+                        idByte = idByteGenDataBlock();
+                        excludedHash.insert(block->hash);
+
+                        try {
+                            this->writeBlock(block->hash, block->block, buffer + offset, blockLength, idByte);
+                        } catch(...) {
+                            if(stealing) {
+                                /// @todo vracet rezervovaný blok původnímu souboru? Možná nakonec ani ne...
+                                ///this->CT->setBlockAsReserved(robbedInode, block);
+                            } else {
+                                delete block;
                             }
 
-                            this->HT->find(block.hash, &filePath);
-                            /// @todo dump vBlock do bufferu
-                            //this->writeBlock(filePath, block.block, buff, length);
-                            redundancyCompleted++;
-                        } // konec vectit
+                            continue;
+                        }
 
-                        //offset += délka zapsaného bloku
+                        this->CT->addContent(file->inode, block);
+                        redundancyFinished++;
+                    }
+                }
 
-                    } // konec mapit
-                } // konec eventuality, pokud máme k dispozici dost rezervovaných bloků
+                // Nemíchat více virtuálních souborů do jednoho fyzického
+                if((this->allocatorFlags & ALLOCATOR_SECURITY) != 0) {
+                    while(redundancyFinished < this->allocatorRedundancy) {
+                        try {
+                            stealing = false;
+                            this->allocatorFindFreeBlock_unusedPreferred(block);
+                        } catch(ExceptionDiscFull) {
+                            /* Všechny bloky v celém FS jsou již obsazené, zbývá proto
+                             * jen "ukrást" jiným virt. souborům jejich rezervované bloky */
+                            stealing = true;
+
+                            try {
+                                this->allocatorStealReservedBlock(robbedInode, block);
+                            } catch(ExceptionDiscFull) {
+                                break;
+                            }
+                        }
+
+                        block->fragment = f;
+                        block->length = blockLength;
+                        block->used = true;
+
+                        idByte = idByteGenDataBlock();
+                        excludedHash.insert(block->hash);
+
+                        try {
+                            this->writeBlock(block->hash, block->block, buffer + offset, blockLength, idByte);
+                        } catch(...) {
+                            if(stealing) {
+                                /// @todo vracet rezervovaný blok původnímu souboru? Možná nakonec ani ne...
+                                ///this->CT->setBlockAsReserved(robbedInode, block);
+                            } else {
+                                delete block;
+                            }
+
+                            continue;
+                        }
+
+                        this->CT->addContent(file->inode, block);
+                        redundancyFinished++;
+                    }
+                }
+            }       // ještě nebyly zapsány všechny kopie souboru, zapsat je "ručně"
+
+            offset += blockLength;
+        } // iterace přes všechny již obsazené fragmenty
+
+
+        /* Obsah je už zapsán celý, nyní jen zkontrolujeme, zda soubor
+         * nemá zarezervováno příliš mnoho bloku */
+        std::set<vBlock*>::iterator setvBlockIterator;
+        while(cTableItem.reservedBytes > maxReservedLength) {
+            setvBlockIterator = cTableItem.reserved.begin();
+
+            // nejdříve fyzicky odstraníme blok ...
+            this->removeBlock((*setvBlockIterator)->hash, (*setvBlockIterator)->block);
+
+            // ... a až poté jej uvolníme i pomocných tabulek
+            this->CT->setBlockAsUnused(file->inode, *setvBlockIterator);
         }
-        */
-
 
         // "Na disku není dostatek místa"
-        throw ExceptionDiscFull();
+        //throw ExceptionDiscFull();
+
+        return lengthParam;
     }
 
     void hiddenFs::allocatorSetStrategy(unsigned char strategy, unsigned int redundancy = 1) {
@@ -826,7 +786,6 @@ namespace HiddenFS {
         if(this->HT->size() == 0) {
             std::cerr << "Úložiště neobsahuje žádné dostupné soubory.\n";
 
-            /// @todo 1 nahradit konstantou
             return EXIT_FAILURE;
         }
 
@@ -857,10 +816,19 @@ namespace HiddenFS {
         std::cout << "=====================================\n";
 
         hash_t h = this->HT->begin()->first;
-        std::cout << "První položka z HT: " << this->HT->begin()->second.filename << "\n";
-        bytestream_t buffW[40*BLOCK_USABLE_LENGTH + 30];
+        //std::cout << "První položka z HT: " << this->HT->begin()->second.filename << "\n";
+
+        std::ifstream f;
+        f.open("test.gif", std::fstream::binary);
+        f.seekg(0, std::fstream::end);
+        unsigned int length = f.tellg();
+        f.seekg(0, std::fstream::beg);
+
+
+        bytestream_t buffW[length];
         memset(buffW, '\0', sizeof(buffW));
         size_t len;
+        f.read((char*)buffW, length);
         /*
         memcpy(buffW, "abcdefghijklmnopq", len);
         */
@@ -902,17 +870,19 @@ namespace HiddenFS {
         */
 
         inode_t inode_ret;
+        /*
         bytestream_t* encBuf;
         bytestream_t* decBuf;
         size_t encBufLen;
         size_t decBufLen;
+        */
 
         vFile* file;
         file = new vFile;
         file->filename = "soubor2.txt";
         file->flags = vFile::FLAG_NONE;
         file->parent = 1;
-        file->size = 3;
+        file->size = sizeof(buffW);
         this->ST->newFile(file);
 
         this->CT->newEmptyContent(file->inode);
@@ -931,6 +901,7 @@ namespace HiddenFS {
 
         this->ST->print();
 
+        /*
         len = 0;
         while(len < sizeof(buffW)) {
             for(char i = 'a'; i <= 'z'; i++) {
@@ -942,19 +913,31 @@ namespace HiddenFS {
                 }
             }
         }
+        */
 
         //file->size += 300;
 
+        this->allocatorAllocate(file->inode, buffW, file->size);
+        this->CT->print();
+        this->ST->print();
+        /*
         this->allocatorAllocate(file->inode, buffW, len);
+        this->CT->print();
         this->ST->print();
 
         assert(false);
+        */
         // ====================================
         std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
         this->getContent(file->inode, &bufRet, &bufRetLen);
-        std::cout << "Kompletní obsah: _";
-        std::cout.write((const char*)bufRet, bufRetLen);
-        std::cout << "_" << std::endl;
+
+        std::ofstream fout;
+        fout.open("test-result.gif", std::fstream::binary);
+        fout.write((char*)bufRet, bufRetLen);
+
+        //std::cout << "Kompletní obsah: _";
+        //std::cout.write((const char*)bufRet, bufRetLen);
+        //std::cout << "_" << std::endl;
         assert(false);
 
         //this->encryption->encrypt(buffW, len, &encBuf, &encBufLen);
@@ -1179,9 +1162,11 @@ namespace HiddenFS {
         return 0;
     }
 
+    /*
     void hiddenFs::enableCacheHashTable(bool cache) {
         this->cacheHashTable = cache;
     }
+    */
 
     void hiddenFs::packData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t id_byte) {
         size_t dataOffset;
@@ -1287,7 +1272,7 @@ namespace HiddenFS {
             if(counter != i->first) {
                 std::stringstream ss;
 
-                ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
+                ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty (díra)!";
                 throw ExceptionRuntimeError(ss.str());
             }
 
@@ -1352,19 +1337,19 @@ namespace HiddenFS {
             }
         }
 
-        if(len != file->size) {
-            std::stringstream ss;
-            ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty!";
-
-            throw ExceptionRuntimeError(ss.str());
-        }
-
         bytestream_t* decryptInputBuff = new bytestream_t[len];
         memset(decryptInputBuff, '\0', len);
         stream.sgetn((char*)decryptInputBuff, len);
 
         //dešifrování obsahu
         this->encryption->decrypt(decryptInputBuff, len, buffer, &blockLen);
+
+        if(blockLen != file->size) {
+            std::stringstream ss;
+            ss << "Soubor s inode č. " << inode << " v souboru neobsahuje všechny fragmenty (jiné délky)!";
+
+            throw ExceptionRuntimeError(ss.str());
+        }
 
         delete [] decryptInputBuff;
 
@@ -1443,6 +1428,7 @@ namespace HiddenFS {
 
         try {
             this->HT->find(hash, &filename);
+            std::cout << "Zapisuju blok=" << block << ", len=" << length << " do: " << filename << std::endl;
 
             try {
                 context = this->HT->getContext(hash);
@@ -1491,14 +1477,23 @@ namespace HiddenFS {
     }
 
     void hiddenFs::findUnusedHash() {
+        this->findHashByAuxList(this->HT->auxList_unused, HT_UNUSED_CHUNK);
+    };
+
+    void hiddenFs::findPartlyUsedHash() {
+        this->findHashByAuxList(this->HT->auxList_partlyUsed, HT_PARTUSED_CHUNK);
+    };
+
+    void hiddenFs::findHashByAuxList(std::set<hash_t>& list, const unsigned int limit) {
         context_t* context;
         hashTable::table_t_constiterator ti;
 
+        // nemá smysl hledat v prázdné hashTable
         assert(this->HT->begin() != this->HT->end());
 
         /* Pokud ještě pořád existuje nějaký soubor/hash, který není
          * vůbec obsazen, nevyhledávat další. */
-        if(this->HT->auxList_unused.size() > 0) {
+        if(list.size() > 0) {
             return;
         }
 
@@ -1514,17 +1509,22 @@ namespace HiddenFS {
                 this->HT->getContext(ti->first);
 
                 continue;
-            } catch(ExceptionRuntimeError) {
+            } catch(ExceptionRuntimeError2& e) {
                 context = this->createContext(ti->second.filename);
                 this->HT->setContext(ti->first, context);
 
                 /* Pokud jsme už dostatečně naplnili seznam zcela neobsazených
                  * souborů/hash, pro tuto chvíli skončíme s dalším hledáním. */
-                if(this->HT->auxList_unused.size() >= HT_UNUSED_CHUNK) {
+                if(list.size() >= limit) {
                     break;
                 }
             }
         }
+
+        /*
+        std::cout << "#.";
+        std::cout.flush();
+        */
 
         // poznamenat si do příště, kde jsme skončili
         if(ti != this->HT->end()) {
@@ -1537,5 +1537,5 @@ namespace HiddenFS {
              * else this->HT->firstIndexing = true
              */
         }
-    };
+    }
 }

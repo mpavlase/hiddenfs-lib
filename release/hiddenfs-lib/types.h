@@ -89,9 +89,14 @@ namespace HiddenFS {
      * automatickém vytváření kontextů */
     static const unsigned int HT_UNUSED_CHUNK = 10;
 
+    /** počet částečně obsazených souborů, které se vyhledávají v jedné iteraci při
+     * automatickém vytváření kontextů */
+    static const unsigned int HT_PARTUSED_CHUNK = HT_UNUSED_CHUNK;
+
     /** Procentuální množství automaticky rezervovaných bloků, výchozí hodnotou je: 10 (=10%) */
     static const unsigned int ALLOCATOR_RESERVED_QUANTITY = 10;
 
+    /** První pořadové číslo fragmentu */
     static const fragment_t FRAGMENT_FIRST = 0;
 
     static const int BLOCK_IN_USE = true;

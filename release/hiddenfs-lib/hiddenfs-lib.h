@@ -76,8 +76,9 @@ namespace HiddenFS {
          * true - uchovávání HashTable v metadatech spolu se StructTable atd.
          * false - při každém mount zaindexovat adresář znovu
          * @param enable/disable
+         * @deprecated
          */
-        void enableCacheHashTable(bool);
+        //void enableCacheHashTable(bool);
 
     protected:
         contentTable* CT;
@@ -286,6 +287,25 @@ namespace HiddenFS {
          * neobsazených skutečných souborů (konstanta HT_UNUSED_CHUNK)
          */
         void findUnusedHash();
+
+        /**
+         * Prochází hash table za účelem nalezení dostatečného počtu doposud
+         * neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK)
+         */
+        void findPartlyUsedHash();
+
+        /**
+         * Systematicky prohledává hash table za účelem naplnění některého ze seznamů
+         * @param list seznam, který chceme naplnit
+         * @param limit množství zaplnění parametru list
+         */
+        void findHashByAuxList(std::set<hash_t>& list, const unsigned int limit);
+
+        /**
+         * Prochází hash table za účelem nalezení dostatečného počtu doposud
+         * neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK)
+         */
+        //void findPartUsedHash();
 
         /**
          * Přečte kompletní obsah virtuálního souboru ze všech fragmentů
