@@ -43,14 +43,15 @@ namespace HiddenFS {
 
 
 
-    void structTable::findFileByInode(inode_t inode, vFile** file) {
-        table_t::iterator i = table.find(inode);
+    void structTable::findFileByInode(inode_t inode, vFile* & file) {
+        table_t::iterator i = this->table.find(inode);
 
         if(i == table.end()) {
             throw ExceptionFileNotFound(inode);
         }
 
-        *file = i->second;
+        //*file = i->second;
+        file = this->table[inode];
     }
 
     void structTable::findFileByName(std::string filename, inode_t parent, vFile** file) {
@@ -58,7 +59,7 @@ namespace HiddenFS {
         vFile* tmpFile = NULL;
 
         for(std::set<inode_t>::iterator it = dirContent.begin(); it != dirContent.end(); it++) {
-            this->findFileByInode(*it, &tmpFile);
+            this->findFileByInode(*it, tmpFile);
 
             if(tmpFile->filename == filename) {
                 *file = tmpFile;
@@ -118,7 +119,9 @@ namespace HiddenFS {
         this->maxInode = ret_inode;
 
         // vložení souboru do hlavní tabulky
-        this->table[ret_inode] = file;
+        //this->table[ret_inode] = file;
+        this->table.insert(std::pair<inode_t, vFile*>(ret_inode, file));
+        //this->table[ret_inode]file;
 
         // vložení souboru do tabulky rodičů
         this->tableDirContent[file->parent].insert(ret_inode);
@@ -130,7 +133,7 @@ namespace HiddenFS {
         vFile* fileInfo;
 
         //try {
-            this->findFileByInode(inode, &fileInfo);
+            this->findFileByInode(inode, fileInfo);
             this->table.erase(inode);
             this->tableDirContent[fileInfo->parent].erase(inode);
         //}

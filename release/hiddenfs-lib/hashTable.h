@@ -8,29 +8,97 @@
 #define	HASHTABLE_H
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "types.h"
 
 namespace HiddenFS {
     /**
-     * Bidirectional mapping real file path and its uniqe hash string
+     * Obousměrné mapování hash a adresy ke skutečnému souboru
      */
     class hashTable {
-    private:
-        typedef std::map<hash_t, std::string> table_t;
-
-        table_t table;
     public:
+        typedef struct {
+            std::string filename;
+            context_t* context;
+        } tableItem;
+
+        typedef std::map<hash_t, tableItem> table_t;
+
+        typedef table_t::const_iterator table_t_constiterator;
+        hash_t lastIndexed;
+
+        /** Příznak pro identifikaci prvního indexování. True = indexování již proběhlo alespoň 1x */
+        bool firstIndexing;
+
         hashTable();
         hashTable(const hashTable& orig);
+
+        /** Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky)
+         * @todo Jak najít další hash, které nemá doposud vytvořený kontext? */
+        std::set<hash_t> auxList_unused;
+
+        /** Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok */
+        std::set<hash_t> auxList_partlyUsed;
+
+        /**
+         * Modifikací pomocných tabulek označí blok jako obsazený. Pro zajištění
+         * konzistence metadat je nutné tuto metodu volat těsně po skutečně provedené operaci.
+         * @param hash jednoznačná identifikace skutečného souboru
+         * @param block číslo bloku, kteý označit jako obsazený
+         */
+        void auxUse(hash_t hash, block_number_t block) {
+            context_t* context;
+
+            context = this->getContext(hash);
+
+            if(context->avaliableBlocks.size() == 0) {
+                this->auxList_partlyUsed.erase(hash);
+            } else {
+                /// @todo odkomentova!
+                this->auxList_partlyUsed.insert(hash);
+            }
+        };
+
+        /**
+         * Modifikací pomocných tabulek označí blok jako volný (tzn. k dalšímu použití).
+         * Pro zajištění konzistence metadat je nutné tuto metodu volat těsně po
+         * skutečně provedené operaci.
+         * @param hash jednoznačná identifikace skutečného souboru
+         * @param block číslo bloku, kteý označit jako volný
+         */
+        void auxFree(hash_t hash, block_number_t block) {
+            context_t* context;
+
+            context = this->getContext(hash);
+
+            if(context->avaliableBlocks.size() == context->maxBlocks) {
+                /// @todo odkomentova!
+                this->auxList_unused.insert(hash);
+                this->auxList_partlyUsed.erase(hash);
+            } else {
+                /// @todo odkomentova!
+                this->auxList_partlyUsed.insert(hash);
+            }
+        }
 
         /**
          * Vyhledání v tabulce (mapování hash -> název souboru)
          * @param hash hash řetězec souboru
+         * @throw ExceptionFileNotFound pokud soubor ve vnitřní tabulce neexistuje
          * @param filename skrze tento parametr metoda vrací umístění skutečného souboru
          */
         void find(hash_t hash, std::string* filename) const;
+
+        /**
+         * Metoda vrací iterátor prvku podle hash
+         * @param hash jednoznačná identifikace hledaného souboru
+         * @return konstantní iterátor
+         */
+        table_t_constiterator find(hash_t hash) {
+            return this->table.find(hash);
+        }
 
         /**
          * Vloží nový záznam do hash tabulky
@@ -45,12 +113,40 @@ namespace HiddenFS {
         void print() const;
 
         /**
+         * Přiřadí kontext k souboru určenému hashem)
+         * @param context
+         */
+        void setContext(hash_t hash, context_t* context) {
+            this->table[hash].context = context;
+        }
+
+        /**
+         * Smaže odkaz na kontext, ale původní ukazatel už neuvolňuje
+         * @param hash identifikace souboru
+         */
+        void clearContext(hash_t hash) {
+            this->setContext(hash, NULL);
+        }
+
+        /**
+         * Vrací kontext k souboru určeném hashem, pokud existuje
+         * @param hash identifikace souboru
+         * @throw ExceptionRuntimeError pokud kontext neexistuje
+         * @return ukazatel na instanci kontextu k souboru
+         */
+        context_t* getContext(hash_t hash) {
+            if(this->table[hash].context == NULL) {
+                throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl přiřazen.");
+            }
+
+            return this->table[hash].context;
+        }
+
+        /**
          * Remove all items from table
          */
         void clear();
         virtual ~hashTable();
-
-        typedef table_t::const_iterator table_t_constiterator;
 
         table_t_constiterator begin() const {
             return this->table.begin();
@@ -63,6 +159,11 @@ namespace HiddenFS {
         unsigned int size() const {
             return this->table.size();
         }
+
+
+        private:
+            table_t table;
+
     };
 };
 

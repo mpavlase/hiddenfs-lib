@@ -47,22 +47,18 @@ public:
     //static HiddenFS::block_number_t FIRST_BLOCK_NO;
     typedef struct {
         ID3_Tag* tag;
-        unsigned int maxBlocks;
-        std::set<HiddenFS::block_number_t> avaliableBlocks;
-        std::set<HiddenFS::block_number_t> usedBlocks;
-    } context_t;
+    } mp3context;
 
 protected:
-    size_t readBlock(void* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const;
-    void writeBlock(void* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length);
+    size_t readBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const;
+    void writeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length);
     void storageRefreshIndex(std::string filename);
-    void* createContext(std::string filename);
-    void listAvaliableBlocks(void* context, std::set<HiddenFS::block_number_t>* blocks) const;
-    void freeContext(void* context);
-    void removeBlock(void* context, HiddenFS::block_number_t block);
-    void flushContext(void* contextParam) {
-        context_t* context = (context_t*) contextParam;
-        context->tag->Update();
+    HiddenFS::context_t* createContext(std::string filename);
+    void listAvaliableBlocks(HiddenFS::context_t* context, std::set<HiddenFS::block_number_t>* blocks) const;
+    void freeContext(HiddenFS::context_t* context);
+    void removeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block);
+    void flushContext(HiddenFS::context_t* context) {
+        ((mp3context*) context->userContext)->tag->Update();
     }
 
     /**
@@ -177,14 +173,13 @@ public:
     };
 };
 
-void mp3fs::listAvaliableBlocks(void* contextParam, std::set<HiddenFS::block_number_t>* blocks) const {
-    context_t* context = (context_t*) contextParam;
+void mp3fs::listAvaliableBlocks(HiddenFS::context_t* context, std::set<HiddenFS::block_number_t>* blocks) const {
     *blocks = context->avaliableBlocks;
 }
 
-void* mp3fs::createContext(std::string filename) {
+HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     // ----------------------------
-    context_t* context = new context_t;
+    HiddenFS::context_t* context = new HiddenFS::context_t;
 
     std::string tagFilename;
     int blok;
@@ -197,9 +192,10 @@ void* mp3fs::createContext(std::string filename) {
     ID3_Frame* frameX;
     unsigned int usedSize;
 
-    context->tag = new ID3_Tag((const char*)filename.c_str());
+    context->userContext = new mp3context;
+    ((mp3context*) context->userContext)->tag = new ID3_Tag((const char*)filename.c_str());
 
-    ID3_Tag::Iterator* itt = context->tag->CreateIterator();
+    ID3_Tag::Iterator* itt = ((mp3context*) context->userContext)->tag->CreateIterator();
     size_t sumGEOB = 0;
 
     while((frameX = itt->GetNext()) != NULL) {
@@ -221,7 +217,7 @@ void* mp3fs::createContext(std::string filename) {
     // rámců obsahující fragmenty tohoto FS
     if(sumGEOB > 0) {
         while(true) {
-            frame = context->tag->Find(ID3FID_GENERALOBJECT);
+            frame = ((mp3context*) context->userContext)->tag->Find(ID3FID_GENERALOBJECT);
 
             if(counter == 0) {
                 first = frame;
@@ -317,14 +313,14 @@ void* mp3fs::createContext(std::string filename) {
     std::cout << "\n";
     */
 
-    return (void*) context;
+    return context;
 }
 
-void mp3fs::freeContext(void* contextParam) {
-    context_t* context = (context_t*) contextParam;
-
+void mp3fs::freeContext(HiddenFS::context_t* context) {
     this->flushContext(context);
 
+    delete ((mp3context*) context->userContext)->tag;
+    delete (mp3context*) context->userContext;
     delete context;
 }
 
@@ -381,8 +377,7 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
     closedir(d);
 }
 
-void mp3fs::removeBlock(void* contextParam, HiddenFS::block_number_t block) {
-    context_t* context = (context_t*) contextParam;
+void mp3fs::removeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block) {
     std::stringstream ss;
 
     ss << block;
@@ -392,12 +387,12 @@ void mp3fs::removeBlock(void* contextParam, HiddenFS::block_number_t block) {
         throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze smazat, není obsazen.");
     }
 
-    ID3_Frame* frame = context->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
+    ID3_Frame* frame = ((mp3context*) context->userContext)->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
     if(frame == NULL) {
         throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze smazat - nebyl nalezen v úložišti.");
     }
 
-    context->tag->RemoveFrame(frame);
+    ((mp3context*) context->userContext)->tag->RemoveFrame(frame);
 
     // v případě, že se v průběhu času změnila délka souboru a tím maximální
     // počet bloků, tento blok pouze uvolníme, ale už nebude vložen mezi bloky,
@@ -408,8 +403,7 @@ void mp3fs::removeBlock(void* contextParam, HiddenFS::block_number_t block) {
     context->usedBlocks.erase(block);
 }
 
-size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const {
-    context_t* context = (context_t*) contextParam;
+size_t mp3fs::readBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) const {
     std::stringstream ss;
     size_t size = 0;
 
@@ -425,7 +419,7 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, Hidd
         throw HiddenFS::ExceptionBlockNotUsed("Blok " + ss.str() + " nelze přečíst, není obsazen (jiný FS?).");
     }
 
-    ID3_Frame* frame = context->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
+    ID3_Frame* frame = ((mp3context*) context->userContext)->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
     if(frame == NULL) {
         throw HiddenFS::ExceptionBlockNotFound("Blok " + ss.str() + " nelze přečíst, nebyl ve fyzickém souboru nalezen.");
     }
@@ -437,8 +431,7 @@ size_t mp3fs::readBlock(void* contextParam, HiddenFS::block_number_t block, Hidd
     return size;
 }
 
-void mp3fs::writeBlock(void* contextParam, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) {
-    context_t* context = (context_t*) contextParam;
+void mp3fs::writeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length) {
     std::stringstream ss;
 
     ss << block;
@@ -451,7 +444,7 @@ void mp3fs::writeBlock(void* contextParam, HiddenFS::block_number_t block, Hidde
         }
     }
 
-    ID3_Frame* frame = context->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
+    ID3_Frame* frame = ((mp3context*) context->userContext)->tag->Find(ID3FID_GENERALOBJECT, ID3FN_FILENAME, (const char*) (ss.str().c_str()));
 
     // blok s tímto číslem dosud neexistuje, takže jej založíme
     if(frame == NULL) {
@@ -463,7 +456,7 @@ void mp3fs::writeBlock(void* contextParam, HiddenFS::block_number_t block, Hidde
         // zápis obsahu bloku
         frame->Field(ID3FN_DATA).Set((const unsigned char*)buff, length);
 
-        context->tag->AddFrame(frame);
+        ((mp3context*) context->userContext)->tag->AddFrame(frame);
     }
 
     // zapíšeme obsah bloku
@@ -580,8 +573,8 @@ void mp3fs::storageRefreshIndex(std::string path) {
 
 int main(int argc, char* argv[]) {
     int ret;
-    mp3fs* fs = new mp3fs(new MyEncryption());
-    //mp3fs* fs = new mp3fs();
+    //mp3fs* fs = new mp3fs(new MyEncryption());
+    mp3fs* fs = new mp3fs();
 
     if(false) {
         std::string a[2];

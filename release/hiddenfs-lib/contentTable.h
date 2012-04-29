@@ -21,8 +21,8 @@ namespace HiddenFS {
     class contentTable {
     public:
         typedef struct {
-            /** množina rezervovaných bloků nad rámec bloků ve složce "content"
-             * této struktury je pouze pomocným seznamem, resp. jiným
+            /** Množina rezervovaných bloků (nad rámec bloků ve složce "content"
+             * této struktury) je pouze pomocným seznamem, resp. jiným
              * pohledem na tabulku content */
             std::set<vBlock*> reserved;
 
@@ -75,6 +75,11 @@ namespace HiddenFS {
          */
         void newEmptyContent(inode_t inode);
 
+        /**
+         * Přiřadí blok k inode (sama uvnitř volá setBlockAsUsed)
+         * @param inode identifikace souboru, kterému rozšiřujeme obsah
+         * @param block
+         */
         void addContent(inode_t inode, vBlock* block) {
             if(block->used) {
                 try {
@@ -87,6 +92,7 @@ namespace HiddenFS {
                 //tableItem ti = this->table[inode];
                 //std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
                 this->table[inode].content[block->fragment].push_back(block);
+                this->setBlockAsUsed(inode, block);
                 /*
                 std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
                 for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = this->table[inode].content.begin(); i != this->table[inode].content.end(); i++) {
@@ -100,12 +106,78 @@ namespace HiddenFS {
                 this->print();
                 */
             } else {
-                this->table[inode].reserved.insert(block);
-                this->table[inode].reservedBytes += block->length;
+                // následující dva řádky obstarává volání setBlockAsReserved()
+                //this->table[inode].reserved.insert(block);
+                //this->table[inode].reservedBytes += block->length;
+                this->setBlockAsReserved(inode, block);
             }
         }
 
+        /**
+         * Naplní parametr reserved seznamem bloků, které má soubor určený inode zarezervovány
+         * @param inode
+         * @param reserved
+         */
         void getReservedBlocks(inode_t inode, std::vector<vBlock*>* reserved);
+
+        /**
+         * Vyhledá a vrátí jakýkoli (takže první dostupný) zarezervovaný blok
+         * bez ohledu na inode, kterému soubor patřil. Metoda neruší příslušnost
+         * bloku k souboru, to už musí provést metoda volající tuto.
+         * @param inode soubor, kterému dotyčný blok původně patřil
+         * @param block umístění volného bloku
+         * @throw ExceptionDiscFull pokud se v systému nevyskytují žádné rezervované bloky
+         */
+        void findAnyReservedBlock(inode_t& inode, vBlock*& block);
+
+        /**
+         * Zruší bloku příznak 'reserved' a odstraní jej z patřičných pomocných seznamů
+         * @param inode identifikace souboru, kterému tento blok patří
+         * @param block operovaný blok
+         */
+        void setBlockAsUsed(inode_t inode, vBlock* block) {
+            block->used = true;
+
+            assert(this->table.find(inode) != this->table.end());
+
+            // Byl blok mezi rezervovanými?
+            if(this->table[inode].reserved.find(block) != this->table[inode].reserved.end()) {
+                // ano byl, proto jej odstraníme ze skupiny rezervovaných
+                this->table[inode].reservedBytes -= block->length;
+                this->table[inode].reserved.erase(block);
+            }
+        }
+
+        /**
+         * Nastaví bloku příznak 'reserved' a zařadí jej do patřičných pomocných seznamů
+         * @param inode identifikace souboru, kterému tento blok patří
+         * @param block operovaný blok
+         */
+        void setBlockAsReserved(inode_t inode, vBlock* block) {
+            block->used = false;
+
+            assert(this->table.find(inode) != this->table.end());
+
+            // Je blok mezi rezervovanými?
+            if(this->table[inode].reserved.find(block) == this->table[inode].reserved.end()) {
+                // není, proto jej mezi ně zařadíme
+                this->table[inode].reservedBytes += block->length;
+                this->table[inode].reserved.insert(block);
+            }
+        }
+
+        /**
+         * Odstraní blok ze všech pomocných seznamů, takže se jeví jako neobsazený
+         * @param inode identifikace souboru, kterému tento blok patří
+         * @param block operovaný blok
+         */
+        void setBlockAsUnused(inode_t inode, vBlock* block) {
+            /* Principielně tato metoda provádí to samé, co setBlockAsUsed():
+             *  odstraní blok ze seznamu rezervovaných a sníží sumu ve složce reservedBytes */
+            this->setBlockAsUsed(inode, block);
+
+            block->used = false;
+        }
     private:
         /** map[inode_t] = tableItem */
         table_t table;

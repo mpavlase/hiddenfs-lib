@@ -9,6 +9,7 @@
 
 #include <bits/types.h>
 #include <cryptopp/sha.h>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <sstream>
@@ -84,6 +85,15 @@ namespace HiddenFS {
      * běžného datového bloku, hodnoty rovny nebo větší jsou považovány za superblok */
     static const id_byte_t ID_BYTE_BOUNDARY = 127;
 
+    /** počet prázdných souborů, které se vyhledávají v jedné iteraci při
+     * automatickém vytváření kontextů */
+    static const unsigned int HT_UNUSED_CHUNK = 10;
+
+    /** Procentuální množství automaticky rezervovaných bloků, výchozí hodnotou je: 10 (=10%) */
+    static const unsigned int ALLOCATOR_RESERVED_QUANTITY = 10;
+
+    static const fragment_t FRAGMENT_FIRST = 0;
+
     static const int BLOCK_IN_USE = true;
     static const int BLOCK_RESERVED = false;
 
@@ -156,10 +166,27 @@ namespace HiddenFS {
     };
 
     /**
-     * Abstrakce spojového seznamu, který slouží pro manipulaci s entitami (jakožto prvky obecné délky)
+     * Abstrakce spojového seznamu, který slouží pro manipulaci s entitami
+     * (jakožto prvky obecné délky)
      * vector<chainItem>
      */
     typedef std::vector<chainItem> chainList_t;
+
+
+    typedef struct {
+        /** maximální počet bloků, které je povoleno do tohoto souboru umístit */
+        unsigned int maxBlocks;
+
+        /** seznam neobsazených bloků */
+        std::set<HiddenFS::block_number_t> avaliableBlocks;
+
+        /** seznam obsazených bloků */
+        std::set<HiddenFS::block_number_t> usedBlocks;
+
+        /** ukazatel pro obecně dále nespecifikované použití, pokud to uživatelská
+         * implementace vyžaduje */
+        void* userContext;
+    } context_t;
 }
 
 #endif	/* TYPES_H */

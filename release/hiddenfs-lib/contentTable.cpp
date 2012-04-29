@@ -263,4 +263,26 @@ namespace HiddenFS {
         }
     }
 
+    void contentTable::findAnyReservedBlock(inode_t& inode, vBlock*& block) {
+        for(table_t::iterator it = this->table.begin(); it != this->table.end(); it++) {
+            if(it->second.reserved.size() > 0) {
+                block = new vBlock;
+
+                block->block = (*(it->second.reserved.begin()))->block;
+                block->fragment = 0;    // libovolná hodnota
+                block->hash = (*(it->second.reserved.begin()))->hash;
+                block->length = (*(it->second.reserved.begin()))->length;
+                block->used = (*(it->second.reserved.begin()))->used;
+
+                assert(block->length > 0);
+                assert(block->used == false);
+
+                inode = it->first;
+
+                return;
+            }
+        }
+
+        throw ExceptionDiscFull();
+    }
 }

@@ -49,7 +49,6 @@ namespace HiddenFS {
 
         //smartConst<size_t> hash_t_sizeof;
 
-
         /**
          * Nastaví preferovanou strategii pro alokování nových bloků
          * @param strategy typ použité strategie (enum)
@@ -87,7 +86,7 @@ namespace HiddenFS {
         superBlock* SB;
         unsigned char allocatorFlags;
 
-        /** množství duplikace dat */
+        /** míra duplikace dat */
         unsigned int allocatorRedundancy;
 
         /** instance objektu pro výpočet kontrolního součtu */
@@ -108,10 +107,9 @@ namespace HiddenFS {
          * @param inode inode ukládaného souboru
          * @param buffer obsah souboru
          * @param length délka bufferu
-         * @param offset offset
          * @return počet skutečně zapsaných bytů
          */
-        size_t allocatorAllocate(inode_t inode, const char* buffer, size_t length, off_t offset);
+        size_t allocatorAllocate(inode_t inode, bytestream_t* buffer, size_t length);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok na základě kritéra:
@@ -119,57 +117,95 @@ namespace HiddenFS {
          * @param block metoda naplní údaje o nalezeném bloku
          * @param hash nový blok hledat v tomto souboru
          */
-        void allocatorFindFreeBlock_sameHash(vBlock* block, hash_t hash);
+        void allocatorFindFreeBlock_sameHash(vBlock*& block, hash_t hash);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok na základě kritéra:
          * Blok se nesmí nacházet v souboru určeném hashem. Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionBlockNotFound,
          * @param block metoda naplní údaje o nalezeném bloku
-         * @param exclude při vyhledávání vhodného bloku přeskočit tento soubor
+         * @param excluded seznam fyzických souborů, které se nesmí použít
          */
-        void allocatorFindFreeBlock_differentHash(vBlock* block, hash_t exclude);
+        void allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_t>& excluded);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok (jakýkoli volný blok).
          * Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionDiscFull.
          * @param block metoda naplní údaje o nalezeném bloku
          */
-        void allocatorFindFreeBlock_any(vBlock* block);
+        void allocatorFindFreeBlock_any(vBlock*& block);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok. Pokusí se nejprve
          * vyhledat v preferovaném souboru (hash) a pokud neuspěje, vyhledá jakýkoli jiný volný blok
          * @param block metoda naplní údaje o nalezeném bloku
          * @param prefered hledání se spouští nejprve na souboru určeném tímto hash
+         * @param excluded seznam fyzických souborů, které se nesmí použít
          */
-        void allocatorFindFreeBlock_any(vBlock* block, hash_t prefered);
+        void allocatorFindFreeBlock_any(vBlock*& block, hash_t prefered, std::set<hash_t>& excluded);
 
         /**
          * Vyhledá volný blok v částečně obsazeném fyzickém souboru.
-         * Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionDiscFull.
          * @param block metoda naplní údaje o nalezeném bloku
+         * @param excluded seznam fyzických souborů, které se nesmí použít
+         * @throw ExceptionBlockNotFound pokud takový blok neexistuje
          */
-        void allocatorFindFreeBlock_partUsed(vBlock* block);
+        void allocatorFindFreeBlock_partUsed(vBlock*& block, std::set<hash_t>& excluded);
 
         /**
-         * Vyhledá volný blok ve fyzickém souboru, který ještě neobsahuje žádný obsazený blok.
-         * Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionDiscFull.
+         * Vyhledá volný blok v částečně obsazeném fyzickém souboru.
+         * Pokud takový blok neexistuje, zkouší se vyhledat v dosud neobsazených fyzických souborech.
          * @param block metoda naplní údaje o nalezeném bloku
+         * @param excluded seznam fyzických souborů, které se nesmí použít
+         * @throw ExceptionDiscFull pokud není k dispozici ani částečně obsazený blok, ani žádný ze zcela volných
          */
-        void allocatorFindFreeBlock_unused(vBlock* block);
+        void allocatorFindFreeBlock_partUsedPreferred(vBlock*& block, std::set<hash_t>& excluded);
+
+        /**
+         * Vyhledá volný blok ve fyzickém souboru, který ještě neobsahuje žádný
+         * obsazený blok a naplní tak parametr, který metoda sama alokuje.
+         * @param block metoda naplní údaje o nalezeném bloku do tohoto parametru
+         * @throw ExceptionBlockNotFound pokud takový blok neexistuje
+         */
+        void allocatorFindFreeBlock_unused(vBlock*& block);
+
+        /**
+         * Vyhledá (podle potřeby i naalokuje) blok, který dosud není použitý.
+         * Pokud žádný takový neexistuje, vrací jakýkoli ještě dostupný blok.
+         * @param block metoda naplní údaje o nalezeném bloku do tohoto parametru
+         * @throw ExceptionDiscFull pokud není k dispozici vůbec žádný volný blok
+         */
+        void allocatorFindFreeBlock_unusedPreferred(vBlock*& block);
+
+        /**
+         * Prozkoumá volné bloky v rámci hash a naplní parametr block prvním dostupným blokem.
+         * Naplní složky: hash, block, used. Zbylé (fragment a length) inicializuje
+         * (obvykle na 0, pro další použití je nutné nastavit na smysluplné hodnoty).
+         * @param hash kde se mají hledat volné bloky
+         * @param block skrze tento parametr metoda vrací info o volném bloku,
+         * metoda sama alokuje tento ukazatel
+         */
+        void allocatorFillFreeBlockByHash(hash_t hash, vBlock*& block);
+
+        /**
+         * Vyhledá a vrací první rezervovaný blok nehledě na to, kterému inode patří
+         * @param inode identifikace okradeného souboru
+         * @param block lokalizace rezervovaného bloku
+         * @throw ExceptionDiscFull pokud se v systému nenalézá žádný rezervovaný blok
+         */
+        void allocatorStealReservedBlock(inode_t& inode, vBlock*& block);
 
         /**
          * Naalokuje zdroje pro práci se skutečným souborem - otevření souboru, různé inicializace...
          * @param filename adresa ke skutečnému souboru
          * @return ukazatel na kontext, který může být libovolného typu
          */
-        virtual void* createContext(std::string filename) = 0;
+        virtual context_t* createContext(std::string filename) = 0;
 
         /**
          * Naplní parametr blocks seznamem čísel bloků, které je možné použít pro nové bloky
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          */
-        virtual void listAvaliableBlocks(void* context, std::set<block_number_t>* blocks) const = 0;
+        virtual void listAvaliableBlocks(context_t* context, std::set<block_number_t>* blocks) const = 0;
 
         /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
@@ -184,19 +220,19 @@ namespace HiddenFS {
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          * @param block číslo bloku ke smazání
          */
-        virtual void removeBlock(void* context, block_number_t block) = 0;
+        virtual void removeBlock(context_t* context, block_number_t block) = 0;
 
         /**
          * Uvolní naalokované prostředky pro skutečný soubor
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          */
-        virtual void freeContext(void* context) = 0;
+        virtual void freeContext(context_t* context) = 0;
 
         /**
          * Zapíše změny do skutečného souboru
          * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
          */
-        virtual void flushContext(void* context) = 0;
+        virtual void flushContext(context_t* context) = 0;
 
         /**
          * Zabezpečuje přečtení bloku obsahující fragment souboru
@@ -218,7 +254,7 @@ namespace HiddenFS {
          * @param length maximální délka bloku
          * @return skutečně načtená délka bloku
          */
-        virtual size_t readBlock(void* context, block_number_t block, bytestream_t* buff, size_t length) const = 0;
+        virtual size_t readBlock(context_t* context, block_number_t block, bytestream_t* buff, size_t length) const = 0;
 
         /**
          * Provádí zápis bloku do skutečného souboru
@@ -237,13 +273,19 @@ namespace HiddenFS {
          * @param buff obsah bloku
          * @param length délka zapisovaného bloku
          */
-        virtual void writeBlock(void* context, block_number_t block, bytestream_t* buff, size_t length) = 0;
+        virtual void writeBlock(context_t* context, block_number_t block, bytestream_t* buff, size_t length) = 0;
 
         /**
          * Naplní hash tabulku (mapování cesty skutečného souboru na jednoznačný řetězec)
          * @param filename umístění adresáře určeného jako úložiště (storage)
          */
         virtual void storageRefreshIndex(std::string filename) = 0;
+
+        /**
+         * Prochází hash table za účelem nalezení dostatečného počtu doposud
+         * neobsazených skutečných souborů (konstanta HT_UNUSED_CHUNK)
+         */
+        void findUnusedHash();
 
         /**
          * Přečte kompletní obsah virtuálního souboru ze všech fragmentů
@@ -260,6 +302,8 @@ namespace HiddenFS {
          * @param output výstupní buffer, metoda sama alokuje potřebnou délku
          * @param outputSize délka výstupního bufferu
          * @param id_byte identifikační byte (pro odlišení superbloku od běžného)
+         * @throw ExceptionRuntimeError pokud se snažíme zapsat více dat,
+         * než kolik se vejde do bloku (inputSize > BLOCK_USABLE_LENGTH)
          */
         void packData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t id_byte);
 

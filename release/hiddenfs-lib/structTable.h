@@ -34,6 +34,7 @@ namespace HiddenFS {
 
         /**
          * Vytvoří nový soubor (přepíše hodnotu inode!) a zapíše všechna potřebná metadata (především přiřazení k "parent")
+         * Pozor: Pro zápis hodnoty se používá copy-konstruktor (vlastnost kontejneru std::vector)
          * @param file očekává se vyplněná struktura (mimo složky inode)
          * @return inode přávě vloženého souboru
          */
@@ -58,7 +59,7 @@ namespace HiddenFS {
          * @param inode identifikátor souboru
          * @param file file podrobnosti o souboru
          */
-        void findFileByInode(inode_t inode, vFile** file);
+        void findFileByInode(inode_t inode, vFile* & file);
 
 
         /**
