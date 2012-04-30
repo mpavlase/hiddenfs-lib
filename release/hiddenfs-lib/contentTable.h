@@ -44,12 +44,17 @@ namespace HiddenFS {
         virtual ~contentTable();
 
         /**
-         * Provede dump hlavní tabulky do podoby řetězce
+         * Provede dump hlavní tabulky do podoby seznamu entit jednotného formátu
          * @param ouput metoda naplní seznam entitami pro pozdější uložení
          */
         void serialize(chainList_t* output);
 
-        void deserialize(chainList_t input);
+        /**
+         * Provádí rekonstrukci seznamu entit a rovnou plní obsah hlavní i všech
+         * přidružených pomocných tabulek
+         * @param input vstupní seznam bloků
+         */
+        void deserialize(const chainList_t& input);
 
         /**
          * user-friendly obsah tabulky

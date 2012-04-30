@@ -416,6 +416,7 @@ namespace HiddenFS {
     }
 
     hiddenFs::hiddenFs(IEncryption* instance = NULL) {
+        ///@todo po odladění odkomentovat!
         //srand(time(NULL));
         srand(1);
 
@@ -431,8 +432,6 @@ namespace HiddenFS {
 
         this->SB = new superBlock();
         this->SB->setEncryptionInstance(this->encryption);
-
-        this->FIRST_BLOCK_NO = 1;
 
         /*
         std::stringbuf s;
@@ -879,6 +878,15 @@ namespace HiddenFS {
 
         vFile* file;
         file = new vFile;
+        file->filename = "souborXYZ.txt";
+        file->flags = vFile::FLAG_NONE;
+        file->parent = 1;
+        file->size = 47;
+        this->ST->newFile(file);
+
+        this->CT->newEmptyContent(file->inode);
+
+        file = new vFile;
         file->filename = "soubor2.txt";
         file->flags = vFile::FLAG_NONE;
         file->parent = 1;
@@ -887,6 +895,24 @@ namespace HiddenFS {
 
         this->CT->newEmptyContent(file->inode);
 
+
+            chainList_t chainST;
+            this->ST->serialize(&chainST);
+
+            size_t sum = 0;
+            for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
+                sum += i->length;
+            }
+
+            std::cout << "celková délka: " << sum << "B\n";
+
+            this->ST->print();
+            delete this->ST;
+
+            this->ST = new structTable();
+            this->ST->deserialize(chainST);
+            this->ST->print();
+            assert(false);
 
 
         bytestream_t* bufRet;
@@ -917,9 +943,12 @@ namespace HiddenFS {
 
         //file->size += 300;
 
+        /*
         this->allocatorAllocate(file->inode, buffW, file->size);
         this->CT->print();
         this->ST->print();
+        */
+
         /*
         this->allocatorAllocate(file->inode, buffW, len);
         this->CT->print();
@@ -928,82 +957,43 @@ namespace HiddenFS {
         assert(false);
         */
         // ====================================
+        /*
         std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
         this->getContent(file->inode, &bufRet, &bufRetLen);
 
         std::ofstream fout;
         fout.open("test-result.gif", std::fstream::binary);
         fout.write((char*)bufRet, bufRetLen);
+        */
 
         //std::cout << "Kompletní obsah: _";
         //std::cout.write((const char*)bufRet, bufRetLen);
         //std::cout << "_" << std::endl;
         assert(false);
 
-        //this->encryption->encrypt(buffW, len, &encBuf, &encBufLen);
-
-        idb = idByteGenDataBlock();
-        idb = 36;
-        bl = 1;
-        lenBlock = 5;
-        /*
-        std::cout << "writeblock bl=" << bl << "\n";
-        this->writeBlock(h, bl, buffW + 0, lenBlock, idb);
-        */
-
-        vBlock* vb;
-
-        vb = new vBlock();
-        vb->block = bl;
-        vb->fragment = FRAGMENT_FIRST;
-        vb->hash = h;
-        vb->length = lenBlock;
-        vb->used = true;
-        this->CT->addContent(file->inode, vb);
-        file->size += vb->length;
-
-        vFile* vf;
-        this->ST->findFileByInode(file->inode, vf);
-        file->size += 10000;
-        // ------------------------------------
-        idb = idByteGenDataBlock();
-        idb = 49;
-        bl = 2;
-        lenBlock = 5;
-        /*
-        std::cout << "writeblock bl=" << bl << "\n";
-        this->writeBlock(h, bl, buffW + 5, lenBlock, idb);
-        */
-
-        //vBlock* vb;
-        vb = new vBlock();
-        vb->block = bl;
-        vb->fragment = FRAGMENT_FIRST + 1;
-        vb->hash = h;
-        vb->length = lenBlock;
-        vb->used = true;
-        this->CT->addContent(file->inode, vb);
-        file->size += vb->length;
-        file->size += 10000;
-        // ------------------------------------
-        this->CT->print();
-        // ====================================
-        std::cout << "run() read-bytes surové1: ";
-        r = this->readBlock(h, 1, &bufRet, BLOCK_USABLE_LENGTH, &idb);
-        std::cout << ", ret z readblock" << r << ", obsah: ";
-        //pBytes(bufRet, 30);
-        std::cout.write((const char*)bufRet, 5);
-        std::cout << std::endl;
-
-        std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
-
-        std::cout << "run() read-bytes surové2: ";
-        r = this->readBlock(h, 2, &bufRet, BLOCK_USABLE_LENGTH, &idb);
-        std::cout << ", ret z readblock" << r << ", obsah: ";
-        //pBytes(bufRet, 30);
-        std::cout.write((const char*)bufRet, 5);
-        std::cout << std::endl;
         //assert(false);
+        // ====================================
+        // ====================================
+                //      serializace CONTENT TABLE
+            /*
+            chainList_t chainCT;
+            this->CT->serialize(&chainCT);
+
+            size_t sum = 0;
+            for(chainList_t::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
+                sum += i->length;
+            }
+
+            std::cout << "celková délka: " << sum << "B\n";
+
+            delete this->CT;
+
+            this->CT = new contentTable();
+            this->CT->deserialize(chainCT);
+            this->CT->print();
+            */
+        // ====================================
+        // ====================================
         //std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 
 
@@ -1046,7 +1036,7 @@ namespace HiddenFS {
         chainList_t chainCT;
         this->CT->serialize(&chainCT);
 
-        size_t sum = 0;
+        sum = 0;
         for(chainList_t::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
             sum += i->length;
         }
@@ -1509,7 +1499,7 @@ namespace HiddenFS {
                 this->HT->getContext(ti->first);
 
                 continue;
-            } catch(ExceptionRuntimeError2& e) {
+            } catch(ExceptionRuntimeError& e) {
                 context = this->createContext(ti->second.filename);
                 this->HT->setContext(ti->first, context);
 

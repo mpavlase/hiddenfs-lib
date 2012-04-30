@@ -35,6 +35,7 @@ namespace HiddenFS {
     }
 
     void contentTable::serialize(chainList_t* output) {
+        // tato délka by měla být více než dostačující, protože serializované entity nezaberou mnoho prostoru
         bytestream_t stream[BLOCK_MAX_LENGTH];
         size_t size = 0;
 
@@ -183,14 +184,14 @@ namespace HiddenFS {
         }
     }
 
-    void contentTable::deserialize(chainList_t input) {
+    void contentTable::deserialize(const chainList_t& input) {
         size_t offset = 0;
         vBlock* block;
         inode_t inode;
         bytestream_t emptyBlock[SIZEOF_vBlock];
         memset(emptyBlock, '\0', SIZEOF_vBlock);
 
-        for(chainList_t::iterator i = input.begin(); i != input.end(); i++) {
+        for(chainList_t::const_iterator i = input.begin(); i != input.end(); i++) {
             offset = 0;
 
             if(&((*i).content) == NULL) {

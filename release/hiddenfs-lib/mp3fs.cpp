@@ -243,7 +243,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     usedSize = context->usedBlocks.size();
 
     if(!context->usedBlocks.empty()) {
-        lastBlock = this->FIRST_BLOCK_NO;
+        lastBlock = HiddenFS::FIRST_BLOCK_NO;
 
         // vyhledání "děr" v číslování, začínat až od dalšího prvku, protože první jsme načetli ručně
         for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
@@ -275,7 +275,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
             lastBlock = actBlock;
         }
     } else {
-        lastBlock = this->FIRST_BLOCK_NO;
+        lastBlock = HiddenFS::FIRST_BLOCK_NO;
 
         for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
 

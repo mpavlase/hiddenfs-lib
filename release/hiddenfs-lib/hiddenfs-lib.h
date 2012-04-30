@@ -36,8 +36,6 @@ namespace HiddenFS {
 
         static const size_t BLOCK_USABLE_LENGTH = BLOCK_MAX_LENGTH - sizeof(checksum_t) - sizeof(id_byte_t);
 
-        block_number_t FIRST_BLOCK_NO;
-
         /** maximální využití každého fyzického souboru (více virtuálních souborů v rámci jednoho fyzického) */
         static const char ALLOCATOR_SPEED = 1 << 0;
 

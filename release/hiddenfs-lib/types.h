@@ -96,8 +96,14 @@ namespace HiddenFS {
     /** Procentuální množství automaticky rezervovaných bloků, výchozí hodnotou je: 10 (=10%) */
     static const unsigned int ALLOCATOR_RESERVED_QUANTITY = 10;
 
-    /** První pořadové číslo fragmentu */
+    /** První pořadové číslo fragmentu (číslování v rámci hiddenFS) */
     static const fragment_t FRAGMENT_FIRST = 0;
+
+    /** První pořadové číslo bloku (číslování v rámci skutečných souborů) */
+    static const block_number_t FIRST_BLOCK_NO = 1;
+
+    /** Maximální délka pro názvy souborů */
+    static const unsigned int FILENAME_MAX_LENGTH = 255;
 
     static const int BLOCK_IN_USE = true;
     static const int BLOCK_RESERVED = false;
@@ -162,9 +168,7 @@ namespace HiddenFS {
         + hash_t_sizeof \
         + sizeof(bool);
 
-    /**
-     * Popis obsahu jedné entity
-     */
+    /** Popis obsahu jedné entity (složky length a content*) */
     struct chainItem {
         size_t length;
         bytestream_t* content;

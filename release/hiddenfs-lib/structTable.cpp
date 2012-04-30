@@ -15,13 +15,7 @@
 
 namespace HiddenFS {
     structTable::structTable() {
-        this->maxInode = 0;
-        // TODO: vytvořit root?
-        vFile* root = new vFile;
-        root->filename = "/";
-        root->flags = vFile::FLAG_DIR;
-        root->parent = 1;
-        this->newFile(root);
+        this->insertRootFile();
     }
 
     structTable::structTable(const structTable& orig) {
@@ -112,21 +106,26 @@ namespace HiddenFS {
         } else {
             // nalezení posledního souboru a vypočtení nového (neobsazeného) inode.
             table_t::reverse_iterator rit = this->table.rbegin();
+            ret_inode = rit->first;
+            assert(rit->first == rit->second->inode);
             ret_inode = rit->second->inode + 1;
         }
 
         file->inode = ret_inode;
-        this->maxInode = ret_inode;
 
+        return this->insertFile(file);
+    }
+
+    inode_t structTable::insertFile(vFile* file) {
         // vložení souboru do hlavní tabulky
         //this->table[ret_inode] = file;
-        this->table.insert(std::pair<inode_t, vFile*>(ret_inode, file));
+        this->table.insert(std::pair<inode_t, vFile*>(file->inode, file));
         //this->table[ret_inode]file;
 
-        // vložení souboru do tabulky rodičů
-        this->tableDirContent[file->parent].insert(ret_inode);
+        // vložení souboru do (pomocné) tabulky rodičů
+        this->tableDirContent[file->parent].insert(file->inode);
 
-        return ret_inode;
+        return file->inode;
     }
 
     void structTable::removeFile(inode_t inode) {
@@ -251,5 +250,173 @@ namespace HiddenFS {
 
         /// @todo tisknout obsah pouze pro ladění!
         this->print();
+    }
+
+    void structTable::serialize(chainList_t* output) {
+        // tato délka by měla být více než dostačující, protože serializované entity nezaberou mnoho prostoru
+        bytestream_t stream[BLOCK_MAX_LENGTH];
+        size_t size = 0;
+
+        chainItem chain;
+        vFile* file;
+
+        // zjištění počtu dále zpracovaných bloků
+        // iterace přes všechny soubory
+        for(table_t::const_iterator i = this->table.begin(); i != this->table.end(); i++) {
+            file = i->second;
+            //std::cout << "table size: " << this->table.size() << std::endl;
+            //std::cout << "content: " << i->second.content.size() << std::endl;
+
+            // hrubá kopie struktury
+
+            memset(&chain, '\0', sizeof(chain));
+            memset(stream, '\0', sizeof(stream));
+            // # dump právě jedné složky do bufferu
+
+            size = 0;
+
+            // dump 'inode'
+            memcpy(stream + size, &(file->inode), sizeof(file->inode));
+            size += sizeof(file->inode);
+
+            // dump 'parent'
+            memcpy(stream + size, &(file->parent), sizeof(file->parent));
+            size += sizeof(file->parent);
+
+            // dump 'size'
+            memcpy(stream + size, &(file->size), sizeof(file->size));
+            size += sizeof(file->size);
+
+            // dump 'filename'
+            assert(file->filename.size() <= FILENAME_MAX_LENGTH);
+            memcpy(stream + size, file->filename.data(), file->filename.size());
+            size += file->filename.size();
+
+            // přidat '\0' pro korektní detekci konce řetězce -- memset není zcele nezbytný
+            memset(stream + size, '\0', size);
+            size += 1;
+
+            // dump 'flags'
+            memcpy(stream + size, &(file->flags), sizeof(file->flags));
+            size += sizeof(file->flags);
+
+            //std::cout << "#:";
+            //std::cout.write((char*) vBlockBuff, vBlockBuffSize);
+            //std::cout << "\n";
+
+            // kopie obsahu
+            chain.content = new bytestream_t[size];
+            memset(chain.content, '\0', size);
+
+            chain.length = size;
+            memcpy(chain.content, stream, size);
+
+            output->push_back(chain);
+        }
+
+        /* Pokud soubor nemá žádný obsah, jeden speciální mu přecejen vytvoříme,
+         * jinak by se nedostal do seznamu entit vůbec. Speciální je ve složce
+         * datového typu 'vBlock', která je po celé délce obsazena znakem \0.
+         */
+        /*
+        if(this->table.begin() == this->table.end()) {
+           memset(&chain, '\0', sizeof(chain));
+
+            // # dump právě jedné složky do bufferu
+            size = 0;
+
+            // dump 'inode'
+            memcpy(stream + size, (&i->first), sizeof(i->first));
+            size += sizeof(i->first);
+
+            // dump 'vBlock'
+            memset(stream + size, '\0', SIZEOF_vBlock);
+            size += SIZEOF_vBlock;
+
+            // kopie obsahu
+            chain.content = new bytestream_t[size];
+            chain.length = size;
+            memcpy(chain.content, stream, size);
+
+            output->push_back(chain);
+        }
+        */
+    }
+
+    void structTable::deserialize(const chainList_t& input) {
+        size_t offset = 0;
+        vFile* file;
+        inode_t inode;
+        size_t filenameLen;
+        int c;
+
+        bytestream_t emptyBlock[SIZEOF_vBlock];
+        memset(emptyBlock, '\0', SIZEOF_vBlock);
+
+        for(chainList_t::const_iterator i = input.begin(); i != input.end(); i++) {
+            offset = 0;
+            filenameLen = 0;
+
+            if(&((*i).content) == NULL) {
+                std::cout << "CT::deserializace.content == NULL!\n";
+                continue;
+            }
+
+            file = new vFile;
+
+                //std::cout << "CT::deserializace.content adredsa: " << (int) (i->content) << std::endl;
+                //std::cout << "CT::deserializace.content adredsa: " << (int) (i->content + offset) << std::endl;
+                //std::cout << "hodnota: " << (int) *(i->content + offset) << std::endl;
+
+            // rekonstrukce složky 'inode'
+            memcpy(&(file->inode), i->content + offset, sizeof(file->inode));
+            offset += sizeof(inode);
+
+            // rekonstrukce složky 'parent'
+            memcpy(&(file->parent), i->content + offset, sizeof(file->parent));
+            offset += sizeof(file->parent);
+
+            // rekonstrukce složky 'size'
+            memcpy(&(file->size), i->content + offset, sizeof(file->size));
+            offset += sizeof(file->size);
+
+            // rekonstrukce složky 'filename'
+            for(filenameLen = 0; filenameLen < FILENAME_MAX_LENGTH; filenameLen++) {
+                c = *(i->content + offset + filenameLen);
+
+                if(c == '\0') {
+                    break;
+                }
+
+                file->filename.push_back(c);
+            }
+            offset += filenameLen;
+
+            /* +1 za koncovou '\0' řetězce počítáme také, protože se ve vstupní
+             * serializované entitě vyskytuje také, i když ji nikde dále neukládáme */
+            offset += 1;
+
+            // rekonstrukce složky 'size'
+            memcpy(&(file->flags), i->content + offset, sizeof(file->flags));
+            offset += sizeof(file->flags);
+
+            // nalezli jsme prázdný blok, takže pouze zinicializujeme vnitřní struktury
+            /*
+            if(memcmp(emptyBlock, i->content + offset, SIZEOF_vBlock) == 0) {
+                this->newEmptyContent(inode);
+            } else {
+                unserialize_vBlock(i->content + offset, SIZEOF_vBlock, &block);
+                this->addContent(inode, block);
+            }
+            */
+
+            assert(offset == i->length);
+
+            if(file->inode == ROOT_INODE) {
+                this->insertRootFile();
+            } else {
+                this->insertFile(file);
+            }
+        }
     }
 }

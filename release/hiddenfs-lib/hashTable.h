@@ -143,7 +143,7 @@ namespace HiddenFS {
          */
         context_t* getContext(hash_t hash) {
             if(this->table[hash].context == NULL) {
-                throw ExceptionRuntimeError2("Kontext k tomuto souboru nebyl přiřazen.");
+                throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl přiřazen.");
             }
 
             return this->table[hash].context;

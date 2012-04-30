@@ -32,13 +32,32 @@ namespace HiddenFS {
          */
         void print(void);
 
+        void insertRootFile() {
+            vFile* root = new vFile;
+
+            root->filename = "/";
+            root->flags = vFile::FLAG_DIR;
+            root->parent = 1;
+            root->inode = ROOT_INODE;
+            this->insertFile(root);
+        }
+
         /**
-         * Vytvoří nový soubor (přepíše hodnotu inode!) a zapíše všechna potřebná metadata (především přiřazení k "parent")
+         * Vytvoří nový soubor a přepíše hodnotu inode (resp. vypočítá takovou hodnotu,
+         * aby nekolidovala s již stávajícími soubory, což je jediný rozdíl oproti metodě
+         * insertFile) a zapíše všechna potřebná metadata (především přiřazení k "parent")
          * Pozor: Pro zápis hodnoty se používá copy-konstruktor (vlastnost kontejneru std::vector)
          * @param file očekává se vyplněná struktura (mimo složky inode)
          * @return inode přávě vloženého souboru
          */
         inode_t newFile(vFile* file);
+
+        /**
+         * Vloží parametr 'file' do patřičných tabulek (hlavní a pomocných).
+         * Oproti metode newFile tako vyžaduje korektně naplněné všechny složka, tzn. i inode.
+         * @param file nový soubor pro zařazení do vnitřních struktur
+         */
+        inode_t insertFile(vFile* file);
 
         /**
          * Odstraní soubor z tabulek
@@ -114,11 +133,21 @@ namespace HiddenFS {
          */
         void moveInode(vFile* inode, inode_t parent);
 
+        /**
+         * Provede dump hlavní tabulky do podoby seznamu entit jednotného formátu
+         * @param ouput metoda naplní seznam entitami pro pozdější uložení
+         */
+        void serialize(chainList_t* output);
+
+        /**
+         * Provádí rekonstrukci seznamu entit a rovnou plní obsah hlavní i všech
+         * přidružených pomocných tabulek
+         * @param input vstupní seznam bloků
+         */
+        void deserialize(const chainList_t& input);
+
     private:
         typedef std::map<inode_t, vFile* > table_t;
-
-        /** nejvyšší doposud využité inode číslo */
-        inode_t maxInode;
 
         /**
          * hlavní hashovací tabulka
