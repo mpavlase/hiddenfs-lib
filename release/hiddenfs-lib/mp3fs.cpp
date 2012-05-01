@@ -54,7 +54,6 @@ protected:
     void writeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block, HiddenFS::bytestream_t* buff, size_t length);
     void storageRefreshIndex(std::string filename);
     HiddenFS::context_t* createContext(std::string filename);
-    void listAvaliableBlocks(HiddenFS::context_t* context, std::set<HiddenFS::block_number_t>* blocks) const;
     void freeContext(HiddenFS::context_t* context);
     void removeBlock(HiddenFS::context_t* context, HiddenFS::block_number_t block);
     void flushContext(HiddenFS::context_t* context) {
@@ -172,10 +171,6 @@ public:
         }
     };
 };
-
-void mp3fs::listAvaliableBlocks(HiddenFS::context_t* context, std::set<HiddenFS::block_number_t>* blocks) const {
-    *blocks = context->avaliableBlocks;
-}
 
 HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     // ----------------------------

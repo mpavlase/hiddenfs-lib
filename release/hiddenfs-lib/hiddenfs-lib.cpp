@@ -66,9 +66,14 @@ struct fuse_file_info {
 
 namespace HiddenFS {
 
+    // hotovo
     void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_t hash) {
-        /// @todo doimplementovat!
-        throw ExceptionNotImplemented("hiddenFs::allocatorFindFreeBlock_sameHash");
+        hashTable::table_t_constiterator cit = this->HT->find(hash);
+        if(cit->second.context->avaliableBlocks.size() > 0) {
+            this->allocatorFillFreeBlockByHash(hash, block);
+        } else {
+            throw ExceptionBlockNotFound();
+        }
     }
 
     void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_t>& excluded) {
@@ -796,7 +801,7 @@ namespace HiddenFS {
         for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
             std::cout << "V souboru: " << i->second << " hledám superblock...\n";
             try {
-                this->readBlock((hash_t)i->first, FIRST_BLOCK_NO, &bufferBlock, BLOCK_MAX_LENGTH, &idByte);
+                this->readBlock((hash_t)i->first, FIRST_BLOCK_NO, &bufferBlock, BLOCK_USABLE_LENGTH, &idByte);
                 this->SB->deserialize(bufferBlock, BLOCK_MAX_LENGTH);
                 break;
             } catch (...) {
@@ -826,7 +831,7 @@ namespace HiddenFS {
 
         bytestream_t buffW[length];
         memset(buffW, '\0', sizeof(buffW));
-        size_t len;
+        //size_t len;
         f.read((char*)buffW, length);
         /*
         memcpy(buffW, "abcdefghijklmnopq", len);
@@ -917,8 +922,9 @@ namespace HiddenFS {
 
         bytestream_t* bufRet;
         size_t bufRetLen;
-        size_t r;
+        //size_t r;
 
+        /*
         id_byte_t idb;
         unsigned int bl;
         size_t lenBlock;
@@ -927,7 +933,6 @@ namespace HiddenFS {
 
         this->ST->print();
 
-        /*
         len = 0;
         while(len < sizeof(buffW)) {
             for(char i = 'a'; i <= 'z'; i++) {
@@ -992,6 +997,28 @@ namespace HiddenFS {
             this->CT->deserialize(chainCT);
             this->CT->print();
             */
+        // ====================================
+        // ====================================
+                // serializace a de- structTable
+        /*
+            chainList_t chainST;
+            this->ST->serialize(&chainST);
+
+            size_t sum = 0;
+            for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
+                sum += i->length;
+            }
+
+            std::cout << "celková délka: " << sum << "B\n";
+
+            this->ST->print();
+            delete this->ST;
+
+            this->ST = new structTable();
+            this->ST->deserialize(chainST);
+            this->ST->print();
+            assert(false);
+         */
         // ====================================
         // ====================================
         //std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -1064,7 +1091,7 @@ namespace HiddenFS {
 
             for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
                 try {
-                    this->readBlock(i->first, FIRST_BLOCK_NO, &sbBuffer, BLOCK_MAX_LENGTH, &idByte);
+                    this->readBlock(i->first, FIRST_BLOCK_NO, &sbBuffer, BLOCK_USABLE_LENGTH, &idByte);
                 } catch (ExceptionBlockNotUsed) {
                     this->SB->serialize(&sbBuffer, &sbBufferLen);
 
@@ -1527,5 +1554,244 @@ namespace HiddenFS {
              * else this->HT->firstIndexing = true
              */
         }
+    }
+
+    void hiddenFs::chainListRestore(vBlock* location, vBlock*& next, chainList_t& chain) {
+        bytestream_t* buff;
+        bytestream_t* buffRaw;
+        bytestream_t buffEmpty[SIZEOF_vBlock];
+        size_t buffLen;
+        size_t buffLenRaw = BLOCK_USABLE_LENGTH;
+        size_t offset;
+        chain_count_t count, i;
+        id_byte_t idByte;
+
+        /** jeden článek řetězu */
+        chainItem link;
+        memset(buffEmpty, '\0', SIZEOF_vBlock);
+
+        try {
+            this->readBlock(location->hash, location->block, &buffRaw, buffLenRaw, &idByte);
+            assert(idByteIsDataBlock(idByte));
+            this->encryption->decrypt(buffRaw, buffLenRaw, &buff, &buffLen);
+            ///@todo decrypt
+        } catch (...) {
+            throw ExceptionRuntimeError("hiddenFs::chainListRestore - naštení bloku s entitami nebylo úspěšné");
+        }
+        offset = 0;
+
+        // rekonstrukce složky 'count'
+        memcpy(&count, buff + offset, sizeof(count));
+
+        // rekonstrukce složky 'vBlock'
+        /* Poslední článek řetězu je identifikován jako oblast znaků '\0' v délce
+         * serializované struktury vBlock */
+        if(memcmp(buff + offset, buffEmpty, SIZEOF_vBlock) == 0) {
+            next = NULL;
+        } else {
+            unserialize_vBlock(buff + offset, SIZEOF_vBlock, &next);
+        }
+        offset += SIZEOF_vBlock;
+
+        // postupná rekonstrukce všech obsažených článků
+        for(i = 0; i < count; i++) {
+            memcpy(&(link.length), buff + offset, sizeof(link.length));
+            offset += sizeof(link.length);
+
+            assert(link.length < BLOCK_USABLE_LENGTH);
+
+            link.content = new bytestream_t[link.length];
+
+            memcpy(link.content, buff + offset, link.length);
+            offset += link.length;
+        }
+
+        assert(offset <= buffLen);
+    }
+
+    void hiddenFs::chainListSave(vBlock* location, vBlock* next, const chainList_t& chain) {
+        bytestream_t buff[BLOCK_USABLE_LENGTH];
+        bytestream_t* vBlockBuff;
+        bytestream_t* encBuffer;
+        size_t vBlockBuffLen;
+        size_t encBufferLen;
+        size_t offset = 0;
+        chain_count_t count = chain.size();
+        id_byte_t idByte;
+        unsigned int countEntits = 0;
+
+        memset(buff, '\0', sizeof(buff));
+
+        // zápis složky 'count'
+        memcpy(buff + offset, &count, sizeof(count));
+        offset += sizeof(count);
+
+        /* zápis složky 'next', poslední článek řetězu se ukládá jako souvislá
+         *  oblast znaku '\0' v délce serializované struktury vBlock */
+        if(next == NULL) {
+            memset(buff + offset, '\0', SIZEOF_vBlock);
+        } else {
+            serialize_vBlock(next, &vBlockBuff, &vBlockBuffLen);
+            assert(vBlockBuffLen == SIZEOF_vBlock);
+            memcpy(buff + offset, vBlockBuff, vBlockBuffLen);
+        }
+        offset += SIZEOF_vBlock;
+
+        // zápis všech entit
+        for(chainList_t::const_iterator i = chain.begin(); i != chain.end(); i++) {
+            // nejdříve délka entity
+            memcpy(buff + offset, &(i->length), sizeof(i->length));
+            offset += sizeof(i->length);
+
+            // ... a následuje samotný obsah entity
+            memcpy(buff + offset, i->content, i->length);
+            offset += i->length;
+
+            countEntits++;
+        }
+
+        assert(countEntits == count);
+
+        // Nesmíme dovolit zapsat delší blok dat, než se vejde do jednoho bloku
+        assert(offset <= BLOCK_USABLE_LENGTH);
+
+        idByte = idByteGenDataBlock();
+        this->encryption->encrypt(buff, BLOCK_USABLE_LENGTH, &encBuffer, &encBufferLen);
+
+        this->writeBlock(location->hash, location->block, encBuffer, encBufferLen, idByte);
+    }
+
+    void hiddenFs::chainListAllocate(const hash_t& hash, vBlock*& block) {
+        /** Pokus o vyhledání dalšího bloku pro uložení aktuální části řetězu.
+         * Prohledávání se provádí podle následujícho scénáře, výběr končí
+         * po prvním nalezeném bloku:
+         * 1) blok ve stejném fyzickém souboru
+         * 2) blok v dosud neobsazeném souboru (kvůli snížení fragmentace)
+         * 3) vyhledání libovolného rezervovaného bloku (nezávisle na inode souboru,
+         * kterému patří) a jeho označení za volný*/
+        inode_t robbedInode;
+
+        try {
+            this->allocatorFindFreeBlock_sameHash(block, hash);
+        } catch(ExceptionBlockNotFound&) {
+            try {
+                this->allocatorFindFreeBlock_unusedPreferred(block);
+            } catch(ExceptionDiscFull&) {
+                /* Pokud i allocatorStealReservedBlock() vyhodí výjimku
+                 * ExceptionDiscFull, nelze uložit celý řetěz */
+                this->allocatorStealReservedBlock(robbedInode, block);
+            }
+        }
+    }
+
+    vBlock* hiddenFs::chainListCompleteSave(const chainList_t& chain, vBlock* firstChain) {
+        vBlock* firstBlock = NULL;
+
+        /** Umístění naposledy zapsaného bloku */
+        vBlock* prevBlock = NULL;
+
+        /** Umístění aktuálně ukládaného bloku */
+        vBlock* actBlock = NULL;
+
+        bool newBlock;
+        size_t actSize;
+        chainList_t actList;
+        chainList_t prevList;
+        hash_t hash;
+
+        const size_t newBlockHeaderLen = sizeof(chain_count_t) + SIZEOF_vBlock;
+        const size_t maxLength = BLOCK_USABLE_LENGTH;
+
+        if(firstChain != NULL) {
+            firstBlock = firstChain;
+        } else {
+            /* Pokud allocatorFindFreeBlock_unusedPreferred vyhodí výjimku
+             * ExceptionDiscFull, je to pořádku ji zde ještě nezachytit,
+             * protože ošetření tohoto stavu náleží metodě, která chainListSave volá. */
+            this->allocatorFindFreeBlock_unusedPreferred(firstBlock);
+        }
+
+        /** @todo zkontrolovat podmínky kolem prevBlock */
+        prevBlock = firstBlock;
+        newBlock = true;
+        actSize = 0;
+
+        for(chainList_t::const_iterator i = chain.begin(); i != chain.end(); i++) {
+            if(newBlock) {
+                actSize += newBlockHeaderLen;
+            }
+
+            if(actSize + sizeof(i->length) + i->length < maxLength) {
+                actList.push_back(*i);
+                actSize += sizeof(i->length) + i->length;
+            } else {
+                /* Přidání další entity by způsobilo 'přetečení' délky bloku,
+                 * proto se pokusím "naprázdno" uložit aktuální seznam a až budu úspěšný,
+                 * přečtu předcházející kus, změním hodnotu 'next' a uložím jej. */
+                while(1) {
+                    // V průběhu iterací while může dojít k ExceptionDiscFull, což je problém a
+                    // 1) uložení aktuálního bloku (následující ještě neznáme, proto NULL)
+                    try {
+                        this->chainListSave(actBlock, NULL, actList);
+                    } catch(ExceptionDiscFull& e) {
+                        throw e;
+                    } catch(...) {
+                        // vyhledej jiný actBlock
+                        hash = actBlock->hash;
+                        this->chainListAllocate(hash, actBlock);
+
+                        /** @todo pozor na zacyklení */
+                        continue;
+                    }
+
+                    break;
+                }
+
+                // nové uložení předešlé části řetězu, protože už známe umístění následující části
+                /** @todo Jak se zachovat, pokud se nepodaří nový zápis do předešlého bloku? */
+                this->chainListSave(prevBlock, actBlock, prevList);
+
+
+                // vrátíme jeden blok načtený navíc zpět
+                // může způsobit zacyklení, ale pouze pokud se do jedné části nevejde ani jedna entita
+                i--;
+
+                newBlock = true;
+                actSize = 0;
+                prevList = actList;
+                prevBlock = actBlock;
+
+                actList.clear();
+
+                hash = actBlock->hash;
+                this->chainListAllocate(hash, actBlock);
+            }
+        }
+
+        // ruční douložení posledního článku
+        while(1) {
+            // V průběhu iterací while může dojít k ExceptionDiscFull, což je problém a
+            // 1) uložení aktuálního bloku (následující ještě neznáme, proto NULL)
+            try {
+                this->chainListSave(actBlock, NULL, actList);
+            } catch(ExceptionDiscFull& e) {
+                throw e;
+            } catch(...) {
+                // vyhledej jiný actBlock
+                hash = actBlock->hash;
+                this->chainListAllocate(hash, actBlock);
+
+                /** @todo pozor na zacyklení */
+                continue;
+            }
+
+            break;
+        }
+
+        // nové uložení předešlé části řetězu, protože už známe umístění následující části
+        /** @todo Jak se zachovat, pokud se nepodaří nový zápis do předešlého bloku? */
+        this->chainListSave(prevBlock, actBlock, prevList);
+
+        return firstBlock;
     }
 }

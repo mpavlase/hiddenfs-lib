@@ -81,6 +81,9 @@ namespace HiddenFS {
     /** datový typ "jednotky" pro manipulaci s binárním obsahem (unsigned char) */
     typedef __u_char bytestream_t;
 
+    /** datový typ pro uchování počtu entit v rámci jednoho bloku */
+    typedef __uint32_t chain_count_t;
+
     /** čísla pod touto hodnotou (bez této hodnoty) jsou považovány za identifikátor
      * běžného datového bloku, hodnoty rovny nebo větší jsou považovány za superblok */
     static const id_byte_t ID_BYTE_BOUNDARY = 127;
@@ -160,7 +163,8 @@ namespace HiddenFS {
     };
 
     /** Součet jednotlivých délek složek struktury vBlock bez jakéhokoli zarovnávání,
-     * používá se pouze pro práci s dumpem struktury vBlock! */
+     * proto hodnota SIZEOF_vBlock je menší než sizeof(vBlock).
+     * Tato konstanta se používá pouze pro práci s dumpem struktury vBlock! */
     static const size_t SIZEOF_vBlock = \
         + sizeof(block_number_t) \
         + sizeof(fragment_t) \

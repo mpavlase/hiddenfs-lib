@@ -115,6 +115,7 @@ namespace HiddenFS {
          * Blok se musí nacházet v souboru určeném hashem. Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionBlockNotFound,
          * @param block metoda naplní údaje o nalezeném bloku
          * @param hash nový blok hledat v tomto souboru
+         * @throw ExceptionBlockNotFound pokud v hashi už není žádný volný blok
          */
         void allocatorFindFreeBlock_sameHash(vBlock*& block, hash_t hash);
 
@@ -201,12 +202,6 @@ namespace HiddenFS {
         virtual context_t* createContext(std::string filename) = 0;
 
         /**
-         * Naplní parametr blocks seznamem čísel bloků, které je možné použít pro nové bloky
-         * @param context ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem
-         */
-        virtual void listAvaliableBlocks(context_t* context, std::set<block_number_t>* blocks) const = 0;
-
-        /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
          * @param hash jednoznačná identifikace souboru, ve kterém se nachází
          * blok pro mazání
@@ -234,7 +229,8 @@ namespace HiddenFS {
         virtual void flushContext(context_t* context) = 0;
 
         /**
-         * Zabezpečuje přečtení bloku obsahující fragment souboru
+         * Zabezpečuje přečtení bloku obsahující fragment souboru s kontrolou
+         * kontrolního součtu a načtení identifikačního byte.
          * @param hash identifikace souboru
          * @param block pořadové číslo bloku v rámci skutečného souboru
          * @param buff užitný obsah bloku, metoda sama alokuje dostatečnou délku
@@ -261,6 +257,7 @@ namespace HiddenFS {
          * @param block pořadové číslo bloku v rámci souboru
          * @param buff obsah bloku
          * @param length délka zapisovaného bloku
+         * @throw ExceptionRuntimeError pokud je buffer příliš dlouhý
          */
         void writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte);
 
@@ -321,7 +318,7 @@ namespace HiddenFS {
          * @param outputSize délka výstupního bufferu
          * @param id_byte identifikační byte (pro odlišení superbloku od běžného)
          * @throw ExceptionRuntimeError pokud se snažíme zapsat více dat,
-         * než kolik se vejde do bloku (inputSize > BLOCK_USABLE_LENGTH)
+         * než kolik se vejde do bloku (inputSize je menší BLOCK_USABLE_LENGTH)
          */
         void packData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t id_byte);
 
@@ -338,22 +335,41 @@ namespace HiddenFS {
          */
         void unpackData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t* id_byte);
 
-        void chainAddEntity(bytestream_t* input, size_t inputLength);
+        /**
+         * Provádí zápis chainListu , je vlastně trochu jiným druhem alokátoru
+         * @param chain vstupní seznam entit určených pro zápis
+         * @param firstChain pokusit se zapsat od tohoto článku a pokud jsou dostupné
+         * i následující, zapisovat do nich namísto nového výběru bloku
+         * @return ukazatel na vBlock, který obsahuje první článek řetězu
+         */
+        vBlock* chainListCompleteSave(const chainList_t& chain, vBlock* firstChain = NULL);
 
-        //HiddenFS::hash_t_sizeof_t& hash_t_sizeof;
+        /**
+         * Načte část řetězu entit do 'chain', která se nachází v 'location'
+         * @param location umístění jednoho článku řetězu pro načtení
+         * @param next naplní ukazatel dalšího článku řetězu
+         * @param chain metoda naplní řetěz entitami
+         * @throw ExceptionRuntimeError pokud čtení z bloku 'location' nebylo
+         * z nějakého důvodu korektní
+         */
+        void chainListRestore(vBlock* location, vBlock*& next, chainList_t& chain);
 
-      /*
-    class chainManager {
-    public:
-        void addEntitiy(bytestream_t* input, size_t inputLength);
+        /**
+         * Uloží řetěz do bloku určeném parametrem location. Výsledný bytestream
+         * nesmí být delší, než je využitelný obsah bloku.
+         * @param location cílový soubor pro zápis
+         * @param next ukazatel na následující blok (může být i NULL)
+         * @param chain vstupní řetěz k uložení
+         */
+        void chainListSave(vBlock* location, vBlock* next, const chainList_t& chain);
 
-
-        typedef std::vector<chainItem> table_t;
-    private:
-        table_t table;
-
-    };
-    */
+        /**
+         * Vyhledá volný blok podle trochu jiných kritérií, než se používá v allocatorAllocate
+         * @param hash identifikace fyzického souboru, který se má upřednostnit při hledání
+         * @param output metoda naplní tento ukazatel volným blokem
+         * @throw ExceptionDiscFull pokud není v systému absolutně žádný další volný blok
+         */
+        void chainListAllocate(const hash_t& hash, vBlock*& output);
 
         // ---------------------------------------------------------------------
         // -----------------------     FUSE     --------------------------------
