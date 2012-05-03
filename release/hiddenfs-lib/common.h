@@ -8,6 +8,7 @@
 #define	COMMON_H
 
 #include <assert.h>
+#include <cryptopp/hex.h>
 #include <cstdlib>
 #include <cstring>
 #include <errno.h>
@@ -207,8 +208,10 @@ namespace HiddenFS {
      */
     id_byte_t idByteGenSuperBlock();
 
-    
+
     void pBytes(bytestream_t* input, size_t len);
+
+    std::string print_hash(hash_t& hash);
 }
 
 #endif	/* COMMON_H */

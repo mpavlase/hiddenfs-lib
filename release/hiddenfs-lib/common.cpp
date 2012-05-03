@@ -44,12 +44,13 @@ namespace HiddenFS {
         ss << "(";
 
         if(b->used == BLOCK_IN_USE) {
-            ss << "[U]";
+            ss << "[  Used  ]";
         } else {
-            ss << "[R]";
+            ss << "[Reserved]";
         }
 
-        ss << ", " << b->hash;
+        ss << ", ";// << b->hash;
+        ss << print_hash(b->hash);
         ss << ", b: ";
         ss << b->block;
         ss << ", f#: " << b->fragment;
@@ -202,4 +203,19 @@ namespace HiddenFS {
         memcpy(&((*output)->used), input + offset, sizeof((*output)->used));
         offset += sizeof((*output)->used);
     };
+
+    std::string print_hash(hash_t& hash) {
+        std::string ret;
+
+        CryptoPP::HexEncoder encoder;
+        encoder.Put((const byte*) (hash.c_str()), hash_t_sizeof);
+
+        size_t size = encoder.MaxRetrievable();
+        if(size) {
+            ret.resize(size);
+            encoder.Get((byte*)ret.data(), ret.size());
+        }
+
+        return ret;
+    }
 }
