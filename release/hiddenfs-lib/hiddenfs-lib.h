@@ -336,10 +336,11 @@ namespace HiddenFS {
         void unpackData(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize, id_byte_t* id_byte);
 
         /**
-         * Provádí zápis chainListu , je vlastně trochu jiným druhem alokátoru
+         * Provádí zápis chainListu, je vlastně trochu jiným druhem alokátoru
          * @param chain vstupní seznam entit určených pro zápis
          * @param firstChain pokusit se zapsat od tohoto článku a pokud jsou dostupné
-         * i následující, zapisovat do nich namísto nového výběru bloku
+         * i následující, zapisovat do nich namísto nového výběru bloku. Pokud je NULL,
+         * automaticky se vybere vhodný blok.
          * @return ukazatel na vBlock, který obsahuje první článek řetězu
          */
         vBlock* chainListCompleteSave(const chainList_t& chain, vBlock* firstChain = NULL);
@@ -348,11 +349,19 @@ namespace HiddenFS {
          * Načte část řetězu entit do 'chain', která se nachází v 'location'
          * @param location umístění jednoho článku řetězu pro načtení
          * @param next naplní ukazatel dalšího článku řetězu
-         * @param chain metoda naplní řetěz entitami
+         * @param chain metoda rozšíří řetěz entitami o další obsah, nemaže původní obsah
          * @throw ExceptionRuntimeError pokud čtení z bloku 'location' nebylo
          * z nějakého důvodu korektní
          */
         void chainListRestore(vBlock* location, vBlock*& next, chainList_t& chain);
+
+        /**
+         * Pokusí se načíst kompletní řetěz entit
+         * @param first blok s prvním článkem řetězu
+         * @param chain metoda naplní řetěz entitami
+         * @throw ExceptionRuntimeError pokud nebylo možné načíst řetěz kompletní
+         */
+        void chainListCompleteRestore(vBlock* first, chainList_t& chain);
 
         /**
          * Uloží řetěz do bloku určeném parametrem location. Výsledný bytestream

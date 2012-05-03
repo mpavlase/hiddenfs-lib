@@ -226,7 +226,7 @@ namespace HiddenFS {
 
         //for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = cTableItem.content.begin(); i != cTableItem.content.end(); i++) {}
         for(fragment_t f = FRAGMENT_FIRST; f < FRAGMENT_FIRST + fragmentsCount; f++) {
-
+            std::cout << "Zápis fragmentu #" << f << ", ";
             // výpočet zbývající délky bloku namísto výchozí BLOCK_USABLE_LENGTH, pokud je to nutné
             // záporná hodnota blockLength signalizuje přebytek naalokovaných bloků
             if(offset + BLOCK_USABLE_LENGTH < contentLength) {
@@ -243,8 +243,7 @@ namespace HiddenFS {
             redundancyFinished = 0;
 
             // uložení všech redundantních kopii jednoho fragmentu
-            //std::cout << "cTableItem.content[f].size() = " << cTableItem.content[f].size() << std::endl;
-            //assert(false);
+            std::cout << "cTableItem.content[f].size() = " << cTableItem.content[f].size() << std::endl;
             for(std::vector<vBlock*>::iterator j = cTableItem.content[f].begin() ; j != cTableItem.content[f].end(); j++) {
                 /* Soubor má naalokováno příliš mnoho bloků, takže všechny ty,
                  * do kterých nebyl aktuálně proveden zápis označíme jako rezervované */
@@ -276,6 +275,7 @@ namespace HiddenFS {
                 // Maximálně využít úložiště - do jednoho fyzického souboru ukládat bloky více virtuálních souborů
                 if((this->allocatorFlags & ALLOCATOR_SPEED) != 0) {
                     while(redundancyFinished < this->allocatorRedundancy) {
+                        std::cout << "";
                         try {
                             stealing = false;
                             this->allocatorFindFreeBlock_partUsedPreferred(block, excludedHash);
@@ -831,11 +831,7 @@ namespace HiddenFS {
 
         bytestream_t buffW[length];
         memset(buffW, '\0', sizeof(buffW));
-        //size_t len;
         f.read((char*)buffW, length);
-        /*
-        memcpy(buffW, "abcdefghijklmnopq", len);
-        */
 
         /*
         block_number_t blockW = 1;
@@ -874,12 +870,6 @@ namespace HiddenFS {
         */
 
         inode_t inode_ret;
-        /*
-        bytestream_t* encBuf;
-        bytestream_t* decBuf;
-        size_t encBufLen;
-        size_t decBufLen;
-        */
 
         vFile* file;
         file = new vFile;
@@ -891,38 +881,59 @@ namespace HiddenFS {
 
         this->CT->newEmptyContent(file->inode);
 
-        file = new vFile;
-        file->filename = "soubor2.txt";
-        file->flags = vFile::FLAG_NONE;
-        file->parent = 1;
-        file->size = sizeof(buffW);
-        this->ST->newFile(file);
+        for(unsigned int i = 0; i < 5; i++) {
+            std::stringstream ss;
+            ss << "soubor-" << i << ".txt";
 
-        this->CT->newEmptyContent(file->inode);
+            file = new vFile;
+            file->filename = ss.str();
+            file->flags = vFile::FLAG_NONE;
+            file->parent = 1;
+            file->size = sizeof(buffW);
+            this->ST->newFile(file);
 
+            this->CT->newEmptyContent(file->inode);
+            this->allocatorAllocate(file->inode, buffW, length);
+        }
 
-            chainList_t chainST;
-            this->ST->serialize(&chainST);
-
-            size_t sum = 0;
-            for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
-                sum += i->length;
-            }
-
-            std::cout << "celková délka: " << sum << "B\n";
+        chainList_t chainST;
+        this->ST->serialize(&chainST);
 
             this->ST->print();
             delete this->ST;
+            this->ST = new structTable();
+            this->ST->deserialize(chainST);
+            this->ST->print();
+        //assert(false);
+
+        vBlock* chainFirst;
+        chainFirst = this->chainListCompleteSave(chainST, NULL);
+        std::cout << print_vBlock(chainFirst);
+        std::cout.flush();
+
+        chainST.clear();
+        this->chainListCompleteRestore(chainFirst, chainST);
+
 
             this->ST = new structTable();
             this->ST->deserialize(chainST);
             this->ST->print();
             assert(false);
 
+        size_t sum = 0;
+        for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
+            sum += i->length;
+        }
+
+            /*
+            std::cout << "celková délka: " << sum << "B\n";
+
+            */
+            assert(false);
+
 
         bytestream_t* bufRet;
         size_t bufRetLen;
-        //size_t r;
 
         /*
         id_byte_t idb;
@@ -946,7 +957,6 @@ namespace HiddenFS {
         }
         */
 
-        //file->size += 300;
 
         /*
         this->allocatorAllocate(file->inode, buffW, file->size);
@@ -1032,14 +1042,6 @@ namespace HiddenFS {
         std::cout.write((const char*)bufRet, bufRetLen);
         std::cout << "_" << std::endl;
         assert(false);
-
-        bytestream_t* bufRetDec;
-        size_t bufRetDecLen;
-        this->encryption->decrypt(bufRet, bufRetLen, &bufRetDec, &bufRetDecLen);
-
-        std::cout << "Dešifrovaný obsah, po slepení (getContent): _";
-        std::cout.write((const char*)bufRetDec, bufRetDecLen);
-        std::cout << "_" << std::endl;
 
         /*
         for(int i = 0; i < 1000; i++) {
@@ -1565,6 +1567,7 @@ namespace HiddenFS {
         size_t offset;
         chain_count_t count, i;
         id_byte_t idByte;
+        static unsigned int poc = 0;
 
         /** jeden článek řetězu */
         chainItem link;
@@ -1574,24 +1577,38 @@ namespace HiddenFS {
             this->readBlock(location->hash, location->block, &buffRaw, buffLenRaw, &idByte);
             assert(idByteIsDataBlock(idByte));
             this->encryption->decrypt(buffRaw, buffLenRaw, &buff, &buffLen);
-            ///@todo decrypt
         } catch (...) {
-            throw ExceptionRuntimeError("hiddenFs::chainListRestore - naštení bloku s entitami nebylo úspěšné");
+            throw ExceptionRuntimeError("hiddenFs::chainListRestore - načtení bloku s entitami nebylo úspěšné");
         }
         offset = 0;
 
         // rekonstrukce složky 'count'
         memcpy(&count, buff + offset, sizeof(count));
+        offset += sizeof(count);
+        //pBytes(buff, 100);
 
         // rekonstrukce složky 'vBlock'
         /* Poslední článek řetězu je identifikován jako oblast znaků '\0' v délce
          * serializované struktury vBlock */
+
+        std::cout << "chainListRestore počítadlo = " << poc << std::endl;
+        poc++;
+        if(poc > 10) {
+            assert(false);
+        }
+        //pBytes(buff + offset, SIZEOF_vBlock);
+
         if(memcmp(buff + offset, buffEmpty, SIZEOF_vBlock) == 0) {
             next = NULL;
         } else {
             unserialize_vBlock(buff + offset, SIZEOF_vBlock, &next);
         }
         offset += SIZEOF_vBlock;
+
+        std::cout << "act  = " << print_vBlock(location) << std::endl;
+        std::cout << "next = ";
+        if(next != NULL) std::cout << print_vBlock(next);
+        std::cout.flush();
 
         // postupná rekonstrukce všech obsažených článků
         for(i = 0; i < count; i++) {
@@ -1604,9 +1621,32 @@ namespace HiddenFS {
 
             memcpy(link.content, buff + offset, link.length);
             offset += link.length;
+
+            chain.push_back(link);
         }
 
         assert(offset <= buffLen);
+    }
+
+    void hiddenFs::chainListCompleteRestore(vBlock* first, chainList_t& chain) {
+        vBlock* act;
+        vBlock* next;
+
+        act = first;
+
+        try {
+            while(true) {
+                this->chainListRestore(act, next, chain);
+
+                if(next == NULL) {
+                    break;
+                }
+
+                act = next;
+            }
+        } catch(...) {
+            throw ExceptionRuntimeError("hiddenFs::chainListCompleteRestore řetěz nebyl načten kompleně");
+        }
     }
 
     void hiddenFs::chainListSave(vBlock* location, vBlock* next, const chainList_t& chain) {
@@ -1682,6 +1722,9 @@ namespace HiddenFS {
                 this->allocatorStealReservedBlock(robbedInode, block);
             }
         }
+
+        block->used = true;
+        block->length = 101;
     }
 
     vBlock* hiddenFs::chainListCompleteSave(const chainList_t& chain, vBlock* firstChain) {
@@ -1700,7 +1743,10 @@ namespace HiddenFS {
         hash_t hash;
 
         const size_t newBlockHeaderLen = sizeof(chain_count_t) + SIZEOF_vBlock;
-        const size_t maxLength = BLOCK_USABLE_LENGTH;
+        size_t maxLength = BLOCK_USABLE_LENGTH;
+
+        /** @todo následující řádek po odladění smazat! */
+        maxLength = 100;
 
         if(firstChain != NULL) {
             firstBlock = firstChain;
@@ -1713,6 +1759,7 @@ namespace HiddenFS {
 
         /** @todo zkontrolovat podmínky kolem prevBlock */
         prevBlock = firstBlock;
+        actBlock = firstBlock;
         newBlock = true;
         actSize = 0;
 
@@ -1722,21 +1769,27 @@ namespace HiddenFS {
             }
 
             if(actSize + sizeof(i->length) + i->length < maxLength) {
+                newBlock = false;
                 actList.push_back(*i);
                 actSize += sizeof(i->length) + i->length;
             } else {
                 /* Přidání další entity by způsobilo 'přetečení' délky bloku,
                  * proto se pokusím "naprázdno" uložit aktuální seznam a až budu úspěšný,
                  * přečtu předcházející kus, změním hodnotu 'next' a uložím jej. */
+
+                std::cout << " === zápis aktuálního bloku ===" << std::endl;
+
                 while(1) {
                     // V průběhu iterací while může dojít k ExceptionDiscFull, což je problém a
                     // 1) uložení aktuálního bloku (následující ještě neznáme, proto NULL)
                     try {
+                            std::cout << "ukládám do actBlock = " << actBlock->block << ", next = " << "NULL, \\/" << std::endl;
                         this->chainListSave(actBlock, NULL, actList);
                     } catch(ExceptionDiscFull& e) {
                         throw e;
                     } catch(...) {
                         // vyhledej jiný actBlock
+                            std::cout << "... zápis se nepodařil, zkouším další..." << std::endl;
                         hash = actBlock->hash;
                         this->chainListAllocate(hash, actBlock);
 
@@ -1747,9 +1800,19 @@ namespace HiddenFS {
                     break;
                 }
 
-                // nové uložení předešlé části řetězu, protože už známe umístění následující části
                 /** @todo Jak se zachovat, pokud se nepodaří nový zápis do předešlého bloku? */
-                this->chainListSave(prevBlock, actBlock, prevList);
+                /* Nové uložení předešlé části řetězu, protože už známe umístění
+                 * následující části, netýká se prvního bloku. */
+
+                std::cout << std::endl << " === aktualizace dat v předešlém bloku ===" << std::endl;
+                std::cout << "možná budu ukládat do prevBlock=" << prevBlock->block << "], nastavuju jeho next na " << actBlock->block << std::endl;
+
+                if(actBlock != prevBlock) {
+                    std::cout << "... jo, uložím to." << std::endl;
+                    this->chainListSave(prevBlock, actBlock, prevList);
+                } else {
+                    std::cout << "actBlock == prevBlock... to je na assert!!" << std::endl;
+                }
 
 
                 // vrátíme jeden blok načtený navíc zpět
@@ -1764,7 +1827,9 @@ namespace HiddenFS {
                 actList.clear();
 
                 hash = actBlock->hash;
+                    std::cout << "   před alokaci: prevBlock = " << prevBlock->block << "], actBlock = " << actBlock->block << std::endl;
                 this->chainListAllocate(hash, actBlock);
+                    std::cout << "     po alokaci: prevBlock = " << prevBlock->block << "], actBlock = " << actBlock->block << std::endl << std::endl;
             }
         }
 
@@ -1790,7 +1855,10 @@ namespace HiddenFS {
 
         // nové uložení předešlé části řetězu, protože už známe umístění následující části
         /** @todo Jak se zachovat, pokud se nepodaří nový zápis do předešlého bloku? */
-        this->chainListSave(prevBlock, actBlock, prevList);
+            std::cout << "#ukládám do prevBlock[" << prevBlock->block << "], nastavuju next na " << actBlock->block << std::endl;
+        if(actBlock != prevBlock) {
+            this->chainListSave(prevBlock, actBlock, prevList);
+        }
 
         return firstBlock;
     }

@@ -8,6 +8,7 @@
 
 #include "exceptions.h"
 #include "hashTable.h"
+#include "common.h"
 
 namespace HiddenFS {
     hashTable::hashTable() {
@@ -61,7 +62,7 @@ namespace HiddenFS {
         std::cout << "počet záznamů: " << this->table.size() << "\n";
 
         for(table_t_constiterator it = this->table.begin(); it != this->table.end(); it++) {
-            std::cout << it->first << "\t" << it->second.filename << (int) it->second.context << "\n";
+            std::cout << print_hash((hash_t&) it->first) << "\t" << it->second.filename << "\n";
         }
     }
 }

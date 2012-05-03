@@ -103,7 +103,7 @@ namespace HiddenFS {
     static const fragment_t FRAGMENT_FIRST = 0;
 
     /** První pořadové číslo bloku (číslování v rámci skutečných souborů) */
-    static const block_number_t FIRST_BLOCK_NO = 1;
+    static const block_number_t FIRST_BLOCK_NO = 10;
 
     /** Maximální délka pro názvy souborů */
     static const unsigned int FILENAME_MAX_LENGTH = 255;
