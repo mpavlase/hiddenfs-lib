@@ -50,7 +50,7 @@ namespace HiddenFS {
         }
 
         ss << ", ";// << b->hash;
-        ss << print_hash(b->hash);
+        ss << b->hash;
         ss << ", b: ";
         ss << b->block;
         ss << ", f#: " << b->fragment;
@@ -158,8 +158,9 @@ namespace HiddenFS {
         offset += sizeof(input->fragment);
 
         // kopírování složky 'hash'
-        memcpy(*output + offset, input->hash.c_str(), hash_t_sizeof);
-        offset += hash_t_sizeof;
+        convertAsciiToHash(*output + offset, input->hash);
+        //memcpy(*output + offset, input->hash.c_str(), hash_raw_t_sizeof);
+        offset += hash_raw_t_sizeof;
 
         // kopírování složky 'length'
         memcpy(*output + offset, &(input->length), sizeof(input->length));
@@ -192,8 +193,10 @@ namespace HiddenFS {
         offset += sizeof((*output)->fragment);
 
         // kopírování složky 'hash'
-        (*output)->hash.assign((const char*)input + offset, 0, hash_t_sizeof);
-        offset += hash_t_sizeof;
+        (*output)->hash.clear();
+        convertHashToAscii((*output)->hash, (const hash_raw_t*)input + offset, hash_raw_t_sizeof);
+        //(*output)->hash.assign((const char*)input + offset, 0, hash_raw_t_sizeof);
+        offset += hash_raw_t_sizeof;
 
         // kopírování složky 'length'
         memcpy(&((*output)->length), input + offset, sizeof((*output)->length));
@@ -204,18 +207,26 @@ namespace HiddenFS {
         offset += sizeof((*output)->used);
     };
 
-    std::string print_hash(hash_t& hash) {
-        std::string ret;
-
+    void convertHashToAscii(hash_ascii_t& output, const hash_raw_t* input, size_t inputLength) {
         CryptoPP::HexEncoder encoder;
-        encoder.Put((const byte*) (hash.c_str()), hash_t_sizeof);
+        encoder.Put((const byte*) input, inputLength);
 
         size_t size = encoder.MaxRetrievable();
-        if(size) {
-            ret.resize(size);
-            encoder.Get((byte*)ret.data(), ret.size());
-        }
+        assert(size > 0);
+        output.resize(size);
+        encoder.Get((byte*)output.data(), output.size());
+    }
 
-        return ret;
+    void convertAsciiToHash(hash_raw_t* output, hash_ascii_t& input) {
+        CryptoPP::HexDecoder decoder;
+
+        decoder.Put((byte*)input.data(), input.size());
+        decoder.MessageEnd();
+
+        size_t size = decoder.MaxRetrievable();
+        if(size) {
+            assert(size == hash_raw_t_sizeof);
+            decoder.Get((byte*)output, size);
+        }
     }
 }

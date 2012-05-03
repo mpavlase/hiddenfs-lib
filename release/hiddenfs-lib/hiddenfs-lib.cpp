@@ -6,6 +6,7 @@
 
 
 #include <cstring>
+#include <cryptopp/hex.h>
 #include <exception>
 #include <iostream>
 #include <string>
@@ -67,7 +68,7 @@ struct fuse_file_info {
 namespace HiddenFS {
 
     // hotovo
-    void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_t hash) {
+    void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_ascii_t hash) {
         hashTable::table_t_constiterator cit = this->HT->find(hash);
         if(cit->second.context->avaliableBlocks.size() > 0) {
             this->allocatorFillFreeBlockByHash(hash, block);
@@ -76,19 +77,19 @@ namespace HiddenFS {
         }
     }
 
-    void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_t>& excluded) {
+    void hiddenFs::allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_ascii_t>& excluded) {
         /// @todo doimplementovat!
         throw ExceptionNotImplemented("hiddenFs::allocatorFindFreeBlock_differentHash");
     }
 
     // hotovo
     void hiddenFs::allocatorFindFreeBlock_any(vBlock*& block) {
-        std::set<hash_t> empty;
+        std::set<hash_ascii_t> empty;
         this->allocatorFindFreeBlock_partUsedPreferred(block, empty);
     }
 
     // hotovo
-    void hiddenFs::allocatorFindFreeBlock_any(vBlock*& block, hash_t prefered, std::set<hash_t>& excluded) {
+    void hiddenFs::allocatorFindFreeBlock_any(vBlock*& block, hash_ascii_t prefered, std::set<hash_ascii_t>& excluded) {
         try {
             this->allocatorFindFreeBlock_sameHash(block, prefered);
         } catch(ExceptionBlockNotFound) {
@@ -113,7 +114,7 @@ namespace HiddenFS {
             }
         }
 
-        hash_t hash = *(this->HT->auxList_unused.begin());
+        hash_ascii_t hash = *(this->HT->auxList_unused.begin());
 
         this->allocatorFillFreeBlockByHash(hash, block);
     }
@@ -126,7 +127,7 @@ namespace HiddenFS {
         }
     }
 
-    void hiddenFs::allocatorFillFreeBlockByHash(hash_t hash, vBlock*& block) {
+    void hiddenFs::allocatorFillFreeBlockByHash(hash_ascii_t hash, vBlock*& block) {
         block = new vBlock;
 
         block->block = *(this->HT->find(hash)->second.context->avaliableBlocks.begin());
@@ -136,7 +137,7 @@ namespace HiddenFS {
         block->used = false;
     }
 
-    void hiddenFs::allocatorFindFreeBlock_partUsed(vBlock*& block, std::set<hash_t>& excluded) {
+    void hiddenFs::allocatorFindFreeBlock_partUsed(vBlock*& block, std::set<hash_ascii_t>& excluded) {
         /* Taktika pro výběr se zkouší jedna po druhé a pokud některá uspěje,
          * vrátí výsledek a metoda končí. Pořadí:
          * 1) zkusit vybrat některý již z obsazených souborů
@@ -144,7 +145,7 @@ namespace HiddenFS {
          * 3) pokud nejsou žádné volné, zkusit zaindexovat další soubory
          * 4) pokud ani tak nebudou existovat žádné volné, vyhazuje se výjimka ExceptionDiscFull
          * **/
-        hash_t hash;
+        hash_ascii_t hash;
 
         if(this->HT->auxList_partlyUsed.empty()) {
             this->findPartlyUsedHash();
@@ -159,7 +160,7 @@ namespace HiddenFS {
         this->allocatorFillFreeBlockByHash(hash, block);
     }
 
-    void hiddenFs::allocatorFindFreeBlock_partUsedPreferred(vBlock*& block, std::set<hash_t>& excluded) {
+    void hiddenFs::allocatorFindFreeBlock_partUsedPreferred(vBlock*& block, std::set<hash_ascii_t>& excluded) {
         try {
             // zkusit najít částečně obsazený
             this->allocatorFindFreeBlock_partUsed(block, excluded);
@@ -188,7 +189,7 @@ namespace HiddenFS {
         bytestream_t* buffToWrite;
         vBlock* block;
         size_t contentLength;
-        std::set<hash_t> excludedHash;
+        std::set<hash_ascii_t> excludedHash;
 
         contentTable::tableItem cTableItem;
         /*
@@ -226,7 +227,7 @@ namespace HiddenFS {
 
         //for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = cTableItem.content.begin(); i != cTableItem.content.end(); i++) {}
         for(fragment_t f = FRAGMENT_FIRST; f < FRAGMENT_FIRST + fragmentsCount; f++) {
-            std::cout << "Zápis fragmentu #" << f << ", ";
+            //std::cout << "Zápis fragmentu #" << f << ", ";
             // výpočet zbývající délky bloku namísto výchozí BLOCK_USABLE_LENGTH, pokud je to nutné
             // záporná hodnota blockLength signalizuje přebytek naalokovaných bloků
             if(offset + BLOCK_USABLE_LENGTH < contentLength) {
@@ -243,7 +244,7 @@ namespace HiddenFS {
             redundancyFinished = 0;
 
             // uložení všech redundantních kopii jednoho fragmentu
-            std::cout << "cTableItem.content[f].size() = " << cTableItem.content[f].size() << std::endl;
+           // std::cout << "cTableItem.content[f].size() = " << cTableItem.content[f].size() << std::endl;
             for(std::vector<vBlock*>::iterator j = cTableItem.content[f].begin() ; j != cTableItem.content[f].end(); j++) {
                 /* Soubor má naalokováno příliš mnoho bloků, takže všechny ty,
                  * do kterých nebyl aktuálně proveden zápis označíme jako rezervované */
@@ -819,7 +820,7 @@ namespace HiddenFS {
         std::cout << "=====================================\n";
         std::cout << "=====================================\n";
 
-        hash_t h = this->HT->begin()->first;
+        hash_ascii_t h = this->HT->begin()->first;
         //std::cout << "První položka z HT: " << this->HT->begin()->second.filename << "\n";
 
         std::ifstream f;
@@ -1376,7 +1377,7 @@ namespace HiddenFS {
     }
 
 
-    size_t hiddenFs::readBlock(hash_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte) {
+    size_t hiddenFs::readBlock(hash_ascii_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte) {
         context_t* context = NULL;
         size_t ret;
         std::string filename;
@@ -1439,7 +1440,7 @@ namespace HiddenFS {
         return ret;     /// @todo nevadí, že požaduju přečíst 5 a ve skutečnosti načtu 4092bytů?
     }
 
-    void hiddenFs::writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte) {
+    void hiddenFs::writeBlock(hash_ascii_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte) {
         context_t* context;
         std::string filename;
         bytestream_t* buff2 = NULL;
@@ -1477,7 +1478,7 @@ namespace HiddenFS {
         }
     }
 
-    void hiddenFs::removeBlock(hash_t hash, block_number_t block) {
+    void hiddenFs::removeBlock(hash_ascii_t hash, block_number_t block) {
         context_t* context;
         std::string filename;
 
@@ -1503,7 +1504,7 @@ namespace HiddenFS {
         this->findHashByAuxList(this->HT->auxList_partlyUsed, HT_PARTUSED_CHUNK);
     };
 
-    void hiddenFs::findHashByAuxList(std::set<hash_t>& list, const unsigned int limit) {
+    void hiddenFs::findHashByAuxList(std::set<hash_ascii_t>& list, const unsigned int limit) {
         context_t* context;
         hashTable::table_t_constiterator ti;
 
@@ -1701,7 +1702,7 @@ namespace HiddenFS {
         this->writeBlock(location->hash, location->block, encBuffer, encBufferLen, idByte);
     }
 
-    void hiddenFs::chainListAllocate(const hash_t& hash, vBlock*& block) {
+    void hiddenFs::chainListAllocate(const hash_ascii_t& hash, vBlock*& block) {
         /** Pokus o vyhledání dalšího bloku pro uložení aktuální části řetězu.
          * Prohledávání se provádí podle následujícho scénáře, výběr končí
          * po prvním nalezeném bloku:
@@ -1740,7 +1741,7 @@ namespace HiddenFS {
         size_t actSize;
         chainList_t actList;
         chainList_t prevList;
-        hash_t hash;
+        hash_ascii_t hash;
 
         const size_t newBlockHeaderLen = sizeof(chain_count_t) + SIZEOF_vBlock;
         size_t maxLength = BLOCK_USABLE_LENGTH;
@@ -1862,4 +1863,5 @@ namespace HiddenFS {
 
         return firstBlock;
     }
+
 }

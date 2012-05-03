@@ -65,8 +65,15 @@ namespace HiddenFS {
     typedef __uint8_t flags_t;
     static const size_t flags_t_sizeof = sizeof(flags_t);
 
-    typedef std::string hash_t;
-    static const size_t hash_t_sizeof = CryptoPP::SHA1::DIGESTSIZE;
+    /** datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru */
+    typedef std::string hash_ascii_t;
+
+    /** datový typ "jednotky" pro manipulaci s binárním obsahem (unsigned char) */
+    typedef __u_char bytestream_t;
+
+    typedef bytestream_t hash_raw_t;
+    static const size_t hash_raw_t_sizeof = CryptoPP::SHA1::DIGESTSIZE;
+
     //hash_t_sizeof_t hash_t_sizeof;
     //typedef smartConst<size_t> hash_t_sizeof_t;
     //hash_t_sizeof_t hash_t_sizeof;
@@ -77,9 +84,6 @@ namespace HiddenFS {
 
     /** datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char) */
     typedef __u_char id_byte_t;
-
-    /** datový typ "jednotky" pro manipulaci s binárním obsahem (unsigned char) */
-    typedef __u_char bytestream_t;
 
     /** datový typ pro uchování počtu entit v rámci jednoho bloku */
     typedef __uint32_t chain_count_t;
@@ -147,7 +151,7 @@ namespace HiddenFS {
     /** abstrakce datového bloku obsahující právě jeden fragment */
     struct vBlock {
         /** identifikace skutečného souboru */
-        hash_t hash;
+        hash_ascii_t hash;
 
         /** pořadové číslo bloku ve skutečném souboru (nesmí se opakovat v rámci vBlock) */
         block_number_t block;
@@ -169,7 +173,7 @@ namespace HiddenFS {
         + sizeof(block_number_t) \
         + sizeof(fragment_t) \
         + sizeof(size_t)
-        + hash_t_sizeof \
+        + hash_raw_t_sizeof \
         + sizeof(bool);
 
     /** Popis obsahu jedné entity (složky length a content*) */

@@ -117,7 +117,7 @@ namespace HiddenFS {
          * @param hash nový blok hledat v tomto souboru
          * @throw ExceptionBlockNotFound pokud v hashi už není žádný volný blok
          */
-        void allocatorFindFreeBlock_sameHash(vBlock*& block, hash_t hash);
+        void allocatorFindFreeBlock_sameHash(vBlock*& block, hash_ascii_t hash);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok na základě kritéra:
@@ -125,7 +125,7 @@ namespace HiddenFS {
          * @param block metoda naplní údaje o nalezeném bloku
          * @param excluded seznam fyzických souborů, které se nesmí použít
          */
-        void allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_t>& excluded);
+        void allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_ascii_t>& excluded);
 
         /**
          * Skrze parametr block vrací právě jeden volný blok (jakýkoli volný blok).
@@ -141,7 +141,7 @@ namespace HiddenFS {
          * @param prefered hledání se spouští nejprve na souboru určeném tímto hash
          * @param excluded seznam fyzických souborů, které se nesmí použít
          */
-        void allocatorFindFreeBlock_any(vBlock*& block, hash_t prefered, std::set<hash_t>& excluded);
+        void allocatorFindFreeBlock_any(vBlock*& block, hash_ascii_t prefered, std::set<hash_ascii_t>& excluded);
 
         /**
          * Vyhledá volný blok v částečně obsazeném fyzickém souboru.
@@ -149,7 +149,7 @@ namespace HiddenFS {
          * @param excluded seznam fyzických souborů, které se nesmí použít
          * @throw ExceptionBlockNotFound pokud takový blok neexistuje
          */
-        void allocatorFindFreeBlock_partUsed(vBlock*& block, std::set<hash_t>& excluded);
+        void allocatorFindFreeBlock_partUsed(vBlock*& block, std::set<hash_ascii_t>& excluded);
 
         /**
          * Vyhledá volný blok v částečně obsazeném fyzickém souboru.
@@ -158,7 +158,7 @@ namespace HiddenFS {
          * @param excluded seznam fyzických souborů, které se nesmí použít
          * @throw ExceptionDiscFull pokud není k dispozici ani částečně obsazený blok, ani žádný ze zcela volných
          */
-        void allocatorFindFreeBlock_partUsedPreferred(vBlock*& block, std::set<hash_t>& excluded);
+        void allocatorFindFreeBlock_partUsedPreferred(vBlock*& block, std::set<hash_ascii_t>& excluded);
 
         /**
          * Vyhledá volný blok ve fyzickém souboru, který ještě neobsahuje žádný
@@ -184,7 +184,7 @@ namespace HiddenFS {
          * @param block skrze tento parametr metoda vrací info o volném bloku,
          * metoda sama alokuje tento ukazatel
          */
-        void allocatorFillFreeBlockByHash(hash_t hash, vBlock*& block);
+        void allocatorFillFreeBlockByHash(hash_ascii_t hash, vBlock*& block);
 
         /**
          * Vyhledá a vrací první rezervovaný blok nehledě na to, kterému inode patří
@@ -207,7 +207,7 @@ namespace HiddenFS {
          * blok pro mazání
          * @param block číslo bloku ke smazání
          */
-        void removeBlock(hash_t hash, block_number_t block);
+        void removeBlock(hash_ascii_t hash, block_number_t block);
 
         /**
          * Pokusí se zcela odstranit zadaný blok z fyzického souboru
@@ -238,7 +238,7 @@ namespace HiddenFS {
          * @param idByte metoda naplní tento parametr hodnotou rozlišovacího byte
          * @return počet skutečně naštených dat
          */
-        size_t readBlock(hash_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte);
+        size_t readBlock(hash_ascii_t hash, block_number_t block, bytestream_t** buff, size_t length, id_byte_t* idByte);
 
         /**
          * Provádí zápis bloku do skutečného souboru,
@@ -259,7 +259,7 @@ namespace HiddenFS {
          * @param length délka zapisovaného bloku
          * @throw ExceptionRuntimeError pokud je buffer příliš dlouhý
          */
-        void writeBlock(hash_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte);
+        void writeBlock(hash_ascii_t hash, block_number_t block, bytestream_t* buff, size_t length, id_byte_t idByte);
 
         /**
          * Provádí zápis bloku do skutečného souboru,
@@ -294,7 +294,7 @@ namespace HiddenFS {
          * @param list seznam, který chceme naplnit
          * @param limit množství zaplnění parametru list
          */
-        void findHashByAuxList(std::set<hash_t>& list, const unsigned int limit);
+        void findHashByAuxList(std::set<hash_ascii_t>& list, const unsigned int limit);
 
         /**
          * Prochází hash table za účelem nalezení dostatečného počtu doposud
@@ -378,7 +378,7 @@ namespace HiddenFS {
          * @param output metoda naplní tento ukazatel volným blokem
          * @throw ExceptionDiscFull pokud není v systému absolutně žádný další volný blok
          */
-        void chainListAllocate(const hash_t& hash, vBlock*& output);
+        void chainListAllocate(const hash_ascii_t& hash, vBlock*& output);
 
         // ---------------------------------------------------------------------
         // -----------------------     FUSE     --------------------------------

@@ -24,10 +24,10 @@ namespace HiddenFS {
             context_t* context;
         } tableItem;
 
-        typedef std::map<hash_t, tableItem> table_t;
+        typedef std::map<hash_ascii_t, tableItem> table_t;
 
         typedef table_t::const_iterator table_t_constiterator;
-        hash_t lastIndexed;
+        hash_ascii_t lastIndexed;
 
         /** Příznak pro identifikaci prvního indexování. True = indexování již proběhlo alespoň 1x */
         bool firstIndexing;
@@ -37,10 +37,10 @@ namespace HiddenFS {
 
         /** Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky)
          * @todo Jak najít další hash, které nemá doposud vytvořený kontext? */
-        std::set<hash_t> auxList_unused;
+        std::set<hash_ascii_t> auxList_unused;
 
         /** Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok */
-        std::set<hash_t> auxList_partlyUsed;
+        std::set<hash_ascii_t> auxList_partlyUsed;
 
         /**
          * Modifikací pomocných tabulek označí blok jako obsazený. Pro zajištění
@@ -48,7 +48,7 @@ namespace HiddenFS {
          * @param hash jednoznačná identifikace skutečného souboru
          * @param block číslo bloku, kteý označit jako obsazený
          */
-        void auxUse(hash_t hash, block_number_t block) {
+        void auxUse(hash_ascii_t hash, block_number_t block) {
             context_t* context;
 
             context = this->getContext(hash);
@@ -68,7 +68,7 @@ namespace HiddenFS {
          * @param hash jednoznačná identifikace skutečného souboru
          * @param block číslo bloku, kteý označit jako volný
          */
-        void auxFree(hash_t hash, block_number_t block) {
+        void auxFree(hash_ascii_t hash, block_number_t block) {
             context_t* context;
 
             context = this->getContext(hash);
@@ -89,14 +89,14 @@ namespace HiddenFS {
          * @throw ExceptionFileNotFound pokud soubor ve vnitřní tabulce neexistuje
          * @param filename skrze tento parametr metoda vrací umístění skutečného souboru
          */
-        void find(hash_t hash, std::string* filename) const;
+        void find(hash_ascii_t hash, std::string* filename) const;
 
         /**
          * Metoda vrací iterátor prvku podle hash
          * @param hash jednoznačná identifikace hledaného souboru
          * @return konstantní iterátor
          */
-        table_t_constiterator find(hash_t hash) {
+        table_t_constiterator find(hash_ascii_t hash) {
             return this->table.find(hash);
         }
 
@@ -105,7 +105,7 @@ namespace HiddenFS {
          * @param hash vypočítaný hash z obsahu souboru
          * @param filename umístění skutečného souboru
          */
-        void add(hash_t hash, std::string filename);
+        void add(hash_ascii_t hash, std::string filename);
 
         /**
          * User friendly zobrazení obsahu tabulky - používat pouze pro ladění!
@@ -116,7 +116,7 @@ namespace HiddenFS {
          * Přiřadí kontext k souboru určenému hashem)
          * @param context
          */
-        void setContext(hash_t hash, context_t* context) {
+        void setContext(hash_ascii_t hash, context_t* context) {
             this->table[hash].context = context;
 
             // zařazení do do aux* pomocných seznamů
@@ -131,7 +131,7 @@ namespace HiddenFS {
          * Smaže odkaz na kontext, ale původní ukazatel už neuvolňuje
          * @param hash identifikace souboru
          */
-        void clearContext(hash_t hash) {
+        void clearContext(hash_ascii_t hash) {
             this->setContext(hash, NULL);
         }
 
@@ -141,7 +141,7 @@ namespace HiddenFS {
          * @throw ExceptionRuntimeError pokud kontext neexistuje
          * @return ukazatel na instanci kontextu k souboru
          */
-        context_t* getContext(hash_t hash) {
+        context_t* getContext(hash_ascii_t hash) {
             if(this->table[hash].context == NULL) {
                 throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl přiřazen.");
             }

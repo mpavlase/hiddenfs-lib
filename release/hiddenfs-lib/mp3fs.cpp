@@ -555,7 +555,27 @@ void mp3fs::storageRefreshIndex(std::string path) {
                 )
             );
 
-            this->HT->add(hashOutput, *i);
+            HiddenFS::hash_ascii_t h_string;
+            HiddenFS::convertHashToAscii(h_string, (HiddenFS::hash_raw_t*) (hashOutput.data()), HiddenFS::hash_raw_t_sizeof);
+            /*
+            std::cout << "hashOutput.size() = " << hashOutput.size() << std::endl << "binárka: _";
+            std::cout.write(hashOutput.data(), hashOutput.size());
+            std::cout << "_\nascii  : _";
+            std::cout.write(h_string.data(), h_string.size());
+            std::cout << "_\n";
+
+            HiddenFS::hash_raw_t* hh[HiddenFS::hash_raw_t_sizeof];
+            this->convertStringToHash((HiddenFS::hash_raw_t*) hh, h_string);
+
+            int rr = memcmp(hh, hashOutput.data(), HiddenFS::hash_raw_t_sizeof);
+            std::cout << "výsledek porovnání: " << rr << " (měl by být 0)" << std::endl;
+
+            assert(false);
+
+            this->convertStringToHash();
+            */
+
+            this->HT->add(h_string, *i);
          } else {
             std::cout << "Soubor " << *i << " je moc krátký (délka < " << fileMinLength << " Bytes)!\n";
          }

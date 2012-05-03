@@ -209,9 +209,28 @@ namespace HiddenFS {
     id_byte_t idByteGenSuperBlock();
 
 
+    /**
+     * User-friendly tisk (HEX i ASCII) bloku binárních dat
+     * @param input vstupní data
+     * @param len délka vstupních dat
+     */
     void pBytes(bytestream_t* input, size_t len);
 
-    std::string print_hash(hash_t& hash);
+    /**
+     * Převede hash souboru (může být binární) do podoby běžného ASCII.
+     * Vhodným postupem je převod bytů do hexadecimální podoby.
+     * @param output
+     * @param input
+     * @param inputLength délka bufferu input
+     */
+    void convertHashToAscii(hash_ascii_t& output, const hash_raw_t* input, size_t inputLength);
+
+    /**
+     * Převod ASCII řetězce reprezentující hash do jeho původní (binární) podoby.
+     * @param output metoda vyžaduje naalokovaný obsah 'output' o délce konstanty hash_raw_t_sizeof
+     * @param input
+     */
+    void convertAsciiToHash(hash_raw_t* output, hash_ascii_t& input);
 }
 
 #endif	/* COMMON_H */

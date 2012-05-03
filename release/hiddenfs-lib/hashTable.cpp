@@ -21,8 +21,8 @@ namespace HiddenFS {
     hashTable::~hashTable() {
     }
 
-    void hashTable::find(hash_t hash, std::string* filename) const {
-        std::map<hash_t, tableItem>::const_iterator it = this->table.find(hash);
+    void hashTable::find(hash_ascii_t hash, std::string* filename) const {
+        std::map<hash_ascii_t, tableItem>::const_iterator it = this->table.find(hash);
         if(it != this->table.end()) {
             *filename = it->second.filename;
         } else {
@@ -32,7 +32,7 @@ namespace HiddenFS {
         }
     }
 
-    void hashTable::add(hash_t hash, std::string filename) {
+    void hashTable::add(hash_ascii_t hash, std::string filename) {
         std::string findFilename;
 
         try {
@@ -62,7 +62,7 @@ namespace HiddenFS {
         std::cout << "počet záznamů: " << this->table.size() << "\n";
 
         for(table_t_constiterator it = this->table.begin(); it != this->table.end(); it++) {
-            std::cout << print_hash((hash_t&) it->first) << "\t" << it->second.filename << "\n";
+            std::cout << it->first << "\t" << it->second.filename << "\n";
         }
     }
 }
