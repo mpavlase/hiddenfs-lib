@@ -112,6 +112,12 @@ namespace HiddenFS {
     /** Maximální délka pro názvy souborů */
     static const unsigned int FILENAME_MAX_LENGTH = 255;
 
+    /** Počet kopií stejné tabulky */
+    static const unsigned int TABLES_REDUNDANCY_AMOUNT = 2;
+
+    /** Počet kopií superbloku */
+    static const unsigned int SUPERBLOCK_REDUNDANCY_AMOUNT = 2;
+
     static const int BLOCK_IN_USE = true;
     static const int BLOCK_RESERVED = false;
 

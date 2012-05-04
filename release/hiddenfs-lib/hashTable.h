@@ -117,6 +117,13 @@ namespace HiddenFS {
          * @param context
          */
         void setContext(hash_ascii_t hash, context_t* context) {
+            if(context == NULL) {
+                this->auxList_partlyUsed.erase(hash);
+                this->auxList_unused.erase(hash);
+
+                return;
+            }
+
             this->table[hash].context = context;
 
             // zařazení do do aux* pomocných seznamů
@@ -143,7 +150,7 @@ namespace HiddenFS {
          */
         context_t* getContext(hash_ascii_t hash) {
             if(this->table[hash].context == NULL) {
-                throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl přiřazen.");
+                throw ExceptionRuntimeError("Kontext k tomuto souboru nebyl doposud přiřazen.");
             }
 
             return this->table[hash].context;

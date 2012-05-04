@@ -22,15 +22,66 @@ namespace HiddenFS {
         };
         superBlock(const superBlock& orig);
 
-        static const size_t rawItemSize = sizeof(CRC::CRC_t) + sizeof(__u_char) + sizeof(SIZEOF_vBlock);
+        typedef __u_char table_flag;
+
+        static const table_flag TABLE_STRUCT_TABLE = 's';
+        static const table_flag TABLE_CONTENT_TABLE = 'c';
+
+        ~superBlock() {
+            for(table_t::iterator i = this->foreignItems.begin(); i != this->foreignItems.end(); i++) {
+                delete [] (*i);
+            }
+
+            for(table_known_t::iterator i = this->knownItems.begin(); i != this->knownItems.end(); i++) {
+                delete i->first;
+            }
+        }
 
         struct tableItem {
-            CRC::CRC_t checksum;
-            __u_char table;
-            vBlock first;
+            /* CRC::CRC_t checksum; */
+            table_flag table;
+            vBlock* first;
         };
 
-        typedef std::vector<bytestream_t[rawItemSize]> table_t;
+        static const size_t RAW_ITEM_SIZE = sizeof(CRC::CRC_t) + sizeof(table_flag) + sizeof(SIZEOF_vBlock);
+
+        typedef std::vector<bytestream_t*> table_t;
+        typedef std::vector<tableItem> table_known_t;
+
+        /**
+         * Přidá jeden záznam typu SuperBlock, ale v tuto chvíli se ještě nezabýváme obsahem.
+         * Při vkládání se provádí hluboká kopie bufferu.
+         * @param item vstupní buffer s blokem dat, který by mohl obsahovat záznam superbloku
+         * @param itemLength délka vstupního bufferu
+         */
+        void add(bytestream_t* item, size_t itemLength);
+
+        /**
+         * Přidá do vnitřního seznamu položky (tableItem) patřící tomuto souborovému systému
+         * @param chain seznam prvních článků řetězu, tzn. počátky kopií obsahu stejné tabulk
+         * @param tableType určuje typ tabulky, které jsou
+         */
+        void addKnownItem(std::set<vBlock*>& chain, table_flag tableType);
+
+        /**
+         * Naplní seznam 'chain' ukazateli na první bloky řetězů, 'tableType' slouží
+         * jako filtr
+         * @param chain metoda naplní tento seznam
+         * @param tableType filtr, podle kterého budou do 'chain' vloženy ukazatele
+         */
+        void readKnownItems(std::set<vBlock*>& chain, table_flag tableType);
+
+        void clearKnownItems() {
+            this->knownItems.clear();
+        }
+
+        /**
+         * Roztřídí obsah do patřičných seznamů: validní položky do knownItems,
+         * vše ostatní do foreignItems
+         * @param buffer vstup dat pro kontrolu
+         * @param bufferLength délka vstupního bufferu
+         */
+        void readItem(bytestream_t* buffer, size_t bufferLength);
 
         /**
          * Převede obsah superbloku na blok dat
@@ -49,13 +100,6 @@ namespace HiddenFS {
         void deserialize(bytestream_t* buffer, size_t size);
 
         /**
-         *
-         * @param buffer
-         * @param output
-         */
-        //void deserializeItem(bytestream_t* buffer, tableItem* output);
-
-        /**
          * Skrze parametr vrací pouze validní položky superbloku (tj. pouze ty,
          * které se podařilo rozšifrovat)
          * @param items vektor s nalezenými položkami
@@ -71,9 +115,22 @@ namespace HiddenFS {
         bool isLoaded() {
             return this->loaded;
         }
+
+        /**
+         * Používat s rozvahou!
+         */
+        void setLoaded() {
+            this->loaded = true;
+        }
     private:
         IEncryption* encryption;
         bool loaded;
+
+        /** seznam všech bloků dat, které jsou položkami superbloku jiného souborového systému */
+        table_t foreignItems;
+
+        /** seznam položek superbloku, který patří tomuto souborovému systému */
+        table_known_t knownItems;
     };
 }
 

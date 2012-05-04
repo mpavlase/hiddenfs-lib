@@ -32,7 +32,7 @@ hiddenfs-lib.o: hiddenfs-lib.h hiddenfs-lib.cpp
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o hiddenfs-lib.o hiddenfs-lib.cpp
 
 superBlock.o: superBlock.h superBlock.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o superBlock.o superBlock.cpp
+	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o superBlock.o superBlock.cpp
 
 $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --cflags` $(INCLUDE) -c -o $(PROJECT).o $(PROJECT).cpp

@@ -88,6 +88,9 @@ namespace HiddenFS {
         /** míra duplikace dat */
         unsigned int allocatorRedundancy;
 
+        /** Seznam všech hash, kde se vykytují kopie superbloků */
+        std::set<hash_ascii_t> superBlockLocations;
+
         /** instance objektu pro výpočet kontrolního součtu */
         CRC* checksum;
 
@@ -379,6 +382,28 @@ namespace HiddenFS {
          * @throw ExceptionDiscFull pokud není v systému absolutně žádný další volný blok
          */
         void chainListAllocate(const hash_ascii_t& hash, vBlock*& output);
+
+        /**
+         * Zastřešuje všechny nutné operace, které souvisí s uložením serializovaných
+         * tabulek do všech kopií superbloků
+         */
+        void tablesSaveToSB();
+
+        /**
+         * Uloží řetěz entit do několika různých kopií (počet podle konstanty
+         * TABLES_REDUNDANCY_AMOUNT) a pokud už jsou známy dříve obsazené bloky
+         * tímto obsahem, upřednostnit je při ukládání.
+         * @param content kompletní řetězec pro uložení
+         * @param copies seznam vBlock(ů) s prvními články řetězu; pokud je prázdný,
+         * metoda sama alokuje první články a naplní jimi tento parametr
+         */
+        void tableSave(chainList_t& content, std::set<vBlock*>& copies);
+
+        /**
+         * Provádí serializaci, zápis do stávajících kopií superbloků i případné
+         * doalokování chybějících kopií.
+         */
+        void superBlockSave();
 
         // ---------------------------------------------------------------------
         // -----------------------     FUSE     --------------------------------
