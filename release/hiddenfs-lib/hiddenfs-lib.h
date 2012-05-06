@@ -48,8 +48,11 @@ namespace HiddenFS {
 
         static void usage(std::ostream& s) {
             s << "Dostupné parametry:\n";
-            s << "\t-c\tvytvoří nový systém souborů chráněný heslem\n";
-            s << "\t-sPATH\tnastaví cestu k úložišti na PATH\n";
+            s << "\t-c, --create\n\t\tvytvoří nový systém souborů chráněný heslem\n\n";
+            s << "\t-s PATH, --storage=PATH\n\t\tnastaví cestu k úložišti na PATH\n\n";
+            s << "\t-p PASS, --password=PASS\n\t\tnastaví heslo pro dešifrování obsahu,";
+            s << " v kombinaci s -c se použije toto heslo jako šifrovací pro nový souborový systém\n\n";
+            s << "\t-h, --help\n\t\tzobrazí tuto nápovědu\n";
             s << "\n";
         }
 
@@ -103,9 +106,16 @@ namespace HiddenFS {
 
         struct optionsStruct {
             char* storagePath;
+            char* password;
         };
 
         struct optionsStruct options;
+
+        /**
+         * Povolí/zakáže echo při čtení ze standartního vstupu
+         * @param state povolit/zakázat echo
+         */
+        void static setConsoleEcho(bool state);
 
         /**
          * Vyhledá (=naalokuje) vhodný počet bloků a zapíše do nich obsah jednotlivých fragmentů

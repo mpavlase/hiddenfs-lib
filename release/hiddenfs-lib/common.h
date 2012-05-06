@@ -95,6 +95,7 @@ namespace HiddenFS {
          * Uložení šifrovacího klíče do nitra objektu
          */
         virtual void setKey(bytestream_t* key, size_t keySize) {
+            std::cout << "IEncryption::setKey = " << key << "\n" << std::flush;
             this->key = new bytestream_t[keySize];
             this->keySize = keySize;
             memcpy(this->key, key, this->keySize);

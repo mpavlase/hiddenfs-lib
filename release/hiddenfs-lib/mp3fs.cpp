@@ -258,7 +258,9 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
     std::string filename, filepath;
     std::string filterLower, filenameLower;
 
-    //printf("aktualni dir: %s\n", path.c_str());
+    if(d == NULL) {
+        throw HiddenFS::ExceptionRuntimeError("Adresář \"" + path + "\" nelze otevřít při indexaci pro čtení.");
+    }
 
     while((item = readdir(d))) {
         filename = std::string(item->d_name);
@@ -269,7 +271,6 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
                 continue;
             }
 
-            dirlist_t d;
             this->scanDir(filepath, filter, output);
 
             continue;
@@ -417,6 +418,7 @@ void mp3fs::storageRefreshIndex(std::string path) {
     std::vector<std::string> filter;
     filter.push_back(".mp3");
 
+    // scandir může vyhazovat výjimku při problému se čtením obsahu adresáře
     this->scanDir(path, filter, listOfFiles);
 
     char* blok = new char[blockAmount+1];

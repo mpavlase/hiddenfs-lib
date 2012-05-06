@@ -82,6 +82,13 @@ namespace HiddenFS {
         }
 
         /**
+         * Testuje existenci záznamů dešifrovatelných globálně zadaným heslem.
+         */
+        bool hasKnownItems() {
+            return !this->knownItems.empty();
+        }
+
+        /**
          * Roztřídí obsah do patřičných seznamů: validní položky do knownItems,
          * vše ostatní do foreignItems
          * @param buffer vstup dat pro kontrolu

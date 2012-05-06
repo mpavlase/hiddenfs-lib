@@ -121,6 +121,12 @@ namespace HiddenFS {
     static const int BLOCK_IN_USE = true;
     static const int BLOCK_RESERVED = false;
 
+    /** Maximální délka hesla použitého pro šifrování */
+    static const unsigned int PASSWORD_MAX_LENGTH = 30;
+
+    /** Počet pokusů při zadávní hesla */
+    static const unsigned int PASSWORD_MAX_ATTEMPTS = 3;
+
     /**
      * Reprezentace virtuálního souboru - skrývaného souboru
      */

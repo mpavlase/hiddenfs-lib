@@ -18,9 +18,10 @@
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <math.h>
+#include <sys/types.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "common.h"
 #include "hiddenfs-lib.h"
@@ -835,17 +836,32 @@ namespace HiddenFS {
             }
 
             case hiddenFs::KEY_HELP : {
-                hiddenFs::usage(std::cerr);
                 HiddenFS::flagFuseRun = false;
+
+                return 1;
             }
         }
 
         return 0;
     }
 
+    void hiddenFs::setConsoleEcho(bool state) {
+        struct termios tty;
+        int fd = STDIN_FILENO;
+
+        tcgetattr(fd, &tty);
+
+        if(state) {
+            tty.c_lflag |= ECHO;
+        } else {
+            tty.c_lflag &= ~ECHO;
+        }
+
+        tcsetattr(fd, TCSANOW, &tty);
+    }
+
     int hiddenFs::run(int argc, char* argv[]) {
         std::string path;
-
         path.clear();
 
         HiddenFS::flagCreateNewFS = false;
@@ -856,6 +872,9 @@ namespace HiddenFS {
         static struct fuse_opt hfs_opts[] = {
             HFS_OPT_KEY("--storage=%s", storagePath, 0),
             HFS_OPT_KEY("-s %s", storagePath, 0),
+
+            HFS_OPT_KEY("-p %s", password, 0),
+            HFS_OPT_KEY("--password=%s", password, 0),
 
             FUSE_OPT_KEY("-c",             KEY_CREATE),
             FUSE_OPT_KEY("--create",       KEY_CREATE),
@@ -880,9 +899,15 @@ namespace HiddenFS {
 
         path = this->options.storagePath;
 
-        // ====================================================
+        try {
+            this->storageRefreshIndex(path);
+        } catch(ExceptionRuntimeError& e) {
+            std::cerr << e.what();
+            std::cerr << "\n";
 
-        this->storageRefreshIndex(path);
+            return EXIT_FAILURE;
+        }
+
         this->HT->print();
 
         if(this->HT->size() == 0) {
@@ -891,13 +916,81 @@ namespace HiddenFS {
             return EXIT_FAILURE;
         }
 
-        id_byte_t idByte;
 
+        // 1) načteme heslo od uživatele
+        char pass1[PASSWORD_MAX_LENGTH];
+        char pass2[PASSWORD_MAX_LENGTH];
+
+        // zakládáme nový systém souborů, heslo získáváme z stdin
+        if(HiddenFS::flagCreateNewFS && options.password == NULL) {
+            bool success;
+
+            std::cout << "Vytváření nového souborového systému\n" << std::flush;
+            std::cout << "Poznámka: Maximální délka uchovávaného hesla je " << PASSWORD_MAX_LENGTH << " znaků.\n" << std::flush;
+
+            success = false;
+
+            for(unsigned int i = 0; i < PASSWORD_MAX_ATTEMPTS && !success; i++) {
+                memset(pass1, '\0', PASSWORD_MAX_LENGTH);
+                memset(pass2, '\0', PASSWORD_MAX_LENGTH);
+
+                this->setConsoleEcho(false);
+
+                std::cout << "Zadejte nové heslo: " << std::flush;
+                std::cin.getline(pass1, PASSWORD_MAX_LENGTH);
+                std::cout << std::endl;
+
+                std::cout << "Zadejte znovu stejné heslo pro kontrolu: " << std::flush;
+                std::cin.getline(pass2, PASSWORD_MAX_LENGTH);
+                std::cout << std::endl;
+
+                if(strncmp(pass1, pass2, PASSWORD_MAX_LENGTH) == 0) {
+                    success = true;
+                    this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
+                    this->setConsoleEcho(true);
+
+                    break;
+                } else {
+                    std::cout << "Zadaná hesla nebyla zadána stejná, opakujte zadání.\n" << std::flush;
+                }
+            }
+
+            if(!success) {
+                this->setConsoleEcho(true);
+                return EXIT_FAILURE;
+            }
+        } else if(options.password == NULL) {
+            memset(pass1, '\0', PASSWORD_MAX_LENGTH);
+            //std::cout << "Zadejte heslo: " << std::flush;
+            this->setConsoleEcho(false);
+            std::cin.getline(pass1, PASSWORD_MAX_LENGTH);
+            this->setConsoleEcho(true);
+
+            ///@todo najít FS, který se dá dešifrovat tímto heslem
+            this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
+        } else {
+            memset(pass1, '\0', PASSWORD_MAX_LENGTH);
+            strcpy(pass1, options.password);
+            this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
+        }
+
+        // Zadali jsme nesprávné heslo -> konec.
+        if(!HiddenFS::flagCreateNewFS && !this->SB->hasKnownItems()) {
+            return EXIT_FAILURE;
+        }
+
+        vBlock* sbBlock;
+        bytestream_t sbBuffer[BLOCK_USABLE_LENGTH];
+        memset(sbBuffer, '\0', sizeof(sbBuffer));
+
+        this->findPartlyUsedHash();
+        this->findUnusedHash();
+
+        id_byte_t idByte;
         bytestream_t* bufferBlock;
         size_t bufferMaxLen = BLOCK_USABLE_LENGTH;
 
-
-        // 1) pokusíme se najít všechny kopie superbloků
+        // 2) pokusíme se najít všechny kopie superbloků
         for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
             std::cout << "V souboru: " << i->second.filename << " hledám superblock... ";
             try {
@@ -913,7 +1006,7 @@ namespace HiddenFS {
                 if(!this->SB->isLoaded()) {
                     // načtu obsah SB do vnitřních struktur
 
-                    std::cout << " SB ještě nebyl naplněn - toto je první plnění.";
+                    std::cout << " SB ještě nebyl naplněn - toto je první plnění.\n";
                     this->SB->deserialize(bufferBlock, bufferMaxLen);
                 }
 
@@ -945,26 +1038,33 @@ namespace HiddenFS {
             }
         }
 
-        vBlock* sbBlock;
-        bytestream_t sbBuffer[BLOCK_USABLE_LENGTH];
-        memset(sbBuffer, '\0', sizeof(sbBuffer));
 
-        this->findPartlyUsedHash();
-        this->findUnusedHash();
-
-        if(this->superBlockLocations.empty() && HiddenFS::flagCreateNewFS) {
-            // vybrat první neobsazené bloky a zapsat do nich libovolný obsah - bu
-            for(unsigned int i = 0; i < SUPERBLOCK_REDUNDANCY_AMOUNT; i++) {
-                this->allocatorFindFreeBlock_unused(sbBlock);
-                assert(sbBlock->block == FIRST_BLOCK_NO);
-                idByte = idByteGenSuperBlock();
-                this->writeBlock(sbBlock->hash, sbBlock->block, sbBuffer, sizeof(sbBuffer), idByte);
-                this->superBlockLocations.insert(sbBlock->hash);
+        // v úložišti dosud neexistuje jediná kopie superbloku
+        if(HiddenFS::flagCreateNewFS && this->superBlockLocations.empty()) {
+            if(this->superBlockLocations.empty()) {
+                // vybrat první neobsazené bloky a zapsat do nich libovolný obsah - bu
+                for(unsigned int i = 0; i < SUPERBLOCK_REDUNDANCY_AMOUNT; i++) {
+                    this->allocatorFindFreeBlock_unused(sbBlock);
+                    assert(sbBlock->block == FIRST_BLOCK_NO);
+                    idByte = idByteGenSuperBlock();
+                    this->writeBlock(sbBlock->hash, sbBlock->block, sbBuffer, sizeof(sbBuffer), idByte);
+                    this->superBlockLocations.insert(sbBlock->hash);
+                }
             }
         }
 
+        if(this->superBlockLocations.empty()) {
+            std::cout << "V úložišti nejsou dostatečně volné jednotky pro vytvoření superbloku.\n";
+
+            return EXIT_FAILURE;
+        }
+
+        for(std::set<hash_ascii_t>::iterator i = this->superBlockLocations.begin(); i != this->superBlockLocations.end(); i++) {
+            std::cout << "Známý superblok: " << *i << std::endl;
+        }
+
         // způsobí případné douložení chybějících kopií
-        this->superBlockSave();
+        //this->superBlockSave();
 
 
         // set allowed FUSE operations
@@ -998,8 +1098,6 @@ namespace HiddenFS {
             std::cout << "fuse_main způsobilo vyhození výjimky\n".
         }
         */
-
-        //this->tablesSaveToSB();
 
         return fuse_ret;
     }
@@ -1763,12 +1861,6 @@ namespace HiddenFS {
 
         this->tablesSaveToSB();
 
-        /*
-        if(!this->SB->isLoaded()) {
-            this->tablesSaveToSB();
-        }
-        */
-
         this->SB->serialize(&sbSerializedBuffer, &sbSerializedBufferLen);
 
         std::cout << "-- superBlockSave --\n";
@@ -1813,8 +1905,6 @@ namespace HiddenFS {
                         this->superBlockLocations.insert(i->first);
                     }
                 } catch (ExceptionBlockNotUsed&) {
-
-
                     std::cout << "do " << i->first << " je zcela prázdný (4)\n";
                     this->writeBlock(i->first, FIRST_BLOCK_NO, sbSerializedBuffer, sbSerializedBufferLen, idByte);
                     this->superBlockLocations.insert(i->first);
