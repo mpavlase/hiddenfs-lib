@@ -99,79 +99,6 @@ private:
 
 };
 
-class MyEncryption : public HiddenFS::IEncryption {
-public:
-    byte encKey[CryptoPP::AES::DEFAULT_KEYLENGTH];
-    byte encIv[CryptoPP::AES::BLOCKSIZE];
-
-    MyEncryption() : HiddenFS::IEncryption() {
-        //this->encKey;
-        //this->encIv[CryptoPP::AES::BLOCKSIZE];
-
-        assert((unsigned size_t)this->keySize <= (unsigned size_t)CryptoPP::AES::DEFAULT_KEYLENGTH);
-
-        memset(this->encKey, '\0', sizeof(this->encKey));
-        memcpy(this->encKey, this->key, this->keySize);
-        //prng.GenerateBlock(key, sizeof(key));
-
-        memset(this->encIv, '\0', sizeof(this->encIv));
-        //prng.GenerateBlock(iv, sizeof(iv));
-    }
-
-    void encrypt(HiddenFS::bytestream_t* input, size_t inputSize, HiddenFS::bytestream_t** output, size_t* outputSize) {
-        std::string cipher;
-
-        assert(input != NULL);
-        assert(outputSize != NULL);
-
-        try {
-            CryptoPP::OFB_Mode< CryptoPP::AES >::Encryption e;
-            e.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
-
-            // OFB mode must not use padding. Specifying
-            //  a scheme will result in an exception
-            CryptoPP::StringSource((const byte*) input, inputSize, true,
-                new CryptoPP::StreamTransformationFilter(e,
-                    new CryptoPP::StringSink(cipher)
-                ) // StreamTransformationFilter
-            ); // StringSource
-
-            *outputSize = cipher.length();
-            *output = new HiddenFS::bytestream_t[*outputSize];
-            cipher.copy((char*)*output, *outputSize, 0);
-            //memcpy(*output, cipher.data(), *outputSize);
-        } catch(const CryptoPP::Exception& e) {
-            std::cerr << e.what() << std::endl;
-            exit(1);
-        }
-    };
-
-    void decrypt(HiddenFS::bytestream_t* input, size_t inputSize, HiddenFS::bytestream_t** output, size_t* outputSize) {
-        std::string recovered;
-
-        try {
-            CryptoPP::OFB_Mode< CryptoPP::AES >::Decryption d;
-            d.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
-
-            // The StreamTransformationFilter removes
-            //  padding as required.
-            CryptoPP::StringSource s((const byte*) input, inputSize, true,
-                new CryptoPP::StreamTransformationFilter(d,
-                    new CryptoPP::StringSink(recovered)
-                ) // StreamTransformationFilter
-            ); // StringSource
-
-            *outputSize = recovered.length();
-            *output = new HiddenFS::bytestream_t[*outputSize];
-            recovered.copy((char*)*output, *outputSize, 0);
-            //memcpy(*output, recovered.data(), *outputSize);
-        } catch(const CryptoPP::Exception& e) {
-            std::cerr << e.what() << std::endl;
-            exit(1);
-        }
-    };
-};
-
 HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     // ----------------------------
     HiddenFS::context_t* context = new HiddenFS::context_t;
@@ -588,8 +515,8 @@ void mp3fs::storageRefreshIndex(std::string path) {
 
 int main(int argc, char* argv[]) {
     int ret;
-    mp3fs* fs = new mp3fs(new MyEncryption());
-    //mp3fs* fs = new mp3fs();
+    //mp3fs* fs = new mp3fs(new MyEncryption());
+    mp3fs* fs = new mp3fs();
 
     if(false) {
         std::string a[2];

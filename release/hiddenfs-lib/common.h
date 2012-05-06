@@ -16,6 +16,13 @@
 #include <string>
 #include <vector>
 
+
+#include <cryptopp/sha.h>
+#include <cryptopp/filters.h>
+#include <cryptopp/aes.h>
+#include <cryptopp/modes.h>
+#include <cryptopp/hex.h>
+
 #include "exceptions.h"
 #include "types.h"
 
@@ -81,7 +88,6 @@ namespace HiddenFS {
 
     class IEncryption {
     public:
-        //IEncryption();
         virtual ~IEncryption() {
             delete this->key;
         };
@@ -117,35 +123,73 @@ namespace HiddenFS {
         size_t keySize;
     };
 
-
     class DefaultEncryption : public IEncryption {
     public:
-        void setKey(bytestream_t* key, size_t keySize) {
-            this->key = new bytestream_t[keySize];
+        byte encKey[CryptoPP::AES::DEFAULT_KEYLENGTH];
+        byte encIv[CryptoPP::AES::BLOCKSIZE];
 
-            memcpy(this->key, key, keySize);
-        };
+        DefaultEncryption() : IEncryption() {
+            assert((unsigned size_t)this->keySize <= (unsigned size_t)CryptoPP::AES::DEFAULT_KEYLENGTH);
 
-        /**
-         * Vstup beze změny převede na výstup
-         */
+            memset(this->encKey, '\0', sizeof(this->encKey));
+            memcpy(this->encKey, this->key, this->keySize);
+            //prng.GenerateBlock(key, sizeof(key));
+
+            memset(this->encIv, '\0', sizeof(this->encIv));
+            //prng.GenerateBlock(iv, sizeof(iv));
+        }
+
         void encrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
-            *output = new bytestream_t[inputSize];
+            std::string cipher;
 
-            memcpy(*output, input, inputSize);
+            assert(input != NULL);
+            assert(outputSize != NULL);
 
-            *outputSize = inputSize;
+            try {
+                CryptoPP::OFB_Mode< CryptoPP::AES >::Encryption e;
+                e.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
+
+                // OFB mode must not use padding. Specifying
+                //  a scheme will result in an exception
+                CryptoPP::StringSource((const byte*) input, inputSize, true,
+                    new CryptoPP::StreamTransformationFilter(e,
+                        new CryptoPP::StringSink(cipher)
+                    ) // StreamTransformationFilter
+                ); // StringSource
+
+                *outputSize = cipher.length();
+                *output = new bytestream_t[*outputSize];
+                cipher.copy((char*)*output, *outputSize, 0);
+                //memcpy(*output, cipher.data(), *outputSize);
+            } catch(const CryptoPP::Exception& e) {
+                std::cerr << e.what() << std::endl;
+                exit(1);
+            }
         };
 
-        /**
-         * Vstup beze změny převede na výstup
-         */
         void decrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
-            *output = new bytestream_t[inputSize];
+            std::string recovered;
 
-            memcpy(*output, input, inputSize);
+            try {
+                CryptoPP::OFB_Mode< CryptoPP::AES >::Decryption d;
+                d.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
 
-            *outputSize = inputSize;
+                // The StreamTransformationFilter removes
+                //  padding as required.
+                CryptoPP::StringSource s((const byte*) input, inputSize, true,
+                    new CryptoPP::StreamTransformationFilter(d,
+                        new CryptoPP::StringSink(recovered)
+                    ) // StreamTransformationFilter
+                ); // StringSource
+
+                *outputSize = recovered.length();
+                *output = new bytestream_t[*outputSize];
+                recovered.copy((char*)*output, *outputSize, 0);
+                //memcpy(*output, recovered.data(), *outputSize);
+            } catch(const CryptoPP::Exception& e) {
+                std::cerr << e.what() << std::endl;
+                exit(1);
+            }
         };
     };
 
