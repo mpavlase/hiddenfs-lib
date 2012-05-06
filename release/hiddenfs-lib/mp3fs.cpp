@@ -588,8 +588,8 @@ void mp3fs::storageRefreshIndex(std::string path) {
 
 int main(int argc, char* argv[]) {
     int ret;
-    //mp3fs* fs = new mp3fs(new MyEncryption());
-    mp3fs* fs = new mp3fs();
+    mp3fs* fs = new mp3fs(new MyEncryption());
+    //mp3fs* fs = new mp3fs();
 
     if(false) {
         std::string a[2];

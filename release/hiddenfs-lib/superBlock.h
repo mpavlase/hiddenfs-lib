@@ -28,8 +28,9 @@ namespace HiddenFS {
         static const table_flag TABLE_CONTENT_TABLE = 'c';
 
         ~superBlock() {
-            for(table_t::iterator i = this->foreignItems.begin(); i != this->foreignItems.end(); i++) {
-                delete [] (*i);
+            for(table_foreign_t::iterator i = this->foreignItems.begin(); i != this->foreignItems.end(); i++) {
+                ///@todo proč to způsobuje segfault?
+                //delete [] (i->content);
             }
 
             for(table_known_t::iterator i = this->knownItems.begin(); i != this->knownItems.end(); i++) {
@@ -38,14 +39,18 @@ namespace HiddenFS {
         }
 
         struct tableItem {
-            /* CRC::CRC_t checksum; */
             table_flag table;
             vBlock* first;
         };
 
-        static const size_t RAW_ITEM_SIZE = sizeof(CRC::CRC_t) + sizeof(table_flag) + sizeof(SIZEOF_vBlock);
+        struct tableForeign {
+            size_t length;
+            bytestream_t* content;
+        };
 
-        typedef std::vector<bytestream_t*> table_t;
+        static const size_t RAW_ITEM_SIZE = sizeof(CRC::CRC_t) + sizeof(table_flag) + SIZEOF_vBlock;
+
+        typedef std::vector<tableForeign> table_foreign_t;
         typedef std::vector<tableItem> table_known_t;
 
         /**
@@ -53,6 +58,7 @@ namespace HiddenFS {
          * Při vkládání se provádí hluboká kopie bufferu.
          * @param item vstupní buffer s blokem dat, který by mohl obsahovat záznam superbloku
          * @param itemLength délka vstupního bufferu
+         * @deprecated
          */
         void add(bytestream_t* item, size_t itemLength);
 
@@ -84,7 +90,7 @@ namespace HiddenFS {
         void readItem(bytestream_t* buffer, size_t bufferLength);
 
         /**
-         * Převede obsah superbloku na blok dat
+         * Převede obsah superbloku na binární blok dat
          * @param buffer výstupní buffer pro serializovaná data, metoda
          * sama alokuje dostatečnou kapacitu ukazatele
          * @param size délka bufferu
@@ -104,7 +110,7 @@ namespace HiddenFS {
          * které se podařilo rozšifrovat)
          * @param items vektor s nalezenými položkami
          */
-        void getValidItems(table_t* items);
+        void getValidItems(table_foreign_t* items);
 
         void setEncryptionInstance(IEncryption* inst) {
             this->encryption = inst;
@@ -127,7 +133,7 @@ namespace HiddenFS {
         bool loaded;
 
         /** seznam všech bloků dat, které jsou položkami superbloku jiného souborového systému */
-        table_t foreignItems;
+        table_foreign_t foreignItems;
 
         /** seznam položek superbloku, který patří tomuto souborovému systému */
         table_known_t knownItems;

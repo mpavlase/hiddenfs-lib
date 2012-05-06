@@ -384,8 +384,8 @@ namespace HiddenFS {
         void chainListAllocate(const hash_ascii_t& hash, vBlock*& output);
 
         /**
-         * Zastřešuje všechny nutné operace, které souvisí s uložením serializovaných
-         * tabulek do všech kopií superbloků
+         * Serializuje všechny tabulky (CT, ST), uloží všechny jejich kopie
+         * a vloží začátky řetězců do superbloku.
          */
         void tablesSaveToSB();
 
@@ -400,8 +400,9 @@ namespace HiddenFS {
         void tableSave(chainList_t& content, std::set<vBlock*>& copies);
 
         /**
-         * Provádí serializaci, zápis do stávajících kopií superbloků i případné
-         * doalokování chybějících kopií.
+         * Komplexní metoda pro uložení superbloku: provádí serializaci,
+         * zápis do stávajících kopií superbloků a podle potřeby doalokování
+         * chybějících kopií.
          */
         void superBlockSave();
 
@@ -419,5 +420,6 @@ namespace HiddenFS {
         static int fuse_mkdir(const char* path, mode_t mode);
         static int fuse_rmdir(const char* path);
         static int fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* file_i);
+        static int fuse_truncate(const char* path, off_t length);
     };
 }

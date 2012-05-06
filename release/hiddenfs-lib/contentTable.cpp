@@ -85,31 +85,6 @@ namespace HiddenFS {
                     delete [] vBlockBuff;
 
                     output->push_back(chain);
-
-                    /*
-                    memset(&chain, '\0', sizeof(chain));
-
-                    // # dump právě jedné složky do bufferu
-                    size = 0;
-
-                    // dump 'inode'
-                    memcpy(stream.sputn((const char*) (&i->first), sizeof(i->first));
-                    size += sizeof(i->first);
-
-                    // dump 'vBlock'
-                    serialize_vBlock(*k, &vBlockBuff, &vBlockBuffSize);
-                    stream.sputn((const char*) vBlockBuff, vBlockBuffSize);
-                    size += vBlockBuffSize;
-
-                    // kopie obsahu
-                    chain.content = new bytestream_t[size];
-                    chain.length = size;
-                    stream.sgetn((char*) chain.content, size);
-
-                    delete vBlockBuff;
-
-                    output->push_back(chain);
-                    */
                 }
             }
 

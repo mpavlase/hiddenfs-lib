@@ -58,6 +58,7 @@ namespace HiddenFS {
             } else {
                 /// @todo odkomentova!
                 this->auxList_partlyUsed.insert(hash);
+                this->auxList_unused.erase(hash);
             }
         };
 
