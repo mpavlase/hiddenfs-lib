@@ -76,13 +76,12 @@ namespace HiddenFS {
          */
         int run(int argc, char* argv[]);
 
-        /**
-         * true - uchovávání HashTable v metadatech spolu se StructTable atd.
-         * false - při každém mount zaindexovat adresář znovu
-         * @param enable/disable
-         * @deprecated
-         */
-        //void enableCacheHashTable(bool);
+        static std::string storagePath;
+
+        enum {
+            KEY_HELP,
+            KEY_CREATE
+        };
 
     protected:
         contentTable* CT;
@@ -102,13 +101,11 @@ namespace HiddenFS {
 
         IEncryption* encryption;
 
-        /**
-         * @deprecated
-         * Při true se knihovna pokusí nejdříve načíst hashTable ze superbloku,
-         * ale pokud selže, provede se indexace zcela nová. Je to začarovaný kruh:
-         * Pro nalezení cacheHT je třeba znát pozici SB. Pro nalezení SB je nuzné znát obsah HT.
-         *  */
-        bool cacheHashTable;
+        struct optionsStruct {
+            char* storagePath;
+        };
+
+        struct optionsStruct options;
 
         /**
          * Vyhledá (=naalokuje) vhodný počet bloků a zapíše do nich obsah jednotlivých fragmentů

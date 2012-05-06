@@ -68,6 +68,8 @@ struct fuse_file_info {
 
 
 namespace HiddenFS {
+    bool flagCreateNewFS;
+    bool flagFuseRun;
 
     // hotovo
     void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_ascii_t hash) {
@@ -824,37 +826,61 @@ namespace HiddenFS {
         return size;
     }
 
-    int hiddenFs::run(int argc, char* argv[]) {
-        std::string path;
-        std::string str;
-        bool flagNewFS = false;
+    static int fuse_opt_processing(void* data, const char* arg, int key, fuse_args* outargs) {
+        //struct options *hopts = (struct options*) data;
 
-        path.clear();
-
-        for(int i = 0; i < argc; i++) {
-            str = argv[i];
-            //std::cout << str << std::endl;
-            //std::cout << " ";
-
-            if(str == "-c") {
-                flagNewFS = true;
-                memset(argv[i], '\0', 2);
-                continue;
+        switch(key) {
+            case hiddenFs::KEY_CREATE : {
+                HiddenFS::flagCreateNewFS = true;
             }
 
-            if(str.compare(0, 2, "-s") == 0) {
-                memset(argv[i], '\0', str.length());
-                path = str.substr(2);
+            case hiddenFs::KEY_HELP : {
+                hiddenFs::usage(std::cerr);
+                HiddenFS::flagFuseRun = false;
             }
         }
 
-        //std::cout << "_" << path << "_";
+        return 0;
+    }
 
-        if(path.empty()) {
+    int hiddenFs::run(int argc, char* argv[]) {
+        std::string path;
+
+        path.clear();
+
+        HiddenFS::flagCreateNewFS = false;
+        HiddenFS::flagFuseRun = true;
+
+        #define HFS_OPT_KEY(t, p, v) { t, offsetof(struct optionsStruct, p), v }
+
+        static struct fuse_opt hfs_opts[] = {
+            HFS_OPT_KEY("--storage=%s", storagePath, 0),
+            HFS_OPT_KEY("-s %s", storagePath, 0),
+
+            FUSE_OPT_KEY("-c",             KEY_CREATE),
+            FUSE_OPT_KEY("--create",       KEY_CREATE),
+            FUSE_OPT_KEY("-h",             KEY_HELP),
+            FUSE_OPT_KEY("--help",         KEY_HELP),
+            FUSE_OPT_END
+        };
+
+        struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
+        memset(&(this->options), 0, sizeof(struct optionsStruct));
+
+        if(fuse_opt_parse(&args, &(this->options), hfs_opts, fuse_opt_processing) == -1) {
+            return EXIT_FAILURE;
+        }
+
+        // kontrola existence umístění úložiště
+        if(this->options.storagePath == NULL) {
             std::cerr << "Nebyla zadána cesta k adresáři úložiště.\n";
             this->usage(std::cerr);
             return EXIT_FAILURE;
         }
+
+        path = this->options.storagePath;
+
+        // ====================================================
 
         this->storageRefreshIndex(path);
         this->HT->print();
@@ -926,7 +952,7 @@ namespace HiddenFS {
         this->findPartlyUsedHash();
         this->findUnusedHash();
 
-        if(this->superBlockLocations.empty() && flagNewFS) {
+        if(this->superBlockLocations.empty() && HiddenFS::flagCreateNewFS) {
             // vybrat první neobsazené bloky a zapsat do nich libovolný obsah - bu
             for(unsigned int i = 0; i < SUPERBLOCK_REDUNDANCY_AMOUNT; i++) {
                 this->allocatorFindFreeBlock_unused(sbBlock);
@@ -959,7 +985,12 @@ namespace HiddenFS {
         try {
         */
         // private data = pointer to actual instance
-        int fuse_ret = fuse_main(argc, argv, &fsOperations, this);
+        int fuse_ret = EXIT_SUCCESS;
+        if(HiddenFS::flagFuseRun) {
+            fuse_ret = fuse_main(args.argc, args.argv, &fsOperations, this);
+        } else {
+            fuse_ret = EXIT_FAILURE;
+        }
 
         this->superBlockSave();
         /*
