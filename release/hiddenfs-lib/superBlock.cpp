@@ -43,7 +43,7 @@ namespace HiddenFS {
 
     void superBlock::readItem(bytestream_t* buffer, size_t bufferLength) {
         tableItem item;
-        size_t offset = 0;
+        size_t offset;
         vBlock* block;
         bytestream_t* buffOut;
         size_t buffOutLength;
@@ -54,8 +54,11 @@ namespace HiddenFS {
 
         this->encryption->decrypt(buffer, bufferLength, &buffOut, &buffOutLength);
 
+        assert(bufferLength == RAW_ITEM_SIZE);
+
         // naplnění kontrolního součtu
-        memcpy(&checksumRead, buffer + offset, sizeof(checksumRead));
+        offset = 0;
+        memcpy(&checksumRead, buffOut + offset, sizeof(checksumRead));
         offset += sizeof(checksumRead);
 
         CRC c = CRC();
@@ -75,14 +78,15 @@ namespace HiddenFS {
         }
 
         // naplnění typu tabulky
-        memcpy(&(item.table), buffer + offset, sizeof(item.table));
+        memcpy(&(item.table), buffOut + offset, sizeof(item.table));
         offset += sizeof(item.table);
 
         // naplnění umístění prvního bloku z řetězu
-        unserialize_vBlock(buffer + offset, SIZEOF_vBlock, &block);
+        unserialize_vBlock(buffOut + offset, SIZEOF_vBlock, &block);
         item.first = new vBlock;
         memcpy(item.first, block, sizeof(vBlock));
-        offset += sizeof(SIZEOF_vBlock);
+        offset += SIZEOF_vBlock;
+
             std::cout << "superBlock::readItem table=" << (char) item.table << ", first=" << print_vBlock(item.first) << std::endl;
 
         assert(offset == bufferLength);

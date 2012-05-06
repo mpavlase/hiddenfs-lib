@@ -44,16 +44,16 @@ $(PROJECT): $(PROJECT).cpp $(OBJFILES)
 	@echo "Kompilace je OK."
 ###############################################
 valgrind: all
-	valgrind -v --leak-check=full --show-reachable=yes ./$(OUTPUT) -d ./vfs
+	valgrind -v --leak-check=full --show-reachable=no ./$(OUTPUT) -d ./vfs
 
 mount: all
 	./$(OUTPUT) -d vfs/
 
 debug: all umount
-	gdb -x list.gdb --args ./$(OUTPUT) -d ./vfs
+	gdb -x list.gdb --args ./$(OUTPUT) -d -s../../mp3_examples ./vfs
 
 ddd: all umount
-	ddd ./$(OUTPUT)
+	ddd -x list.gdb --args ./$(OUTPUT) -d -s../../mp3_examples ./vfs
 
 umount:
 	./umount.sh

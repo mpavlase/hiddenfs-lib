@@ -13,6 +13,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <fuse_opt.h>
+
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -70,6 +72,9 @@ namespace HiddenFS {
     // hotovo
     void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_ascii_t hash) {
         hashTable::table_t_constiterator cit = this->HT->find(hash);
+
+        assert(cit != this->HT->end());
+
         if(cit->second.context->avaliableBlocks.size() > 0) {
             this->allocatorFillFreeBlockByHash(hash, block);
         } else {
@@ -821,30 +826,35 @@ namespace HiddenFS {
 
     int hiddenFs::run(int argc, char* argv[]) {
         std::string path;
-        //HiddenFS::hash_t_sizeof.set(20);
+        std::string str;
+        bool flagNewFS = false;
 
-        if(argc == 2) {
-            path.assign(argv[1]);
-        } else {
-            path.assign("../../mp3_examples");
+        path.clear();
+
+        for(int i = 0; i < argc; i++) {
+            str = argv[i];
+            //std::cout << str << std::endl;
+            //std::cout << " ";
+
+            if(str == "-c") {
+                flagNewFS = true;
+                memset(argv[i], '\0', 2);
+                continue;
+            }
+
+            if(str.compare(0, 2, "-s") == 0) {
+                memset(argv[i], '\0', str.length());
+                path = str.substr(2);
+            }
         }
-            path.assign("../../mp3_examples");
 
-        /*
-        smartConst<int> smart;
-        smart.set(14);
-        std::cout << "hash_sizeof: " << smart.get() << std::endl;
-        assert(false);
-        */
+        //std::cout << "_" << path << "_";
 
-/*
-        vBlock* bl = new vBlock;
-        bl->block = 3;
-        bl->fragment = 1;
-        bl->hash = "hashString";
-        bl->length = 4096;
-        bl->used = true;
-*/
+        if(path.empty()) {
+            std::cerr << "Nebyla zadána cesta k adresáři úložiště.\n";
+            this->usage(std::cerr);
+            return EXIT_FAILURE;
+        }
 
         this->storageRefreshIndex(path);
         this->HT->print();
@@ -854,6 +864,7 @@ namespace HiddenFS {
 
             return EXIT_FAILURE;
         }
+
         id_byte_t idByte;
 
         bytestream_t* bufferBlock;
@@ -900,367 +911,35 @@ namespace HiddenFS {
 
             // uvolnění prostředků
             hashTable::table_t_constiterator htci = this->HT->find(i->first);
-            if(htci->second.context != NULL) {
-                this->freeContext(htci->second.context);
-                this->HT->clearContext(i->first);
+            if(htci != this->HT->end()) {
+                if(htci->second.context != NULL) {
+                    this->freeContext(htci->second.context);
+                    this->HT->clearContext(i->first);
+                }
+            }
+        }
+
+        vBlock* sbBlock;
+        bytestream_t sbBuffer[BLOCK_USABLE_LENGTH];
+        memset(sbBuffer, '\0', sizeof(sbBuffer));
+
+        this->findPartlyUsedHash();
+        this->findUnusedHash();
+
+        if(this->superBlockLocations.empty() && flagNewFS) {
+            // vybrat první neobsazené bloky a zapsat do nich libovolný obsah - bu
+            for(unsigned int i = 0; i < SUPERBLOCK_REDUNDANCY_AMOUNT; i++) {
+                this->allocatorFindFreeBlock_unused(sbBlock);
+                assert(sbBlock->block == FIRST_BLOCK_NO);
+                idByte = idByteGenSuperBlock();
+                this->writeBlock(sbBlock->hash, sbBlock->block, sbBuffer, sizeof(sbBuffer), idByte);
+                this->superBlockLocations.insert(sbBlock->hash);
             }
         }
 
         // způsobí případné douložení chybějících kopií
         this->superBlockSave();
 
-        /* Pokud:
-         * a) superblok vůbec neexistuje (nebo žádný není čitelný)
-         * b) alespoň jedna kopie je v pořádku, ale nenalezli jsme všechny kopie
-         * **/
-
-        // superblok ještě neexistuje
-/*
-        if(!this->SB->isLoaded() || superBlockLocations.size() < SUPERBLOCK_REDUNDANCY_AMOUNT) {
-            if(!this->SB->isLoaded()) {
-
-            }
-
-            this->findUnusedHash();
-
-            //... vybrat prvních N bloků a umístit do nich kopie superbloků
-            for(std::set<hash_ascii_t>::iterator i = this->HT->auxList_unused.begin(); i != this->HT->auxList_unused.begin(); i++) {
-
-            }
-        }
-*/
-
-        //bytestream_t* ctBuf = NULL;
-        //size_t ctBufSize = 0;
-
-        std::cout << "=====================================\n";
-        std::cout << "=====================================\n";
-        std::cout << "=====================================\n";
-
-        //hash_ascii_t h = this->HT->begin()->first;
-        //std::cout << "První položka z HT: " << this->HT->begin()->second.filename << "\n";
-
-        /*
-        std::ifstream f;
-        f.open("test.gif", std::fstream::binary);
-        f.seekg(0, std::fstream::end);
-        unsigned int length = f.tellg();
-        f.seekg(0, std::fstream::beg);
-
-
-        bytestream_t buffW[length];
-        memset(buffW, '\0', sizeof(buffW));
-        f.read((char*)buffW, length);
-        */
-
-        /*
-        block_number_t blockW = 1;
-        //std::cout << "write: ";
-        //std::cout.write((const char*)buffW, len);
-        //std::cout << std::endl;
-        bytestream_t* encBuf;
-        bytestream_t* decBuf;
-        size_t encBufLen;
-        size_t decBufLen;
-        this->encryption->encrypt(buffW, len, &encBuf, &encBufLen);
-
-        //this->writeBlock(h, blockW, encBuf, encBufLen, idb);
-        //this->writeBlock(h, blockW + 10, buffW, len, idb);
-        //this->writeBlock(h, blockW + 16, buffW, len, idb);
-
-        idb = 0;
-        bytestream_t* buffR;
-        //memset(buffW, '\0', sizeof(buffW));
-
-        size_t r = this->readBlock(h, blockW, &buffR, BLOCK_USABLE_LENGTH, &idb);
-        //std::cout << "read-bytes surové: " << r << ", obsah: ";
-        //std::cout.write((const char*)buffR, BLOCK_USABLE_LENGTH);
-        //std::cout << std::endl;
-
-        this->encryption->decrypt(buffR, BLOCK_USABLE_LENGTH, &decBuf, &decBufLen);
-        std::cout << "read-bytes po decryption " << r << ", obsah: ";
-        std::cout.write((const char*)decBuf, len);
-        std::cout << std::endl;
-
-        this->removeBlock(h, 1);
-        this->removeBlock(h, 11);
-        this->removeBlock(h, 17);
-
-        assert(false);
-        */
-
-        /*
-        inode_t inode_ret;
-
-        vFile* file;
-        file = new vFile;
-        file->filename = "souborXYZ.txt";
-        file->flags = vFile::FLAG_NONE;
-        file->parent = 1;
-        file->size = 47;
-        this->ST->newFile(file);
-
-        this->CT->newEmptyContent(file->inode);
-
-        for(unsigned int i = 0; i < 5; i++) {
-            std::stringstream ss;
-            ss << "soubor-" << i << ".txt";
-
-            file = new vFile;
-            file->filename = ss.str();
-            file->flags = vFile::FLAG_NONE;
-            file->parent = 1;
-            file->size = sizeof(buffW);
-            this->ST->newFile(file);
-
-            this->CT->newEmptyContent(file->inode);
-            this->allocatorAllocate(file->inode, buffW, length);
-        }
-
-        chainList_t chainST;
-        this->ST->serialize(&chainST);
-
-            this->ST->print();
-            delete this->ST;
-            this->ST = new structTable();
-            this->ST->deserialize(chainST);
-            this->ST->print();
-        //assert(false);
-
-        vBlock* chainFirst;
-        chainFirst = this->chainListCompleteSave(chainST, NULL);
-        std::cout << print_vBlock(chainFirst);
-        std::cout.flush();
-
-        chainST.clear();
-        this->chainListCompleteRestore(chainFirst, chainST);
-
-
-            this->ST = new structTable();
-            this->ST->deserialize(chainST);
-            this->ST->print();
-            assert(false);
-
-
-        bytestream_t* bufRet;
-        size_t bufRetLen;
-        size_t sum = 0;
-        for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
-            sum += i->length;
-        }
-
-
-        this->getContent(file->inode, &bufRet, &bufRetLen);
-        std::ofstream fout;
-        fout.open("test-result.gif", std::fstream::binary);
-        fout.write((char*)bufRet, bufRetLen);
-        */
-
-            /*
-            std::cout << "celková délka: " << sum << "B\n";
-
-            */
-
-
-        /*
-        id_byte_t idb;
-        unsigned int bl;
-        size_t lenBlock;
-        //len = 10;
-        //memcpy(buffW, "abcdefghijklMNOPQRSTUVWXYZ", len);
-
-        this->ST->print();
-
-        len = 0;
-        while(len < sizeof(buffW)) {
-            for(char i = 'a'; i <= 'z'; i++) {
-                if(len < sizeof(buffW)) {
-                    buffW[len] = i;
-                    len++;
-                } else {
-                    break;
-                }
-            }
-        }
-        */
-
-
-        /*
-        this->allocatorAllocate(file->inode, buffW, file->size);
-        this->CT->print();
-        this->ST->print();
-        */
-
-        /*
-        this->allocatorAllocate(file->inode, buffW, len);
-        this->CT->print();
-        this->ST->print();
-
-        assert(false);
-        */
-        // ====================================
-        /*
-        std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
-        this->getContent(file->inode, &bufRet, &bufRetLen);
-
-        std::ofstream fout;
-        fout.open("test-result.gif", std::fstream::binary);
-        fout.write((char*)bufRet, bufRetLen);
-        */
-
-        //std::cout << "Kompletní obsah: _";
-        //std::cout.write((const char*)bufRet, bufRetLen);
-        //std::cout << "_" << std::endl;
-        //assert(false);
-
-        //assert(false);
-        // ====================================
-        // ====================================
-                //      serializace CONTENT TABLE
-            /*
-            chainList_t chainCT;
-            this->CT->serialize(&chainCT);
-
-            size_t sum = 0;
-            for(chainList_t::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
-                sum += i->length;
-            }
-
-            std::cout << "celková délka: " << sum << "B\n";
-
-            delete this->CT;
-
-            this->CT = new contentTable();
-            this->CT->deserialize(chainCT);
-            this->CT->print();
-            */
-        // ====================================
-        // ====================================
-                // serializace a de- structTable
-        /*
-            chainList_t chainST;
-            this->ST->serialize(&chainST);
-
-            size_t sum = 0;
-            for(chainList_t::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
-                sum += i->length;
-            }
-
-            std::cout << "celková délka: " << sum << "B\n";
-
-            this->ST->print();
-            delete this->ST;
-
-            this->ST = new structTable();
-            this->ST->deserialize(chainST);
-            this->ST->print();
-            assert(false);
-         */
-        // ====================================
-        // ====================================
-        //std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
-
-
-        //std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
-
-        /*
-        // ====================================
-        this->getContent(file->inode, &bufRet, &bufRetLen);
-        std::cout << "Kompletní obsah: _";
-        std::cout.write((const char*)bufRet, bufRetLen);
-        std::cout << "_" << std::endl;
-        assert(false);
-        */
-
-        /*
-        for(int i = 0; i < 1000; i++) {
-            vb= new vBlock();
-            vb->block = 17 + i;
-            vb->fragment = i;
-            vb->hash = "hahsX.XXXXXXXXXXXXXc";
-            vb->length = 20 + i;
-            vb->used = true;
-            this->CT->addContent(file->inode, vb);
-        }
-        */
-
-        //assert(false);
-
-        //this->allocator->allocate(file->inode, content, length);
-
-        //std::cout << "\n";
-        //this->CT->print();
-
-        /*
-        chainList_t chainCT;
-        this->CT->serialize(&chainCT);
-
-        sum = 0;
-        for(chainList_t::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
-            sum += i->length;
-        }
-
-        std::cout << "celková délka: " << sum << "B\n";
-
-        delete this->CT;
-        this->CT = new contentTable();
-        this->CT->deserialize(chainCT);
-
-        assert(false);
-        */
-
-
-
-
-        // 2) podle potřeby založit ST, CT, HT
-
-        // 3) načíst ST, CT, HT
-
-
-        //assert(false);
-
-        //inode_t inode_ret;
-
-        //vFile* file;
-        /*
-        file = new vFile;
-        file->filename = "soubor2.txt";
-        file->flags = vFile::FLAG_NONE;
-        file->parent = 1;
-        file->size = 37;
-        this->ST->newFile(file);
-
-        file = new vFile;
-        file->filename = "dir1";
-        file->flags = vFile::FLAG_DIR;
-        file->parent = 1;
-        file->size = 0;
-        inode_ret = this->ST->newFile(file);
-
-        file = new vFile;
-        file->filename = "souborJiný.txt";
-        file->flags = vFile::FLAG_NONE;
-        file->parent = inode_ret;
-        file->size = 123;
-        this->ST->newFile(file);
-        this->ST->print();
-
-        vFile* ftest;
-        this->ST->findFileByInode(1, ftest);
-        */
-
-
-        /*
-        char* content = new char[file->size];
-        string content_string = "obsah souboru";
-        size_t length = sizeof(content_string.c_str());
-        memcpy(content, content_string.c_str(), length);
-
-        this->allocator->allocate(file->inode, content, length);
-
-        cout << endl;
-        this->CT->print();
-        */
 
         // set allowed FUSE operations
         static struct fuse_operations fsOperations;
@@ -1275,8 +954,6 @@ namespace HiddenFS {
         fsOperations.mkdir  = this->fuse_mkdir;
         fsOperations.rmdir  = this->fuse_rmdir;
         //fsOperations.truncate  = this->fuse_truncate;
-
-        //delete [] content;
 
         /*
         try {

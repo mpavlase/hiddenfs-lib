@@ -8,6 +8,7 @@
 #define FUSE_USE_VERSION 26
 #include <fuse.h>
 #include <string>
+#include <iostream>
 
 #include "common.h"
 #include "contentTable.h"
@@ -45,7 +46,12 @@ namespace HiddenFS {
         /** uložení jednoho bloku se provede několikanásobně do různých fyzických souborů */
         static const char ALLOCATOR_REDUNDANCY = 1 << 7;
 
-        //smartConst<size_t> hash_t_sizeof;
+        static void usage(std::ostream& s) {
+            s << "Dostupné parametry:\n";
+            s << "\t-c\tvytvoří nový systém souborů chráněný heslem\n";
+            s << "\t-sPATH\tnastaví cestu k úložišti na PATH\n";
+            s << "\n";
+        }
 
         /**
          * Nastaví preferovanou strategii pro alokování nových bloků
