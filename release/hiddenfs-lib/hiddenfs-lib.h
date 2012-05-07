@@ -51,8 +51,10 @@ namespace HiddenFS {
             s << "\t-c, --create\n\t\tvytvoří nový systém souborů chráněný heslem\n\n";
             s << "\t-s PATH, --storage=PATH\n\t\tnastaví cestu k úložišti na PATH\n\n";
             s << "\t-p PASS, --password=PASS\n\t\tnastaví heslo pro dešifrování obsahu,";
-            s << " v kombinaci s -c se použije toto heslo jako šifrovací pro nový souborový systém\n\n";
+            s << " v kombinaci s -c se použije toto heslo jako šifrovací pro nový";
+            s << " souborový systém. Pokud není přepínač nastaven, čte se ze standartního vstupu\n\n";
             s << "\t-h, --help\n\t\tzobrazí tuto nápovědu\n";
+            s << "\t-m PATH\n\t\tmountpoint, prázdný adresář pro připojení souborového systému\n";
             s << "\n";
         }
 
@@ -83,7 +85,8 @@ namespace HiddenFS {
 
         enum {
             KEY_HELP,
-            KEY_CREATE
+            KEY_CREATE,
+            KEY_FUSE_DEBUG,
         };
 
     protected:
@@ -107,6 +110,7 @@ namespace HiddenFS {
         struct optionsStruct {
             char* storagePath;
             char* password;
+            char* mountpoint;
         };
 
         struct optionsStruct options;
@@ -419,6 +423,58 @@ namespace HiddenFS {
          */
         void superBlockSave();
 
+        /**
+         * Provádí rekonstrukci všech tabulek (structTable i contentTable) z řetězce
+         * entit do skutečného obsahu.
+         * @throw ExceptionRuntimeError pokud nejsou content i struct table načteny kompletně a korektně
+         */
+        void tableRestoreFromSB() {
+            std::set<vBlock*> chainCT;
+            std::set<vBlock*> chainST;
+            chainList_t chain;
+            bool success = false;
+
+            assert(this->SB->isLoaded());
+
+            this->SB->readKnownItems(chainCT, superBlock::TABLE_CONTENT_TABLE);
+            this->SB->readKnownItems(chainST, superBlock::TABLE_STRUCT_TABLE);
+
+            chain.clear();
+            success = false;
+            for(std::set<vBlock*>::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
+                try {
+                    this->chainListCompleteRestore(*i, chain);
+                    this->CT->deserialize(chain);
+                    success = true;
+
+                    break;
+                } catch(ExceptionRuntimeError&) {
+                    continue;
+                }
+            }
+
+            if(!success) {
+                throw ExceptionRuntimeError("Rekonstrukce contentTable nebyla úspěšná.");
+            }
+
+            chain.clear();
+            success = false;
+            for(std::set<vBlock*>::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
+                try {
+                    this->chainListCompleteRestore(*i, chain);
+                    this->ST->deserialize(chain);
+                    success = true;
+
+                    break;
+                } catch(ExceptionRuntimeError&) {
+                    continue;
+                }
+            }
+
+            if(!success) {
+                throw ExceptionRuntimeError("Rekonstrukce structTable nebyla úspěšná.");
+            }
+        }
         // ---------------------------------------------------------------------
         // -----------------------     FUSE     --------------------------------
         // ---------------------------------------------------------------------

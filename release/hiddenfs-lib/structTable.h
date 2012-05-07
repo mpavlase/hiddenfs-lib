@@ -74,9 +74,10 @@ namespace HiddenFS {
         void findFileByName(std::string filename, inode_t parent, vFile** file);
 
         /**
-         * Vyhledá soubor na základě inode, jinak vyhazuje výjimku "FileNotFound"
+         * Vyhledá soubor na základě inode
          * @param inode identifikátor souboru
          * @param file file podrobnosti o souboru
+         * @throw ExceptionFileNotFound pokud soubor neexistuje
          */
         void findFileByInode(inode_t inode, vFile* & file);
 

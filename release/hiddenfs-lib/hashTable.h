@@ -118,6 +118,8 @@ namespace HiddenFS {
          * @param context
          */
         void setContext(hash_ascii_t hash, context_t* context) {
+            this->table[hash].context = context;
+            
             if(context == NULL) {
                 this->auxList_partlyUsed.erase(hash);
                 this->auxList_unused.erase(hash);
@@ -125,7 +127,6 @@ namespace HiddenFS {
                 return;
             }
 
-            this->table[hash].context = context;
 
             // zařazení do do aux* pomocných seznamů
             if(context->avaliableBlocks.size() == context->maxBlocks) {
