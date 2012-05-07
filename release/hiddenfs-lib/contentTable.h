@@ -87,29 +87,18 @@ namespace HiddenFS {
          */
         void addContent(inode_t inode, vBlock* block) {
             if(block->used) {
+                if(this->table.find(inode) == this->table.end()) {
+                    throw ExceptionFileNotFound(inode);
+                }
+
                 try {
                     this->newEmptyContent(inode);
                 } catch (ExceptionInodeExists) { }
 
                 // zde to padá, protože přistupuju do nezinicializvaného pole!
                 // špatně deserializovaná složka .block v vBlock
-                //this->table[inode].content[block->fragment].push_back(block);
-                //tableItem ti = this->table[inode];
-                //std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
                 this->table[inode].content[block->fragment].push_back(block);
                 this->setBlockAsUsed(inode, block);
-                /*
-                std::cout << "ti.content.size() = " << this->table[inode].content.size() << "\n";
-                for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = this->table[inode].content.begin(); i != this->table[inode].content.end(); i++) {
-                    std::cout << "fragment = " << i->first << ", ";
-                    for(std::vector<vBlock*>::iterator j = i->second.begin(); j != i->second.end(); j++) {
-                        std::cout << print_vBlock(*j);
-                    }
-                    std::cout << "\n";
-                }
-                std::cout << "............................\n";
-                this->print();
-                */
             } else {
                 // následující dva řádky obstarává volání setBlockAsReserved()
                 //this->table[inode].reserved.insert(block);
@@ -118,12 +107,61 @@ namespace HiddenFS {
             }
         }
 
+        bool isInodePresent(inode_t inode) {
+            return (this->table.find(inode) != this->table.end());
+        }
+
+        /**
+         * Vyhledá veškeré bloky obsazené, či rezervované k souboru
+         * @param inode identifikace souboru
+         * @param block metoda naplní tento seznam bloky, které byly přiřazeny
+         * k tomuto souboru a měly by být volající metodou fyzicky uvolněn.
+         * @throw ExceptionFileNotFound pokud inode v tabulce neexistuje
+         */
+        void findAllBlocks(inode_t inode, std::set<vBlock*>& blocks) {
+            if(this->table.find(inode) == this->table.end()) {
+                throw ExceptionFileNotFound(inode);
+            }
+
+            // zkopírování rezervovaných bloků
+            this->getReservedBlocks(inode, blocks);
+            //blocks.insert(this->table[inode].reserved.begin(), this->table[inode].reserved.end());
+
+            // zkopírování bloků obsahu
+            this->findUsedBlocks(inode, blocks);
+        }
+
+        /**
+         * Nalezne všechny obsazené bloky, které tento soubor obsadil
+         * @param inode identifikace souboru, jehož obsah chceme nalézt
+         * @param blocks seznam všech obsazených bloků
+         * @throw ExceptionFileNotFound pokud inode v tabulce neexistuje
+         */
+        void findUsedBlocks(inode_t inode, std::set<vBlock*>& blocks) {
+            if(this->table.find(inode) == this->table.end()) {
+                throw ExceptionFileNotFound(inode);
+            }
+
+            // zkopírování bloků obsahu
+            std::map<fragment_t, std::vector<vBlock*> >::iterator i;
+            for(i = this->table[inode].content.begin(); i != this->table[inode].content.end(); i++) {
+                blocks.insert(i->second.begin(), i->second.end());
+            }
+        }
+
         /**
          * Naplní parametr reserved seznamem bloků, které má soubor určený inode zarezervovány
-         * @param inode
-         * @param reserved
+         * @param inode identifikace souboru, jehož obsah chceme nalézt
+         * @param reserved seznam všech rezervovaných bloků
+         * @throw ExceptionFileNotFound pokud inode v tabulce neexistuje
          */
-        void getReservedBlocks(inode_t inode, std::vector<vBlock*>* reserved);
+        void getReservedBlocks(inode_t inode, std::set<vBlock*>& reserved) {
+            if(this->table.find(inode) == this->table.end()) {
+                throw ExceptionFileNotFound(inode);
+            }
+
+            reserved.insert(this->table[inode].reserved.begin(), this->table[inode].reserved.end());
+        }
 
         /**
          * Vyhledá a vrátí jakýkoli (takže první dostupný) zarezervovaný blok

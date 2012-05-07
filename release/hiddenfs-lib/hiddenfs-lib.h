@@ -22,7 +22,6 @@
 //#define BLOCK_LENGH (1 << 10)
 
 namespace HiddenFS {
-
     class hiddenFs {
     public:
         /**
@@ -46,18 +45,6 @@ namespace HiddenFS {
         /** uložení jednoho bloku se provede několikanásobně do různých fyzických souborů */
         static const char ALLOCATOR_REDUNDANCY = 1 << 7;
 
-        static void usage(std::ostream& s) {
-            s << "Dostupné parametry:\n";
-            s << "\t-c, --create\n\t\tvytvoří nový systém souborů chráněný heslem\n\n";
-            s << "\t-s PATH, --storage=PATH\n\t\tnastaví cestu k úložišti na PATH\n\n";
-            s << "\t-p PASS, --password=PASS\n\t\tnastaví heslo pro dešifrování obsahu,";
-            s << " v kombinaci s -c se použije toto heslo jako šifrovací pro nový";
-            s << " souborový systém. Pokud není přepínač nastaven, čte se ze standartního vstupu\n\n";
-            s << "\t-h, --help\n\t\tzobrazí tuto nápovědu\n";
-            s << "\t-m PATH\n\t\tmountpoint, prázdný adresář pro připojení souborového systému\n";
-            s << "\n";
-        }
-
         /**
          * Nastaví preferovanou strategii pro alokování nových bloků
          * @param strategy typ použité strategie (enum)
@@ -65,13 +52,6 @@ namespace HiddenFS {
          * @todo přes bitové operace nastavit další vlastnosti (redundancy)
          */
         void allocatorSetStrategy(unsigned char strategy, unsigned int redundancy);
-
-        /**
-         * Vrací aktuálně použitou strategii alokace
-         * @deprecated
-         * @return hodnotu z enumu ALLOC_METHOD
-         */
-        //char allocatorGetStrategy();
 
         /**
          * Hlavní výkonná metoda (wrapper nad fuse_main)
@@ -83,10 +63,12 @@ namespace HiddenFS {
 
         static std::string storagePath;
 
-        enum {
+        enum FUSE_ARGS {
             KEY_HELP,
             KEY_CREATE,
             KEY_FUSE_DEBUG,
+            KEY_REMOVE,
+            KEY_FORCE,
         };
 
     protected:
@@ -401,6 +383,13 @@ namespace HiddenFS {
         void chainListAllocate(const hash_ascii_t& hash, vBlock*& output);
 
         /**
+         * Uvolní celý řetězec entit
+         * @param first ukazatel na první blok řetězce
+         * @throw ExceptionRuntimeError pokud nebylo možné projít řetězec až do konce
+         */
+        void chainListFree(vBlock* first);
+
+        /**
          * Serializuje všechny tabulky (CT, ST), uloží všechny jejich kopie
          * a vloží začátky řetězců do superbloku.
          */
@@ -475,20 +464,44 @@ namespace HiddenFS {
                 throw ExceptionRuntimeError("Rekonstrukce structTable nebyla úspěšná.");
             }
         }
+
+        /**
+         * Odstraní obsah souboru i včetně metadat ve structureTable
+         * @param inode identifikace souboru pro smazání
+         */
+        void removeFile(inode_t inode) {
+            std::set<vBlock*> blocks;
+
+            // uvolnění obsahu
+            this->CT->findAllBlocks(inode, blocks);
+            for(std::set<vBlock*>::iterator i = blocks.begin(); i != blocks.end(); i++) {
+                this->removeBlock((*i)->hash, (*i)->block);
+                this->CT->setBlockAsUnused(inode, *i);
+            }
+
+            // uvolnění samotného záznamu
+            this->ST->removeFile(inode);
+        }
+
         // ---------------------------------------------------------------------
         // -----------------------     FUSE     --------------------------------
         // ---------------------------------------------------------------------
 
+        static int fuse_chmod(const char* path, mode_t mode);
+        static int fuse_chown(const char* path, uid_t uid, gid_t gid);
+        static int fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i);
         static int fuse_getattr(const char* path, struct stat* stbuf);
+        static int fuse_mkdir(const char* path, mode_t mode);
         static int fuse_open(const char* path, struct fuse_file_info* file_i);
+        static int fuse_statfs(const char* path, struct statvfs* stat);
         static int fuse_read(const char* path, char* buffer, size_t size, off_t length, struct fuse_file_info* file_i);
+        static int fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* file_i);
+        static int fuse_rename(const char* from, const char* to);
+        static int fuse_rmdir(const char* path);
+        static int fuse_truncate(const char* path, off_t length);
+        static int fuse_unlink(const char* path);
+        static int fuse_utimens(const char* path, const struct timespec tv[2]);
         static int fuse_write(const char* path, const char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i);
         // možná ještě fuse_release
-        static int fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i);
-        static int fuse_rename(const char* from, const char* to);
-        static int fuse_mkdir(const char* path, mode_t mode);
-        static int fuse_rmdir(const char* path);
-        static int fuse_readdir(const char* path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* file_i);
-        static int fuse_truncate(const char* path, off_t length);
     };
 }

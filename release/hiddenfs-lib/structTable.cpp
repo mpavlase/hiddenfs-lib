@@ -129,16 +129,11 @@ namespace HiddenFS {
     }
 
     void structTable::removeFile(inode_t inode) {
-        vFile* fileInfo;
+        vFile* file;
 
-        //try {
-            this->findFileByInode(inode, fileInfo);
-            this->table.erase(inode);
-            this->tableDirContent[fileInfo->parent].erase(inode);
-        //}
-        //catch (ExceptionFileNotFound e) {
-            //this->log()
-        //}
+        this->findFileByInode(inode, file);
+        this->table.erase(inode);
+        this->tableDirContent[file->parent].erase(inode);
     }
 
     inode_t structTable::pathToInode(const char* path, vFile** retFile) {

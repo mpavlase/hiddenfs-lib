@@ -72,6 +72,26 @@ namespace HiddenFS {
     bool flagCreateNewFS;
     bool flagFuseDebug;
     bool flagFuseRun;
+    bool flagForce;
+    bool flagRemove;
+
+    /** Cesta ke spouštěcímu souboru */
+    std::string executableFilename;
+
+    static void usage(std::ostream& s) {
+        s << HiddenFS::executableFilename << " -s PATH1 -m PATH2 [-p PASS] [-c|-r [-f]] [-h]\n\n";
+        s << "Dostupné parametry:\n";
+        s << "\t-c, --create\n\t\tVytvoří nový systém souborů chráněný heslem\n\n";
+        s << "\t-f, --force\n\t\tOdstraní bloky bez potvrzení. Funkční pouze s volbou -r\n\n";
+        s << "\t-h, --help\n\t\tZobrazí tuto nápovědu\n";
+        s << "\t-m PATH, --mountpoint=PATH\n\t\tmountpoint, prázdný adresář pro připojení souborového systému\n";
+        s << "\t-p PASS, --password=PASS\n\t\tNastaví heslo pro dešifrování obsahu,";
+        s << " v kombinaci s -c\n\t\tse použije toto heslo jako šifrovací pro nový";
+        s << " souborový systém.\n\t\tPokud není přepínač nastaven, čte se ze standartního vstupu\n\n";
+        s << "\t-r, --remove\n\t\tOdstraní všechny obsazené bloky i vnitřní struktury\n\n";
+        s << "\t-s PATH, --storage=PATH\n\t\tNastaví cestu k úložišti na PATH\n\n";
+        s << "\n";
+    }
 
     // hotovo
     void hiddenFs::allocatorFindFreeBlock_sameHash(vBlock*& block, hash_ascii_t hash) {
@@ -537,9 +557,31 @@ namespace HiddenFS {
             stbuf->st_size = file->size;
             stbuf->st_nlink = 1;
         }
-        stbuf->st_blksize = 1 << 14;
 
         return ret;
+    }
+
+    int hiddenFs::fuse_utimens(const char* path, const timespec* tv) {
+        return 0;
+    }
+
+    int hiddenFs::fuse_chmod(const char* path, mode_t mode) {
+        return -EACCES;
+    }
+
+    int hiddenFs::fuse_chown(const char* path, uid_t uid, gid_t gid) {
+        return -EACCES;
+    }
+
+    int hiddenFs::fuse_statfs(const char* path, struct statvfs* stvfs) {
+        hiddenFs* hfs = GET_INSTANCE;
+        vFile* file;
+
+        hfs->ST->pathToInode(path, &file);
+
+        stvfs->f_namemax;
+
+        return 0;
     }
 
     int hiddenFs::fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i) {
@@ -646,7 +688,11 @@ namespace HiddenFS {
         bytestream_t* bufferContent;
         size_t sizeContent;
 
-        hfs->getContent(file->inode, &bufferContent, &sizeContent);
+        try {
+            hfs->getContent(file->inode, &bufferContent, &sizeContent);
+        } catch(ExceptionRuntimeError&) {
+            return -EIO;
+        }
 
         // 3) naplnění obsahu
         if(offset > sizeContent) {
@@ -658,8 +704,9 @@ namespace HiddenFS {
             }
 
             memcpy(buffer, bufferContent + offset, size);
-            delete [] bufferContent;
         }
+
+        delete [] bufferContent;
 
         return size;
     }
@@ -680,6 +727,12 @@ namespace HiddenFS {
             hfs->ST->findFileByInode(inode, file);
 
             it = hfs->ST->directoryContent(file->inode);
+
+            // adresář neobsahuje žádné soubory
+            if(it == hfs->ST->directoryContentEnd()) {
+                return 0;
+            }
+
             for(std::set<inode_t>::iterator i = it->second.begin(); i != it->second.end(); i++) {
                 // kořenový adresář nevypisovat, protože se jedná jen o logický záznam
                 if(*i == structTable::ROOT_INODE) {
@@ -731,11 +784,30 @@ namespace HiddenFS {
         return 0;
     }
 
+    int hiddenFs::fuse_unlink(const char* path) {
+        hiddenFs* hfs = GET_INSTANCE;
+        vFile* file;
+
+        hfs->ST->pathToInode(path, &file);
+
+        hfs->removeFile(file->inode);
+
+        return 0;
+    }
+
     int hiddenFs::fuse_rmdir(const char* path) {
         std::cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< \n";
         std::cout << " << <<<<<<<<<" << path << "<<<<<<<<<< \n";
         std::cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< \n";
-        throw "hiddenFs::fuse_rmdir ještě není implementované!";
+
+        hiddenFs* hfs = GET_INSTANCE;
+        vFile* file;
+
+        // překld cesty na inode
+        hfs->ST->pathToInode(path, &file);
+
+        // uvolnění samotného záznamu
+        hfs->ST->removeFile(file->inode);
 
         return 0;
     }
@@ -744,19 +816,33 @@ namespace HiddenFS {
         std::cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< \n";
         std::cout << " << <<<<<<<<<" << path << ", length = " << length << "<<<<<<<<<< \n";
         std::cout << " <<  <<<<<<<<<<<<<<<<<<<<<<<< \n";
-        throw "hiddenFs::fuse_truncate ještě není implementované!";
+        //throw "hiddenFs::fuse_truncate ještě není implementované!";
 
         hiddenFs* hfs = GET_INSTANCE;
         bytestream_t* buffer;
-        inode_t inode;
         vFile* file;
         size_t size;
+        std::set<vBlock*> blocks;
 
-        inode = hfs->ST->pathToInode(path);
-        hfs->ST->findFileByInode(inode, file);
+        hfs->ST->pathToInode(path, &file);
 
-        hfs->getContent(file->inode, &buffer, &size);
-        hfs->allocatorAllocate(file->inode, buffer, length);
+        if(length == 0) {
+            hfs->CT->findUsedBlocks(file->inode, blocks);
+            for(std::set<vBlock*>::iterator i = blocks.begin(); i != blocks.end(); i++) {
+                hfs->CT->setBlockAsReserved(file->inode, *i);
+            }
+
+            return 0;
+        }
+
+        try {
+            hfs->getContent(file->inode, &buffer, &size);
+            hfs->allocatorAllocate(file->inode, buffer, length);
+        } catch(ExceptionRuntimeError&) {
+            return -EIO;
+        } catch(...) {
+            return -EIO;
+        }
 
         return 0;
     }
@@ -836,6 +922,14 @@ namespace HiddenFS {
                 HiddenFS::flagCreateNewFS = true;
                 break;
             }
+            case hiddenFs::KEY_REMOVE : {
+                HiddenFS::flagRemove = true;
+                break;
+            }
+            case hiddenFs::KEY_FORCE : {
+                HiddenFS::flagForce = true;
+                break;
+            }
             case hiddenFs::KEY_FUSE_DEBUG : {
                 HiddenFS::flagFuseDebug = true;
                 fuse_opt_add_arg(outargs, "-d");
@@ -873,6 +967,8 @@ namespace HiddenFS {
         HiddenFS::flagCreateNewFS = false;
         HiddenFS::flagFuseRun = true;
         HiddenFS::flagFuseDebug = false;
+        HiddenFS::flagForce = false;
+        HiddenFS::flagRemove = false;
 
         #define HFS_OPT_KEY(t, p, v) { t, offsetof(struct optionsStruct, p), v }
 
@@ -884,14 +980,23 @@ namespace HiddenFS {
             HFS_OPT_KEY("--password=%s", password, 0),
 
             HFS_OPT_KEY("-m %s", mountpoint, 0),
+            HFS_OPT_KEY("--mountpoint %s", mountpoint, 0),
 
             FUSE_OPT_KEY("-c",             KEY_CREATE),
             FUSE_OPT_KEY("--create",       KEY_CREATE),
-            FUSE_OPT_KEY("-d",       KEY_FUSE_DEBUG),
+            FUSE_OPT_KEY("-d",             KEY_FUSE_DEBUG),
+            FUSE_OPT_KEY("-f",             KEY_FORCE),
+            FUSE_OPT_KEY("--force",        KEY_FORCE),
             FUSE_OPT_KEY("-h",             KEY_HELP),
             FUSE_OPT_KEY("--help",         KEY_HELP),
+            FUSE_OPT_KEY("-r",             KEY_REMOVE),
+            FUSE_OPT_KEY("--remove",       KEY_REMOVE),
             FUSE_OPT_END
         };
+
+        if(argc > 0) {
+            HiddenFS::executableFilename = argv[0];
+        }
 
         struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
         memset(&(this->options), 0, sizeof(struct optionsStruct));
@@ -900,19 +1005,25 @@ namespace HiddenFS {
             return EXIT_FAILURE;
         }
 
-        // zakázat spouštění ve více vláknech
+        // zamezit spouštění FUSE ve více vláknech
         fuse_opt_add_arg(&args, "-s");
 
         // kontrola existence umístění úložiště
         if(this->options.storagePath == NULL) {
             std::cerr << "Nebyla zadána cesta k adresáři úložiště.\n";
-            this->usage(std::cerr);
+            usage(std::cerr);
             return EXIT_FAILURE;
         }
 
         if(this->options.mountpoint == NULL) {
             std::cerr << "Nebyla zadána cesta k přípojnému bodu (mountpoint).\n";
-            this->usage(std::cerr);
+            usage(std::cerr);
+            return EXIT_FAILURE;
+        }
+
+        if(HiddenFS::flagCreateNewFS && HiddenFS::flagRemove) {
+            std::cerr << "Nepřípustná kombinace parametrů: -c a -r\n";
+            usage(std::cerr);
             return EXIT_FAILURE;
         }
 
@@ -987,20 +1098,12 @@ namespace HiddenFS {
             std::cin.getline(pass1, PASSWORD_MAX_LENGTH);
             this->setConsoleEcho(true);
 
-            ///@todo najít FS, který se dá dešifrovat tímto heslem
             this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
         } else {
             // použijeme stávající superblock, heslo z parametru příkazové řádky
             memset(pass1, '\0', PASSWORD_MAX_LENGTH);
             strcpy(pass1, options.password);
             this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
-        }
-
-        // Zadali jsme nesprávné heslo, konec.
-        if(!HiddenFS::flagCreateNewFS && !this->SB->hasKnownItems()) {
-            std::cout << "Nesprávné heslo.\n";
-
-            return EXIT_FAILURE;
         }
 
         vBlock* sbBlock;
@@ -1067,6 +1170,45 @@ namespace HiddenFS {
             */
         }
 
+        // Zadali jsme nesprávné heslo, konec.
+        if(!HiddenFS::flagCreateNewFS && !this->SB->hasKnownItems()) {
+            std::cout << "Nesprávné heslo.\n";
+
+            return EXIT_FAILURE;
+        }
+
+        if(HiddenFS::flagRemove) {
+            assert(this->SB->isLoaded());
+            std::set<vBlock*> chain;
+
+            if(!HiddenFS::flagForce) {
+                std::string input;
+                std::cout << "Opravdu chcete smazat veškeré stopy po aktuálním souborovém systému [y/n]? " << std::flush;
+
+                std::cin >> input;
+                if(input != "y") {
+                    return EXIT_SUCCESS;
+                }
+            }
+
+            /* Odstranit:
+             * 1) všechny bloky podle content table
+             * 2) všechny kopie struct table
+             * 3) všechny kopie content table
+             * 4) všechny kopie superbloků - jen pokud nejsou přítomny žádné další.
+             **/
+
+            // odstranění kompletě všech záznamů z content table i struct table
+            for(structTable::table_t::const_iterator i = this->ST->begin(); i != this->ST->end(); i++) {
+                this->removeFile(i->first);
+            }
+
+            this->SB->clearKnownItems();
+            this->SB->readKnownItems(chain, superBlock::TABLE_CONTENT_TABLE);
+            this->cha
+
+        }
+
         // v úložišti dosud neexistuje jediná kopie superbloku
         if(HiddenFS::flagCreateNewFS && this->superBlockLocations.empty()) {
             if(this->superBlockLocations.empty()) {
@@ -1098,16 +1240,21 @@ namespace HiddenFS {
         // set allowed FUSE operations
         static struct fuse_operations fsOperations;
 
-        fsOperations.getattr = this->fuse_getattr;
-        fsOperations.readdir = this->fuse_readdir;
-        fsOperations.open = this->fuse_open;
-        fsOperations.read = this->fuse_read;
-        fsOperations.write = this->fuse_write;
+        fsOperations.chmod = this->fuse_chmod;
+        fsOperations.chown = this->fuse_chown;
         fsOperations.create  = this->fuse_create;
-        fsOperations.rename  = this->fuse_rename;
+        fsOperations.getattr = this->fuse_getattr;
         fsOperations.mkdir  = this->fuse_mkdir;
+        fsOperations.open = this->fuse_open;
+        fsOperations.statfs = this->fuse_statfs;
+        fsOperations.read = this->fuse_read;
+        fsOperations.readdir = this->fuse_readdir;
+        fsOperations.rename  = this->fuse_rename;
         fsOperations.rmdir  = this->fuse_rmdir;
-        //fsOperations.truncate  = this->fuse_truncate;
+        fsOperations.truncate  = this->fuse_truncate;
+        fsOperations.unlink  = this->fuse_unlink;
+        fsOperations.utimens = this->fuse_utimens;
+        fsOperations.write = this->fuse_write;
 
         /*
         try {
@@ -1714,6 +1861,28 @@ namespace HiddenFS {
         this->encryption->encrypt(buff, BLOCK_USABLE_LENGTH, &encBuffer, &encBufferLen);
 
         this->writeBlock(location->hash, location->block, encBuffer, encBufferLen, idByte);
+    }
+
+    void hiddenFs::chainListFree(vBlock* first) {
+        vBlock* act;
+        vBlock* next;
+        chainList_t chain;
+
+        act = first;
+
+        try {
+            while(true) {
+                this->chainListRestore(act, next, chain);
+
+                if(next == NULL) {
+                    break;
+                }
+
+                act = next;
+            }
+        } catch(...) {
+            throw ExceptionRuntimeError("hiddenFs::chainListFree řetěz nebyl načten kompleně");
+        }
     }
 
     void hiddenFs::chainListAllocate(const hash_ascii_t& hash, vBlock*& block) {

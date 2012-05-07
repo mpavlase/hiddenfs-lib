@@ -26,6 +26,7 @@ namespace HiddenFS {
         static const inode_t ERR_INODE = -1;
         static const char PATH_DELIM = '/';
         typedef std::map<inode_t, std::set<inode_t> > table_content_t;
+        typedef std::map<inode_t, vFile* > table_t;
 
         /**
          * user-friendly obsah tabulek, používat pouze pro ladění!
@@ -60,7 +61,7 @@ namespace HiddenFS {
         inode_t insertFile(vFile* file);
 
         /**
-         * Odstraní soubor z tabulek
+         * Odstraní soubor z tabulek. Funguje pro běžné soubory i adresáře.
          * @param inode inode mazaného souboru
          */
         void removeFile(inode_t inode);
@@ -127,6 +128,14 @@ namespace HiddenFS {
         }
 
         /**
+         * Vrací iterátor .end() z tabulky tableDirContent
+         * @return iterátor .end()
+         */
+        table_content_t::iterator directoryContentEnd() {
+            return this->tableDirContent.end();
+        }
+
+        /**
          * Změní atribut 'parent' od inode na jiný. Funkce volající tuto metodu MUSÍ ZAJISTIT,
          * aby se pod stejném 'parent' nevyskytovaly dva soubory stejného jména.
          * @param inode inode souboru, kterému se má změnit nadřazený adresáč
@@ -147,8 +156,23 @@ namespace HiddenFS {
          */
         void deserialize(const chainList_t& input);
 
+        /**
+         * Vrací iterátor na začátek hlavní tabulky
+         * @return konstantní iterátor
+         */
+        table_t::const_iterator begin() {
+            return this->table.begin();
+        }
+
+        /**
+         * Vrací iterátor na konec hlavní tabulky
+         * @return konstantní iterátor
+         */
+        table_t::const_iterator end() {
+            return this->table.end();
+        }
+
     private:
-        typedef std::map<inode_t, vFile* > table_t;
 
         /**
          * hlavní hashovací tabulka

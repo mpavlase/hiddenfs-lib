@@ -182,10 +182,16 @@ namespace HiddenFS {
             offset += sizeof(inode);
                 //std::cout << "CT::deserializace.content adredsa: " << (int) (((*i).content) + offset) << std::endl;
 
+
             // nalezli jsme prázdný blok, takže pouze zinicializujeme vnitřní struktury
             if(memcmp(emptyBlock, i->content + offset, SIZEOF_vBlock) == 0) {
+                assert(!this->isInodePresent(inode));
                 this->newEmptyContent(inode);
             } else {
+                if(!this->isInodePresent(inode)) {
+                    this->newEmptyContent(inode);
+                }
+
                 unserialize_vBlock(i->content + offset, SIZEOF_vBlock, &block);
                 this->addContent(inode, block);
             }
@@ -194,10 +200,6 @@ namespace HiddenFS {
 
             assert(offset == i->length);
         }
-    }
-
-    void contentTable::getReservedBlocks(inode_t inode, std::vector<vBlock*>* reserved) {
-        reserved->assign(this->table[inode].reserved.begin(), this->table[inode].reserved.end());
     }
 
     void contentTable::print() {
@@ -210,8 +212,7 @@ namespace HiddenFS {
             /// @todo tisknout i rezervované bloky
             for(std::map<fragment_t, std::vector<vBlock*> >::iterator i = it->second.content.begin(); i !=  it->second.content.end(); i++) {
                 std::cout << "\n       [#" << i->first << ": ";
-                for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++)
-                {
+                for(std::vector<vBlock*>::iterator j = i->second.begin() ; j != i->second.end(); j++) {
                     std::cout << print_vBlock(*j);
                 }
                 std::cout << "]";
