@@ -97,30 +97,40 @@ namespace HiddenFS {
         return this->update_crc(0L, buf, len);
     }
 
-    bool idByteIsSuperBlock(id_byte_t b) {
-        return (b > ID_BYTE_BOUNDARY);
-    };
-
     bool idByteIsDataBlock(id_byte_t b) {
-        return !idByteIsSuperBlock(b);
+        return (0 < b && b < ID_BYTE_BOUNDARIES[0]);
     };
 
-    id_byte_t idByteMaxValue() {
+    bool idByteIsSuperBlock(id_byte_t b) {
+        return (ID_BYTE_BOUNDARIES[0] < b && b < ID_BYTE_BOUNDARIES[1]);
+    };
+
+    bool idByteIsChain(id_byte_t b) {
+        return (ID_BYTE_BOUNDARIES[1] < b && b < idByteMaxValue());
+    }
+
+    const id_byte_t idByteMaxValue() {
         /* Protože je datový typ id_byte_t bezznaménkový, lze pro nejvyšší
-         * dosažitelnou hodotu jednoduše využít podtečení */
+         * dosažitelnou hodnotu jednoduše využít podtečení */
         return -1;
     };
 
     id_byte_t idByteGenDataBlock() {
-        // <0; ID_BYTE_BOUNDARY)
+        // interval (0; ID_BYTE_BOUNDARIES[0])
 
-        return (rand() % ID_BYTE_BOUNDARY);
+        return (rand() % (ID_BYTE_BOUNDARIES[0] - 1) ) + 1;
     }
 
     id_byte_t idByteGenSuperBlock() {
-        // <ID_BYTE_BOUNDARY; idByteMaxValue()>
+        // interval (ID_BYTE_BOUNDARIES[0]; ID_BYTE_BOUNDARIES[1])
 
-        return ID_BYTE_BOUNDARY + (rand() % (idByteMaxValue() - ID_BYTE_BOUNDARY));
+        return ID_BYTE_BOUNDARIES[0] + (rand() % (ID_BYTE_BOUNDARIES[1] - ID_BYTE_BOUNDARIES[0] - 1)) + 1;
+    }
+
+    id_byte_t idByteGenChain() {
+        // interval (ID_BYTE_BOUNDARIES[1]; idByteMaxValue())
+
+        return ID_BYTE_BOUNDARIES[1] + (rand() % (idByteMaxValue() - ID_BYTE_BOUNDARIES[1] - 1)) + 1;
     }
 
     void pBytes(bytestream_t* input, size_t len) {
@@ -135,7 +145,7 @@ namespace HiddenFS {
         }
         std::cout << std::dec << "\nASCII --->";
         std::cout.write((const char*)input, len);
-        std::cout << "\n";
+        std::cout << "\n" << std::flush;
     }
 
     void serialize_vBlock(vBlock* input, bytestream_t** output, size_t* size) {

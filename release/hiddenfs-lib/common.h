@@ -34,6 +34,13 @@ namespace HiddenFS {
     std::string print_vBlock(vBlock* b);
 
     /**
+     * User-friendly tisk (HEX i ASCII) bloku binárních dat
+     * @param input vstupní data
+     * @param len délka vstupních dat
+     */
+    void pBytes(bytestream_t* input, size_t len);
+
+    /**
      * Převod struktury vBlock na blok bytů
      * @param input zpracovávaný vBlock
      * @param output výstupní buffer, metoda sama alokuje dostatečný prostor
@@ -94,8 +101,9 @@ namespace HiddenFS {
         /**
          * Uložení šifrovacího klíče do nitra objektu
          */
-        virtual void setKey(bytestream_t* key, size_t keySize) {
+        void setKey(bytestream_t* key, size_t keySize) {
             std::cout << "IEncryption::setKey = " << key << "\n" << std::flush;
+            //HiddenFS::pBytes(key, keySize);
             this->key = new bytestream_t[keySize];
             this->keySize = keySize;
             memcpy(this->key, key, this->keySize);
@@ -128,27 +136,32 @@ namespace HiddenFS {
     public:
         byte encKey[CryptoPP::AES::DEFAULT_KEYLENGTH];
         byte encIv[CryptoPP::AES::BLOCKSIZE];
+        bool encKeyFilled;
 
         DefaultEncryption() : IEncryption() {
             assert((unsigned size_t)this->keySize <= (unsigned size_t)CryptoPP::AES::DEFAULT_KEYLENGTH);
 
             memset(this->encKey, '\0', sizeof(this->encKey));
-            memcpy(this->encKey, this->key, this->keySize);
             //prng.GenerateBlock(key, sizeof(key));
 
             memset(this->encIv, '\0', sizeof(this->encIv));
             //prng.GenerateBlock(iv, sizeof(iv));
+            this->encKeyFilled = false;
         }
 
         void encrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
             std::string cipher;
+            if(!this->encKeyFilled) {
+                memcpy(this->encKey, this->key, this->keySize);
+                this->encKeyFilled = true;
+            }
 
             assert(input != NULL);
             assert(outputSize != NULL);
 
             try {
                 CryptoPP::OFB_Mode< CryptoPP::AES >::Encryption e;
-                e.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
+                e.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv, sizeof(this->encIv));
 
                 // OFB mode must not use padding. Specifying
                 //  a scheme will result in an exception
@@ -161,7 +174,6 @@ namespace HiddenFS {
                 *outputSize = cipher.length();
                 *output = new bytestream_t[*outputSize];
                 cipher.copy((char*)*output, *outputSize, 0);
-                //memcpy(*output, cipher.data(), *outputSize);
             } catch(const CryptoPP::Exception& e) {
                 std::cerr << e.what() << std::endl;
                 exit(1);
@@ -170,10 +182,14 @@ namespace HiddenFS {
 
         void decrypt(bytestream_t* input, size_t inputSize, bytestream_t** output, size_t* outputSize) {
             std::string recovered;
+            if(!this->encKeyFilled) {
+                memcpy(this->encKey, this->key, this->keySize);
+                this->encKeyFilled = true;
+            }
 
             try {
                 CryptoPP::OFB_Mode< CryptoPP::AES >::Decryption d;
-                d.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv);
+                d.SetKeyWithIV(this->encKey, sizeof(this->encKey), this->encIv, sizeof(this->encIv));
 
                 // The StreamTransformationFilter removes
                 //  padding as required.
@@ -186,7 +202,6 @@ namespace HiddenFS {
                 *outputSize = recovered.length();
                 *output = new bytestream_t[*outputSize];
                 recovered.copy((char*)*output, *outputSize, 0);
-                //memcpy(*output, recovered.data(), *outputSize);
             } catch(const CryptoPP::Exception& e) {
                 std::cerr << e.what() << std::endl;
                 exit(1);
@@ -197,6 +212,7 @@ namespace HiddenFS {
     /**
      * Jedna složka spojového seznamu pro uložení serializovaných entit (=řádků)
      * tabulek
+     * @deprecated
      */
     struct chainOfEntities {
         /** Počet entit v aktuálním článku řetězu */
@@ -239,9 +255,14 @@ namespace HiddenFS {
     bool idByteIsDataBlock(id_byte_t b);
 
     /**
+     * Funkce testuje hodnotu parametru, zda je v rozsahu pro řetěz entit
+     */
+    bool idByteIsChain(id_byte_t b);
+
+    /**
      * Vrací nejvyšší dosažitelnou hodnotu dle datového typu
      */
-    id_byte_t idByteMaxValue();
+    const id_byte_t idByteMaxValue();
 
     /**
      * Generuje hodnotu platnou pro běžný datový blok
@@ -253,13 +274,10 @@ namespace HiddenFS {
      */
     id_byte_t idByteGenSuperBlock();
 
-
     /**
-     * User-friendly tisk (HEX i ASCII) bloku binárních dat
-     * @param input vstupní data
-     * @param len délka vstupních dat
+     * Generuje hodnotu v rozsahu platném pro řetěz entit
      */
-    void pBytes(bytestream_t* input, size_t len);
+    id_byte_t idByteGenChain();
 
     /**
      * Převede hash souboru (může být binární) do podoby běžného ASCII.
