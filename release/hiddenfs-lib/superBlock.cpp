@@ -82,8 +82,11 @@ namespace HiddenFS {
             tableForeign tfi;
 
             tfi.length = bufferLength;
+
+            assert(tfi.length == RAW_ITEM_SIZE);
+
             tfi.content = new bytestream_t[tfi.length];
-            memcpy(tfi.content, buffOut, tfi.length);
+            memcpy(tfi.content, buffer, tfi.length);
             offset = tfi.length;
             this->foreignItems.push_back(tfi);
         }
