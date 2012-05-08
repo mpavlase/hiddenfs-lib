@@ -44,7 +44,7 @@ $(PROJECT): $(PROJECT).cpp $(OBJFILES)
 	@echo "Kompilace je OK."
 ###############################################
 valgrind: all
-	valgrind -v --leak-check=full --show-reachable=no ./$(OUTPUT) -d ./vfs
+	valgrind -v --leak-check=full --show-reachable=no ./$(OUTPUT) -d  -s ../../mp3_examples -m ./vfs
 
 mount: all
 	./$(OUTPUT) -d vfs/
