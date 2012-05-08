@@ -29,7 +29,7 @@ namespace HiddenFS {
          * @param instance instance objektu implementující rozhraní IEncryption
          */
         hiddenFs(IEncryption* instance);
-        virtual ~hiddenFs();
+        ~hiddenFs();
 
         /** datový typ kontrolního součtu */
         typedef CRC::CRC_t checksum_t;
@@ -94,6 +94,15 @@ namespace HiddenFS {
             char* password;
             char* mountpoint;
         };
+
+        typedef struct {
+            bytestream_t* buffer;
+            size_t allocated;
+            size_t length;
+            bool enabled;
+        } fileWriteBuff_t;
+
+        fileWriteBuff_t fileWriteBuff;
 
         struct optionsStruct options;
 
@@ -420,7 +429,7 @@ namespace HiddenFS {
         void tableRestoreFromSB() {
             std::set<vBlock*> chainCT;
             std::set<vBlock*> chainST;
-            chainList_t chain;
+            chainList_t chainList;
             bool success = false;
 
             assert(this->SB->isLoaded());
@@ -428,12 +437,12 @@ namespace HiddenFS {
             this->SB->readKnownItems(chainCT, superBlock::TABLE_CONTENT_TABLE);
             this->SB->readKnownItems(chainST, superBlock::TABLE_STRUCT_TABLE);
 
-            chain.clear();
+            chainList.clear();
             success = false;
             for(std::set<vBlock*>::const_iterator i = chainCT.begin(); i != chainCT.end(); i++) {
                 try {
-                    this->chainListCompleteRestore(*i, chain);
-                    this->CT->deserialize(chain);
+                    this->chainListCompleteRestore(*i, chainList);
+                    this->CT->deserialize(chainList);
                     success = true;
 
                     break;
@@ -446,12 +455,12 @@ namespace HiddenFS {
                 throw ExceptionRuntimeError("Rekonstrukce contentTable nebyla úspěšná.");
             }
 
-            chain.clear();
+            chainList.clear();
             success = false;
             for(std::set<vBlock*>::const_iterator i = chainST.begin(); i != chainST.end(); i++) {
                 try {
-                    this->chainListCompleteRestore(*i, chain);
-                    this->ST->deserialize(chain);
+                    this->chainListCompleteRestore(*i, chainList);
+                    this->ST->deserialize(chainList);
                     success = true;
 
                     break;
@@ -490,6 +499,7 @@ namespace HiddenFS {
         static int fuse_chmod(const char* path, mode_t mode);
         static int fuse_chown(const char* path, uid_t uid, gid_t gid);
         static int fuse_create(const char* path, mode_t mode, struct fuse_file_info* file_i);
+        static int fuse_flush(const char* path, struct fuse_file_info* info);
         static int fuse_getattr(const char* path, struct stat* stbuf);
         static int fuse_mkdir(const char* path, mode_t mode);
         static int fuse_open(const char* path, struct fuse_file_info* file_i);

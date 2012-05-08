@@ -50,7 +50,7 @@ mount: all
 	./$(OUTPUT) -d vfs/
 
 debug: all umount
-	gdb -x list.gdb --args ./$(OUTPUT) -d -c -s ../../mp3_examples -m ./vfs -p 123
+	gdb -x list.gdb --args ./$(OUTPUT) -d -s ../../mp3_examples -m ./vfs
 
 ddd: all umount
 	ddd -x list.gdb --args ./$(OUTPUT) -d -s ../../mp3_examples -m ./vfs -p 123

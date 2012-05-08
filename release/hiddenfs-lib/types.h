@@ -90,7 +90,7 @@ namespace HiddenFS {
 
     /** čísla pod touto hodnotou (bez této hodnoty) jsou považovány za identifikátor
      * běžného datového bloku, hodnoty rovny nebo větší jsou považovány za superblok */
-    static const id_byte_t ID_BYTE_BOUNDARY = 127;
+    static const id_byte_t ID_BYTE_BOUNDARIES[] = {127, 200};
 
     /** počet prázdných souborů, které se vyhledávají v jedné iteraci při
      * automatickém vytváření kontextů */
@@ -126,6 +126,9 @@ namespace HiddenFS {
 
     /** Počet pokusů při zadávní hesla */
     static const unsigned int PASSWORD_MAX_ATTEMPTS = 3;
+
+    /** Velikost bloku při alokování bufferu pro zápis (implicitně 1MB) */
+    static const unsigned int WRITE_BUFF_ALLOC_BLOCKSIZE = 1 << 20;
 
     /**
      * Reprezentace virtuálního souboru - skrývaného souboru

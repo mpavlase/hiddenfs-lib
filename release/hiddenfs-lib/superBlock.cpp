@@ -64,34 +64,31 @@ namespace HiddenFS {
         CRC c = CRC();
         checksumComputed = c.calculate(buffOut + offset, buffOutLength - offset);
 
-        if(checksumRead != checksumComputed) {
+        if(checksumRead == checksumComputed) {
+            // naplnění typu tabulky
+            memcpy(&(item.table), buffOut + offset, sizeof(item.table));
+            offset += sizeof(item.table);
+
+            // naplnění umístění prvního bloku z řetězu
+            unserialize_vBlock(buffOut + offset, SIZEOF_vBlock, &block);
+            item.first = new vBlock;
+            memcpy(item.first, block, sizeof(vBlock));
+            offset += SIZEOF_vBlock;
+
+            std::cout << "superBlock::readItem table=" << (char) item.table << ", first=" << print_vBlock(item.first) << std::endl;
+
+            this->knownItems.push_back(item);
+        } else {
             tableForeign tfi;
 
             tfi.length = bufferLength;
             tfi.content = new bytestream_t[tfi.length];
-
+            memcpy(tfi.content, buffOut, tfi.length);
+            offset = tfi.length;
             this->foreignItems.push_back(tfi);
-            /// @todo Je nutné vyhazovat výjimku?
-            //throw ExceptionRuntimeError("Blok neobsahuje korektní obsah.");
-
-            return;
         }
 
-        // naplnění typu tabulky
-        memcpy(&(item.table), buffOut + offset, sizeof(item.table));
-        offset += sizeof(item.table);
-
-        // naplnění umístění prvního bloku z řetězu
-        unserialize_vBlock(buffOut + offset, SIZEOF_vBlock, &block);
-        item.first = new vBlock;
-        memcpy(item.first, block, sizeof(vBlock));
-        offset += SIZEOF_vBlock;
-
-            std::cout << "superBlock::readItem table=" << (char) item.table << ", first=" << print_vBlock(item.first) << std::endl;
-
         assert(offset == bufferLength);
-
-        this->knownItems.push_back(item);
     }
 
     void superBlock::serialize(bytestream_t** bufferOut, size_t* size) {
@@ -147,6 +144,8 @@ namespace HiddenFS {
             delete [] bufferEncoded;
             delete [] blockBuff;
         }
+
+        delete [] bufferToEncode;
 
         for(table_foreign_t::iterator i = this->foreignItems.begin(); i != this->foreignItems.end(); i++) {
             std::cout << "sizeof foreign prvku: " << i->length << std::endl;

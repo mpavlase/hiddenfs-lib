@@ -157,8 +157,6 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
 
             std::istringstream(tagFilename) >> blok;
             context->usedBlocks.insert(blok);
-            //std::cout << "GEOB[" << blok << "]: " << frame->GetField(ID3FN_FILENAME)->GetRawText() << ", " << frame->GetField(ID3FN_DATA)->GetRawBinary() << "\n";
-            //std::cout << "a_" << tagFilename << "\n";
         }
     }
 
@@ -221,6 +219,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     std::cout << ", poč.avaliable: " << context->avaliableBlocks.size();
     std::cout << ", max bloku: " << context->maxBlocks << ", poč. volných bloků:" << context->avaliableBlocks.size() << "\n";
 
+    std::cout << "CREATE CONTEXT pro " << filename;
     std::cout << "used = ";
     for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
         std::cout << *setIt << ", ";
