@@ -7,9 +7,8 @@
 #include <dirent.h>
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
 #include <math.h>
-#include <dirent.h>
+#include <stdexcept>
 #include <sys/stat.h>
 
 #include <cryptopp/sha.h>
@@ -114,6 +113,11 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     ID3_Frame* frameX;
     unsigned int usedSize;
 
+    // výpočet objem rámců, které je možno použít pro uložení datových bloků
+    int stat_ret = stat(filename.c_str(), &stBuff);
+    char* msg1 = strerror(stat_ret);
+    char* msg2 = strerror(errno);
+
     context->userContext = new mp3context;
     ((mp3context*) context->userContext)->tag = new ID3_Tag((const char*)filename.c_str());
 
@@ -130,9 +134,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
         //std::cout << "\n";
     }
 
-    // výpočet objem rámců, které je možno použít pro uložení datových bloků
-    stat(filename.c_str(), &stBuff);
-    int pureContentLength = stBuff.st_size - sumGEOB;
+    unsigned int pureContentLength = stBuff.st_size - sumGEOB;
     context->maxBlocks = floor(pureContentLength * STEGO_RATIO / BLOCK_MAX_LENGTH);
 
     // průchod přes všechny ID3 tagy typu Global Enculapsed Object pro nalezení
@@ -289,6 +291,7 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
             if(pos != std::string::npos && pos == (filename.length() - filterLower.length())) {
                 //cout << path  << filename << " ...ok" << endl;
                 output.push_back(filepath);
+
                 break;
             } else {
                 //cout << path << filenameLower << " ## mě nezajímá" <<  endl;

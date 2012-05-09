@@ -9,6 +9,7 @@
 #include <cryptopp/hex.h>
 #include <exception>
 #include <iostream>
+#include <linux/limits.h>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -25,48 +26,6 @@
 
 #include "common.h"
 #include "hiddenfs-lib.h"
-
-/*
-struct fuse_file_info {
-	// Open flags.	 Available in open() and release()
-	int flags;
-
-	// Old file handle, don't use
-	unsigned long fh_old;
-
-	// In case of a write operation indicates if this was caused by a
-	    writepage
-	int writepage;
-
-	// Can be filled in by open, to use direct I/O on this file.
-	    Introduced in version 2.4
-	unsigned int direct_io : 1;
-
-	// Can be filled in by open, to indicate, that cached file data
-	    need not be invalidated.  Introduced in version 2.4
-	unsigned int keep_cache : 1;
-
-	// Indicates a flush operation.  Set in flush operation, also
-	    maybe set in highlevel lock operation and lowlevel release
-	    operation.	Introduced in version 2.6
-	unsigned int flush : 1;
-
-	// Can be filled in by open, to indicate that the file is not
-	    seekable.  Introduced in version 2.8
-	unsigned int nonseekable : 1;
-
-	// Padding.  Do not use
-	unsigned int padding : 28;
-
-	// File handle.  May be filled in by filesystem in open().
-	    Available in all other file operations
-	uint64_t fh;
-
-	// Lock owner id.  Available in locking operations and flush
-	uint64_t lock_owner;
-};
-*/
-
 
 namespace HiddenFS {
     bool flagCreateNewFS;
@@ -562,7 +521,6 @@ namespace HiddenFS {
         vFile* file;
         hfs->ST->pathToInode(path, &file);
 
-        stvfs->f_namemax;
         */
         return 0;
     }
@@ -588,10 +546,8 @@ namespace HiddenFS {
         hfs->CT->newEmptyContent(inode);
 
         // příprava bufferu pro zápis
-        if(hfs->fileWriteBuff.buffer == NULL) {
-            hfs->fileWriteBuff.allocated = WRITE_BUFF_ALLOC_BLOCKSIZE;
-            hfs->fileWriteBuff.buffer = new bytestream_t[hfs->fileWriteBuff.allocated];
-        }
+        assert(hfs->fileWriteBuff.buffer == NULL);
+        assert(hfs->fileWriteBuff.allocated == 0);
 
         hfs->fileWriteBuff.length = 0;
         hfs->fileWriteBuff.enabled = false;
@@ -664,32 +620,12 @@ namespace HiddenFS {
         vFile* file;
         hiddenFs* hfs = GET_INSTANCE;
 
-        std::cout << " <<<<<<<<<<<<<<<<<<<<<<<<<< \n";
-        std::stringstream str;
-        str << "fuse_read('";
-        str << path;
-        str << "')\n";
-
         try {
             hfs->ST->pathToInode(path, &file);
-            str << "length: " << file->size << "\n";
         } catch (ExceptionFileNotFound) {
             std::cout << " ## " << "path se nepodařilo přeložit na inode..." << " ##\n";
-            /** @todo po doladění fuse_read odkomentovat! */
-            return -ENOENT;
+            return -EIO;
         }
-
-        /*
-        std::cout << "Obsah souboru: -" << str.str() << "-\n";
-        size = str.str().length();
-        memcpy(buffer, str.str().c_str(), size);
-        std::cout << "buffer: -" << buffer << "-\n";
-
-        */
-
-        /// @todo odkomentovat!
-        //return size;
-
 
         // 2) načíst obsah
         bytestream_t* bufferContent;
@@ -701,7 +637,7 @@ namespace HiddenFS {
             return -EIO;
         }
 
-        // 3) naplnění obsahu
+        // 3) naplnění bufferu obsahem
         if(offset > sizeContent) {
             size = 0;
         } else {
@@ -867,6 +803,7 @@ namespace HiddenFS {
     int hiddenFs::fuse_write(const char* path, const char* buffer, size_t size, off_t offset, struct fuse_file_info* file_i) {
         hiddenFs* hfs = GET_INSTANCE;
         bytestream_t* tempBuff;
+        bytestream_t* oldBuff;
         size_t newSize;
 
         hfs->fileWriteBuff.enabled = true;
@@ -875,7 +812,16 @@ namespace HiddenFS {
         if(hfs->fileWriteBuff.allocated < offset + size) {
             newSize = hfs->fileWriteBuff.allocated + WRITE_BUFF_ALLOC_BLOCKSIZE;
             tempBuff = new bytestream_t[newSize];
-            memcpy(tempBuff, hfs->fileWriteBuff.buffer, hfs->fileWriteBuff.allocated);
+
+            if(hfs->fileWriteBuff.allocated == 0) {
+                hfs->fileWriteBuff.buffer = tempBuff;
+            } else {
+                oldBuff = hfs->fileWriteBuff.buffer;
+                memcpy(tempBuff, hfs->fileWriteBuff.buffer, hfs->fileWriteBuff.allocated);
+                hfs->fileWriteBuff.buffer = tempBuff;
+                delete [] oldBuff;
+            }
+
             hfs->fileWriteBuff.allocated = newSize;
         }
 
@@ -898,10 +844,8 @@ namespace HiddenFS {
         size_t sizeNew;
         size_t sizeNewEncrypted;
 
-        bytestream_t* contentNew;
         bytestream_t* contentNewEncrypted;
 
-        contentNew = hfs->fileWriteBuff.buffer;
         sizeNew = hfs->fileWriteBuff.length;
 
         if(!hfs->fileWriteBuff.enabled) {
@@ -910,17 +854,15 @@ namespace HiddenFS {
         }
 
         hfs->ST->pathToInode(path, &file);
-
-        ///@todo odkomentovat!!
-        //assert(file->size >= offset);
+        std::cout << path << std::endl;
 
         try {
-            hfs->encryption->encrypt(contentNew, sizeNew, &contentNewEncrypted, &sizeNewEncrypted);
+            hfs->encryption->encrypt(hfs->fileWriteBuff.buffer, sizeNew, &contentNewEncrypted, &sizeNewEncrypted);
             sizeWritten = hfs->allocatorAllocate(file->inode, contentNewEncrypted, sizeNewEncrypted);
-        } catch(ExceptionDiscFull) {
+        } catch(ExceptionDiscFull&) {
             // vyčištění bufferu pro zápis
             hfs->fileWriteBuff.allocated = 0;
-            delete [] hfs->fileWriteBuff.buffer;
+            delete [] (hfs->fileWriteBuff.buffer);
             hfs->fileWriteBuff.buffer = NULL;
             hfs->fileWriteBuff.length = 0;
             hfs->fileWriteBuff.enabled = false;
@@ -929,20 +871,38 @@ namespace HiddenFS {
                 delete [] contentNewEncrypted;
             }
 
+            std::cout << "hiddenFs::fuse_flush - není dost místa, odstraňuji soubor (1)\n";
+            hfs->removeFile(file->inode);
+
             return -ENOSPC;
-        }/* catch(...) {
-            /// @todo ošetřit i jiné druhy chyb?
+
+        } catch(std::exception& e) {
+            std::cout << "hiddenFs::fuse_flush exception: " << e.what() << std::endl;
         }
-        */
 
         // vyčištění bufferu pro zápis
+        delete [] (hfs->fileWriteBuff.buffer);
         hfs->fileWriteBuff.allocated = 0;
-        delete [] hfs->fileWriteBuff.buffer;
         hfs->fileWriteBuff.buffer = NULL;
         hfs->fileWriteBuff.length = 0;
         hfs->fileWriteBuff.enabled = false;
 
         delete [] contentNewEncrypted;
+
+        try {
+            hfs->superBlockSave();
+        } catch(ExceptionDiscFull&) {
+            std::cout << "hiddenFs::fuse_flush - není dost místa, odstraňuji soubor (2)\n";
+            hfs->removeFile(file->inode);
+
+            /* Po uvolnění souboru by se mohly uvolnit některé bloky,
+             * které by superblok mohl potřebovat */
+            try {
+                hfs->superBlockSave();
+            } catch(ExceptionDiscFull&) {}
+
+            return -ENOSPC;
+        }
 
         return 0;
     }
@@ -964,7 +924,7 @@ namespace HiddenFS {
                 break;
             }
             case hiddenFs::KEY_FUSE_DEBUG : {
-                HiddenFS::flagFuseDebug = true;
+                flagFuseDebug = true;
                 fuse_opt_add_arg(outargs, "-d");
                 break;
             }
@@ -999,7 +959,7 @@ namespace HiddenFS {
 
         HiddenFS::flagCreateNewFS = false;
         HiddenFS::flagFuseRun = true;
-        HiddenFS::flagFuseDebug = false;
+        flagFuseDebug = false;
         HiddenFS::flagForce = false;
         HiddenFS::flagRemove = false;
 
@@ -1061,7 +1021,12 @@ namespace HiddenFS {
         }
 
         fuse_opt_add_arg(&args, options.mountpoint);
-        path = this->options.storagePath;
+
+        // převod úložiště na absolutní adresu
+        char pathBuf[PATH_MAX];
+        realpath(this->options.storagePath, pathBuf);
+        path.assign(pathBuf);
+        //path = this->options.storagePath;
 
         try {
             this->storageRefreshIndex(path);
@@ -1072,7 +1037,9 @@ namespace HiddenFS {
             return EXIT_FAILURE;
         }
 
-        this->HT->print();
+        if(flagFuseDebug) {
+            this->HT->print();
+        }
 
         if(this->HT->size() == 0) {
             std::cerr << "Úložiště neobsahuje žádné dostupné soubory.\n";
@@ -1128,10 +1095,13 @@ namespace HiddenFS {
         } else if(options.password == NULL) {
             // použijeme stávající superblock, heslo z stdin
             memset(pass1, '\0', PASSWORD_MAX_LENGTH);
-            //std::cout << "Zadejte heslo: " << std::flush;
+            std::cout << "Zadejte heslo: " << std::flush;
+
             this->setConsoleEcho(false);
             std::cin.getline(pass1, PASSWORD_MAX_LENGTH);
             this->setConsoleEcho(true);
+
+            std::cout << std::endl;
 
             this->encryption->setKey((bytestream_t*)pass1, PASSWORD_MAX_LENGTH);
         } else {
@@ -1157,21 +1127,31 @@ namespace HiddenFS {
         // 2) pokusíme se najít všechny kopie superbloků
         // =================================================================
         for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
-            std::cout << "V souboru: " << i->second.filename << " hledám superblock... ";
+            if(HiddenFS::flagFuseDebug) {
+                std::cout << "V souboru: " << i->second.filename << " hledám superblock... ";
+            }
+
             try {
                 this->readBlock(i->first, FIRST_BLOCK_NO, &bufferBlock, bufferMaxLen, &idByte);
 
                 if(!idByteIsSuperBlock(idByte)) {
-                    std::cout << "nemá idByte superbloku (" << (int) idByte << ")\n";
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cout << "nemá idByte superbloku (" << (int) idByte << ")\n";
+                    }
                     continue;
                 }
 
-                std::cout << "našel jsem! :-) :-) :-) :-) ";
+
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << "našel jsem! :-) :-) :-) :-) ";
+                }
 
                 if(!this->SB->isLoaded()) {
                     // načtu obsah SB do vnitřních struktur
 
-                    std::cout << " SB ještě nebyl naplněn - toto je první plnění.\n";
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cout << " SB ještě nebyl naplněn - toto je první plnění.\n";
+                    }
                     this->SB->deserialize(bufferBlock, bufferMaxLen);
 
                     /**
@@ -1192,35 +1172,39 @@ namespace HiddenFS {
 
                 if(this->superBlockLocations.size() >= SUPERBLOCK_REDUNDANCY_AMOUNT) {
                     // našel jsem všechny kopie superbloků, nemá proto smysl hledat dále
-                    std::cout << " SB: mám načteno " << this->superBlockLocations.size();
-                    std::cout << " z " << SUPERBLOCK_REDUNDANCY_AMOUNT << " ### mám je kompletní" << std::endl;
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cout << " SB: mám načteno " << this->superBlockLocations.size();
+                        std::cout << " z " << SUPERBLOCK_REDUNDANCY_AMOUNT << " ### mám je kompletní" << std::endl;
+                    }
                     break;
                 }
+
+            if(HiddenFS::flagFuseDebug) {
                 std::cout << " SB: mám načteno " << this->superBlockLocations.size() << " z " << SUPERBLOCK_REDUNDANCY_AMOUNT << std::endl;
+            }
             } catch (ExceptionBlockNotUsed&) {
-                std::cout << " ExceptionBlockNotUsed... continue.\n";
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << " ExceptionBlockNotUsed... continue.\n";
+                }
+
                 continue;
             } catch (ExceptionBlockNotFound&) {
-                std::cout << " ExceptionBlockNotFound... continue.\n";
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << " ExceptionBlockNotFound... continue.\n";
+                }
+
                 continue;
             } catch (std::exception& e) {
-                std::cout << " Exception" << e.what() << "... continue.\n";
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << " Exception" << e.what() << "... continue.\n";
+                }
+
                 continue;
             }
 
             // uvolnění prostředků
-            //std::cout << "zkouším uvolnit kontext pro " << i->first << std::endl;
             this->freeContext(i->second.context);
             this->HT->clearContext(i->first);
-            /*
-            hashTable::table_t_constiterator htci = this->HT->find(i->first);
-            if(htci != this->HT->end()) {
-                if(htci->second.context != NULL) {
-                    this->freeContext(htci->second.context);
-                    this->HT->clearContext(i->first);
-                }
-            }
-            */
         }
 
         // Zadali jsme nesprávné heslo, konec.
@@ -1276,9 +1260,15 @@ namespace HiddenFS {
         // v úložišti dosud neexistuje jediná kopie superbloku
         if(HiddenFS::flagCreateNewFS && this->superBlockLocations.empty()) {
             if(this->superBlockLocations.empty()) {
-                // vybrat první neobsazené bloky a zapsat do nich libovolný obsah - bu
+                // vybrat první neobsazené bloky a zapsat do nich libovolný obsah
                 for(unsigned int i = 0; i < SUPERBLOCK_REDUNDANCY_AMOUNT; i++) {
-                    this->allocatorFindFreeBlock_unused(sbBlock);
+                    try {
+                        this->allocatorFindFreeBlock_unused(sbBlock);
+                    } catch(ExceptionBlockNotFound&) {
+                        this->superBlockLocations.clear();
+                        break;
+                    }
+
                     assert(sbBlock->block == FIRST_BLOCK_NO);
                     idByte = idByteGenSuperBlock();
                     this->writeBlock(sbBlock->hash, sbBlock->block, sbBuffer, sizeof(sbBuffer), idByte);
@@ -1293,22 +1283,20 @@ namespace HiddenFS {
             return EXIT_FAILURE;
         }
 
+        /*
         for(std::set<hash_ascii_t>::iterator i = this->superBlockLocations.begin(); i != this->superBlockLocations.end(); i++) {
             std::cout << "Známý superblok: " << *i << std::endl;
         }
+        */
 
 
         // příprava bufferu pro zápis
-        this->fileWriteBuff.allocated = WRITE_BUFF_ALLOC_BLOCKSIZE;
-        this->fileWriteBuff.buffer = new bytestream_t[this->fileWriteBuff.allocated];
+        this->fileWriteBuff.allocated = 0;
+        this->fileWriteBuff.buffer = NULL;
         this->fileWriteBuff.length = 0;
         this->fileWriteBuff.enabled = false;
 
-        // způsobí případné douložení chybějících kopií
-        //this->superBlockSave();
-
-
-        // set allowed FUSE operations
+        // Nastavení všech podporovaných systémových volání
         static struct fuse_operations fsOperations;
 
         fsOperations.chmod = this->fuse_chmod;
@@ -1336,18 +1324,20 @@ namespace HiddenFS {
             fuse_ret = EXIT_FAILURE;
         }
 
+        try {
+            this->superBlockSave();
+        } catch(ExceptionDiscFull&) {
+            std::cerr << "V úložišti není dostatek místa pro zápis metadat.";
+            fuse_ret = EXIT_FAILURE;
+        }
+
         // uvolnění kontextu hashTable
         context_t* context;
-
-        this->superBlockSave();
 
         for(hashTable::table_t_constiterator i = this->HT->begin(); i != this->HT->end(); i++) {
             try {
                 context = this->HT->getContext(i->first);
-                //context = i->second.context;
-                std::cout << " -------------------------------------------------- " << (long) context << std::flush;
                 this->freeContext(context);
-                std::cout << "... uvolněno." << std::endl;
             } catch (ExceptionRuntimeError&) {
                 continue;
             } catch(...) {
@@ -1397,26 +1387,18 @@ namespace HiddenFS {
             unsigned int count = copies.size();
 
             for(unsigned int i = count; i < TABLES_REDUNDANCY_AMOUNT; i++) {
-                try {
-                    std::cout << "-- hiddenFs::tableSave zkouším doalokovávat kopii #" << i << " z " << TABLES_REDUNDANCY_AMOUNT << std::endl;
-                    block = this->chainListCompleteSave(content, NULL);
-                    std::cout << "-- hiddenFs::tableSave, chainListCompleteSave do " << print_vBlock(block) << std::endl;
-                    copies.insert(block);
-                } catch(ExceptionDiscFull&) {
-                    break;
-                }
+                //std::cout << "-- hiddenFs::tableSave zkouším doalokovávat kopii #" << i << " z " << TABLES_REDUNDANCY_AMOUNT << std::endl;
+                block = this->chainListCompleteSave(content, NULL);
+                //std::cout << "-- hiddenFs::tableSave, chainListCompleteSave do " << print_vBlock(block) << std::endl;
+                copies.insert(block);
             }
         } else {
             /* Redundantních kopií je na vstupu dostatek, */
             assert(copies.size() == TABLES_REDUNDANCY_AMOUNT);
 
             for(std::set<vBlock*>::iterator i = copies.begin(); i != copies.end(); i++) {
-                try {
-                    std::cout << "ukládám do známé kopie #??? z " << TABLES_REDUNDANCY_AMOUNT << std::endl;
-                    this->chainListCompleteSave(content, *i);
-                } catch(ExceptionDiscFull&) {
-                    break;
-                }
+                //std::cout << "ukládám do známé kopie #??? z " << TABLES_REDUNDANCY_AMOUNT << std::endl;
+                this->chainListCompleteSave(content, *i);
             }
         }
     }
@@ -1505,7 +1487,6 @@ namespace HiddenFS {
         contentTable::tableItem ti;
         vFile* file = NULL;
         bytestream_t* fragmentBuffer;
-        bytestream_t* fragmentBufferPost;
         size_t len = 0;                     // pozice posledního zapsaného fragmentu
         *length = 0;
         unsigned int counter = FRAGMENT_FIRST;                    // pořadové číslo posledního zapsaného fragmentu
@@ -1539,20 +1520,13 @@ namespace HiddenFS {
 
                 try {
                     fragmentBuffer = NULL;
-                    fragmentBufferPost = NULL;
-                    //std::cout << "\tgetcontent: counter(fragment) = " << counter << ", block = " << (*j)->block << ", surový obsah po readblock(hash):\n";
                     blockLen = this->readBlock((*j)->hash, (*j)->block, &fragmentBuffer, BLOCK_USABLE_LENGTH, &idByte);
-                    //pBytes(fragmentBuffer, 30);
-                    //this->unpackData(fragmentBuffer, BLOCK_MAX_LENGTH, &fragmentBufferPost, &blockLen, &idByte);
 
                     if(!idByteIsDataBlock(idByte)) {
                         // uvolnění alokovaných prostředků
                         if(fragmentBuffer != NULL) {
                             delete [] fragmentBuffer;
                         }
-                        /*if(fragmentBufferPost != NULL) {
-                            delete [] fragmentBufferPost;
-                        }*/
 
                         continue;
                     }
@@ -1563,9 +1537,6 @@ namespace HiddenFS {
                     if(fragmentBuffer != NULL) {
                         delete [] fragmentBuffer;
                     }
-                    /*if(fragmentBufferPost != NULL) {
-                        delete [] fragmentBufferPost;
-                    }*/
                 } catch(...) {
                     /* při načítání bloku něco nebylo v pořádku - nezkoumáme dál
                      * co se stalo, protože stejně se vždy pokusíme načíst další
@@ -1573,9 +1544,6 @@ namespace HiddenFS {
                     if(fragmentBuffer != NULL) {
                         delete fragmentBuffer;
                     }
-                    /*if(fragmentBufferPost != NULL) {
-                        delete [] fragmentBufferPost;
-                    }*/
                     continue;
                 }
 
@@ -1670,6 +1638,8 @@ namespace HiddenFS {
 
             throw e;
         }
+
+        delete [] buff2;
 
         return ret;     /// @todo nevadí, že požaduju přečíst 5 a ve skutečnosti načtu 4091bytů?
     }
@@ -1813,7 +1783,8 @@ namespace HiddenFS {
         size_t buffLen;
         size_t buffLenRaw = BLOCK_USABLE_LENGTH;
         size_t offset;
-        chain_count_t count, i;
+        chain_count_t count;
+        chain_count_t i;
         id_byte_t idByte;
         static unsigned int poc = 0;
 
@@ -1838,15 +1809,10 @@ namespace HiddenFS {
         // rekonstrukce složky 'vBlock'
         /* Poslední článek řetězu je identifikován jako oblast znaků '\0' v délce
          * serializované struktury vBlock */
-
-        std::cout << "chainListRestore počítadlo = " << poc << std::endl;
-        poc++;
-        /*
-        if(poc > 100) {
-            assert(false);
+        if(HiddenFS::flagFuseDebug) {
+            std::cout << "chainListRestore počítadlo = " << poc << std::endl;
+            poc++;
         }
-        */
-        //pBytes(buff + offset, SIZEOF_vBlock);
 
         if(memcmp(buff + offset, buffEmpty, SIZEOF_vBlock) == 0) {
             next = NULL;
@@ -1854,11 +1820,15 @@ namespace HiddenFS {
             unserialize_vBlock(buff + offset, SIZEOF_vBlock, &next);
         }
         offset += SIZEOF_vBlock;
+        if(HiddenFS::flagFuseDebug) {
+            std::cout << "act  = " << print_vBlock(location) << std::endl;
+            std::cout << "next = ";
+        }
 
-        std::cout << "act  = " << print_vBlock(location) << std::endl;
-        std::cout << "next = ";
-        if(next != NULL) std::cout << print_vBlock(next);
-        std::cout.flush();
+        if(next != NULL && HiddenFS::flagFuseDebug) {
+            std::cout << print_vBlock(next);
+            std::cout.flush();
+        }
 
         // postupná rekonstrukce všech obsažených článků
         for(i = 0; i < count; i++) {
@@ -1951,6 +1921,8 @@ namespace HiddenFS {
         this->encryption->encrypt(buff, BLOCK_USABLE_LENGTH, &encBuffer, &encBufferLen);
 
         this->writeBlock(location->hash, location->block, encBuffer, encBufferLen, idByte);
+
+        delete [] encBuffer;
     }
 
     void hiddenFs::chainListFree(vBlock* first) {
@@ -2013,6 +1985,7 @@ namespace HiddenFS {
         vBlock* actBlock = NULL;
 
         bool newBlock;
+        bool discIsFull;
         size_t actSize;
         chainList_t actList;
         chainList_t prevList;
@@ -2030,10 +2003,10 @@ namespace HiddenFS {
             this->allocatorFindFreeBlock_unusedPreferred(firstBlock);
         }
 
-        /** @todo zkontrolovat podmínky kolem prevBlock */
         prevBlock = firstBlock;
         actBlock = firstBlock;
         newBlock = true;
+        discIsFull = false;
         actSize = 0;
 
         for(chainList_t::const_iterator i = chain.begin(); i != chain.end(); i++) {
@@ -2050,19 +2023,28 @@ namespace HiddenFS {
                  * proto se pokusím "naprázdno" uložit aktuální seznam a až budu úspěšný,
                  * přečtu předcházející kus, změním hodnotu 'next' a uložím jej. */
 
-                std::cout << " === zápis aktuálního bloku ===" << std::endl;
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << " === zápis aktuálního bloku ===" << std::endl;
+                }
 
-                while(1) {
+                while(!discIsFull) {
                     // V průběhu iterací while může dojít k ExceptionDiscFull, což je problém a
                     // 1) uložení aktuálního bloku (následující ještě neznáme, proto NULL)
                     try {
-                        std::cout << "ukládám do actBlock = " << actBlock->block << ", next = " << "NULL, \\/" << std::endl;
+                        if(HiddenFS::flagFuseDebug) {
+                            std::cout << "ukládám do actBlock = " << actBlock->block << ", next = " << "NULL, \\/" << std::endl;
+                        }
+
                         this->chainListSave(actBlock, NULL, actList);
                     } catch(ExceptionDiscFull& e) {
+                        discIsFull = true;
                         throw e;
-                    } catch(...) {
+                    } catch(ExceptionRuntimeError&) {
                         // vyhledej jiný actBlock
+                        if(HiddenFS::flagFuseDebug) {
                             std::cout << "... zápis se nepodařil, zkouším další..." << std::endl;
+                        }
+
                         hash = actBlock->hash;
                         this->chainListAllocate(hash, actBlock);
 
@@ -2077,14 +2059,12 @@ namespace HiddenFS {
                 /* Nové uložení předešlé části řetězu, protože už známe umístění
                  * následující části, netýká se prvního bloku. */
 
-                //std::cout << std::endl << " === aktualizace dat v předešlém bloku ===" << std::endl;
-                //std::cout << "možná budu ukládat do prevBlock=" << prevBlock->block << "], nastavuju jeho next na " << actBlock->block << std::endl;
-
                 if(actBlock != prevBlock) {
-                    //std::cout << "... jo, uložím to." << std::endl;
                     this->chainListSave(prevBlock, actBlock, prevList);
                 } else {
-                    std::cout << __LINE__ << "actBlock == prevBlock... to je na assert!!" << std::endl;
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cout << __LINE__ << "actBlock == prevBlock... to je na assert!!" << std::endl;
+                    }
                 }
 
 
@@ -2107,7 +2087,7 @@ namespace HiddenFS {
         }
 
         // ruční douložení posledního článku
-        while(1) {
+        while(!discIsFull) {
             // V průběhu iterací while může dojít k ExceptionDiscFull, což je problém a
             // 1) uložení aktuálního bloku (následující ještě neznáme, proto NULL)
             try {
@@ -2128,7 +2108,10 @@ namespace HiddenFS {
 
         // nové uložení předešlé části řetězu, protože už známe umístění následující části
         /** @todo Jak se zachovat, pokud se nepodaří nový zápis do předešlého bloku? */
+        if(HiddenFS::flagFuseDebug) {
             std::cout << "#ukládám do prevBlock[" << prevBlock->block << "], nastavuju next na " << actBlock->block << std::endl;
+        }
+
         if(actBlock != prevBlock) {
             this->chainListSave(prevBlock, actBlock, prevList);
         }
@@ -2147,8 +2130,11 @@ namespace HiddenFS {
 
         this->SB->serialize(&sbSerializedBuffer, &sbSerializedBufferLen);
 
-        std::cout << "\n-- hiddenFs::superBlockSave --\n";
-        std::cout << "zkouším uložit do známých superbloků\n";
+        if(HiddenFS::flagFuseDebug) {
+            std::cout << "\n-- hiddenFs::superBlockSave --\n";
+            std::cout << "zkouším uložit do známých superbloků\n";
+        }
+
         for(std::set<hash_ascii_t>::iterator i = this->superBlockLocations.begin(); i != this->superBlockLocations.end(); i++) {
             idByte = idByteGenSuperBlock();
             try {
@@ -2156,11 +2142,17 @@ namespace HiddenFS {
                 this->writeBlock(*i, FIRST_BLOCK_NO, sbSerializedBuffer, sbSerializedBufferLen, idByte);
 
                 if(sbSerializedBufferLen > BLOCK_MAX_LENGTH) {
-                    std::cerr << "Superblok se nevejde do jediného bloku! (3)\n";
-                    return;
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cerr << "Superblok se nevejde do jediného bloku! (3)\n";
+                    }
+
+                    throw ExceptionDiscFull();
                 }
             } catch(...) {
-                std::cout << "... to výše bylo neúspěšné, mažu prvek.\n";
+                if(HiddenFS::flagFuseDebug) {
+                    std::cout << "... to výše bylo neúspěšné, mažu prvek.\n";
+                }
+
                 this->superBlockLocations.erase(i);
             }
         }
@@ -2176,7 +2168,10 @@ namespace HiddenFS {
                 try {
                     this->readBlock(i->first, FIRST_BLOCK_NO, &readBuffer, BLOCK_USABLE_LENGTH, &idByte);
                     if(!idByteIsSuperBlock(idByte)) {
-                        std::cout << i->first << " nemá příznak SuperBloku (1)\n";
+                        if(HiddenFS::flagFuseDebug) {
+                            std::cout << i->first << " nemá příznak SuperBloku (1)\n";
+                        }
+
                         continue;
                     }
 
@@ -2184,12 +2179,18 @@ namespace HiddenFS {
 
                     // našli jsme superblok, který ještě není 'zaindexovaný' v seznamu superBlockLocations
                     if(this->superBlockLocations.find(i->first) == this->superBlockLocations.end()) {
-                        std::cout << "do " << i->first << " jsem ještě nezapisoval, ale je vhodný (2)\n";
+                        if(HiddenFS::flagFuseDebug) {
+                            std::cout << "do " << i->first << " jsem ještě nezapisoval, ale je vhodný (2)\n";
+                        }
+
                         this->writeBlock(i->first, FIRST_BLOCK_NO, sbSerializedBuffer, sbSerializedBufferLen, idByte);
                         this->superBlockLocations.insert(i->first);
                     }
                 } catch (ExceptionBlockNotUsed&) {
-                    std::cout << "do " << i->first << " je zcela prázdný (4)\n";
+                    if(HiddenFS::flagFuseDebug) {
+                        std::cout << "do " << i->first << " je zcela prázdný (3)\n";
+                    }
+
                     this->writeBlock(i->first, FIRST_BLOCK_NO, sbSerializedBuffer, sbSerializedBufferLen, idByte);
                     this->superBlockLocations.insert(i->first);
                 }

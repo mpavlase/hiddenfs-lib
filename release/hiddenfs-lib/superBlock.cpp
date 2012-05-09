@@ -75,7 +75,9 @@ namespace HiddenFS {
             memcpy(item.first, block, sizeof(vBlock));
             offset += SIZEOF_vBlock;
 
-            std::cout << "superBlock::readItem table=" << (char) item.table << ", first=" << print_vBlock(item.first) << std::endl;
+            if(HiddenFS::flagFuseDebug) {
+                std::cout << "superBlock::readItem table=" << (char) item.table << ", first=" << print_vBlock(item.first) << std::endl;
+            }
 
             this->knownItems.push_back(item);
         } else {
@@ -151,7 +153,6 @@ namespace HiddenFS {
         delete [] bufferToEncode;
 
         for(table_foreign_t::iterator i = this->foreignItems.begin(); i != this->foreignItems.end(); i++) {
-            std::cout << "sizeof foreign prvku: " << i->length << std::endl;
             memcpy(buffer + offset, i->content, i->length);
             offset += i->length;
         }
@@ -164,23 +165,30 @@ namespace HiddenFS {
 
     void superBlock::addKnownItem(std::set<vBlock*>& chain, table_flag tableType) {
         tableItem ti;
-        std::cout << "superBlock::addKnownItem chain(z parametru).size() = " << chain.size() << std::endl;
+        if(HiddenFS::flagFuseDebug) {
+            std::cout << "superBlock::addKnownItem chain(z parametru).size() = " << chain.size() << std::endl;
+        }
 
         for(std::set<vBlock*>::iterator i = chain.begin(); i != chain.end(); i++) {
             ti.table = tableType;
             ti.first = *i;
-
-            std::cout << "  - table=" << (char) ti.table << ", first=" << print_vBlock(ti.first) << std::endl;
+            if(HiddenFS::flagFuseDebug) {
+                std::cout << "  - table=" << (char) ti.table << ", first=" << print_vBlock(ti.first) << std::endl;
+            }
 
             this->knownItems.push_back(ti);
         }
     }
 
     void superBlock::readKnownItems(std::set<vBlock*>& chain, table_flag tableType) {
-        std::cout << "superBlock::readKnownItems this->knownItems.size() = " << this->knownItems.size() << std::endl;
+        if(HiddenFS::flagFuseDebug) {
+            std::cout << "superBlock::readKnownItems this->knownItems.size() = " << this->knownItems.size() << std::endl;
+        }
 
         for(table_known_t::iterator i = this->knownItems.begin(); i != knownItems.end(); i++) {
-            std::cout << "superBlock::readKnownItems table = '" << (char) (i->table) << "', " << print_vBlock(i->first) << std::endl;
+            if(HiddenFS::flagFuseDebug) {
+                std::cout << "superBlock::readKnownItems table = '" << (char) (i->table) << "', " << print_vBlock(i->first) << std::endl;
+            }
             if(i->table == tableType) {
                 chain.insert(i->first);
             }

@@ -26,8 +26,27 @@
 #include "exceptions.h"
 #include "types.h"
 
+//DD = DisplayDebug
+
+#ifdef D_ENABLE
+#ifndef DD
+#define DD //
+#else
+#define DD
+#endif
+
+#else
+
+#ifndef DD
+#define DD
+#endif
+
+#endif
+
 namespace HiddenFS {
     #define _D(f) std::cerr << "DEBUG: " << f << "\n";
+
+    extern bool flagFuseDebug;
 
     std::string print_vFile(vFile* f);
 
@@ -102,7 +121,9 @@ namespace HiddenFS {
          * Uložení šifrovacího klíče do nitra objektu
          */
         void setKey(bytestream_t* key, size_t keySize) {
-            std::cout << "IEncryption::setKey = " << key << "\n" << std::flush;
+            if(flagFuseDebug) {
+                std::cout << "IEncryption::setKey = " << key << "\n" << std::flush;
+            }
             //HiddenFS::pBytes(key, keySize);
             this->key = new bytestream_t[keySize];
             this->keySize = keySize;

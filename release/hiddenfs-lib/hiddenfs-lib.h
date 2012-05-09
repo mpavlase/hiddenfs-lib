@@ -352,6 +352,7 @@ namespace HiddenFS {
          * @param firstChain pokusit se zapsat od tohoto článku a pokud jsou dostupné
          * i následující, zapisovat do nich namísto nového výběru bloku. Pokud je NULL,
          * automaticky se vybere vhodný blok.
+         * @throw ExceptionDiscFull pokud nelze uložit retěz komplení
          * @return ukazatel na vBlock, který obsahuje první článek řetězu
          */
         vBlock* chainListCompleteSave(const chainList_t& chain, vBlock* firstChain = NULL);
@@ -401,6 +402,7 @@ namespace HiddenFS {
         /**
          * Serializuje všechny tabulky (CT, ST), uloží všechny jejich kopie
          * a vloží začátky řetězců do superbloku.
+         * @throw ExceptionDiscFull pokud nebylo možné vše uložit kompleně
          */
         void tablesSaveToSB();
 
@@ -411,6 +413,7 @@ namespace HiddenFS {
          * @param content kompletní řetězec pro uložení
          * @param copies seznam vBlock(ů) s prvními články řetězu; pokud je prázdný,
          * metoda sama alokuje první články a naplní jimi tento parametr
+         * @throw ExceptionDiscFull pokud nebylo možné uložit tabulku kompleně
          */
         void tableSave(chainList_t& content, std::set<vBlock*>& copies);
 
@@ -418,6 +421,7 @@ namespace HiddenFS {
          * Komplexní metoda pro uložení superbloku: provádí serializaci,
          * zápis do stávajících kopií superbloků a podle potřeby doalokování
          * chybějících kopií.
+         * @throw ExceptionDiscFull pokud nebylo možné uložit tabulku kompleně
          */
         void superBlockSave();
 
@@ -475,18 +479,20 @@ namespace HiddenFS {
         }
 
         /**
-         * Odstraní obsah souboru i včetně metadat ve structureTable
+         * Kompletně odstraní obsah souboru i včetně metadat ve structureTable
          * @param inode identifikace souboru pro smazání
          */
         void removeFile(inode_t inode) {
             std::set<vBlock*> blocks;
 
-            // uvolnění obsahu
-            this->CT->findAllBlocks(inode, blocks);
-            for(std::set<vBlock*>::iterator i = blocks.begin(); i != blocks.end(); i++) {
-                this->removeBlock((*i)->hash, (*i)->block);
-                this->CT->setBlockAsUnused(inode, *i);
-            }
+            // uvolnění obsahu, pokud existuje
+            try {
+                this->CT->findAllBlocks(inode, blocks);
+                for(std::set<vBlock*>::iterator i = blocks.begin(); i != blocks.end(); i++) {
+                    this->removeBlock((*i)->hash, (*i)->block);
+                    this->CT->setBlockAsUnused(inode, *i);
+                }
+            } catch(ExceptionFileNotFound&) {}
 
             // uvolnění samotného záznamu
             this->ST->removeFile(inode);
