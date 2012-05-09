@@ -33,15 +33,10 @@ namespace HiddenFS {
         ExceptionFileNotFound(inode_t inode) : std::runtime_error("ExceptionFileNotFound") {
             std::stringstream s;
             s << "Soubor s inode " << inode << " nenalezen";
-
-            //throw runtime_error(s.str());
         }
         ExceptionFileNotFound(std::string filename) : std::runtime_error("ExceptionFileNotFound") {
             std::stringstream s;
             s << "Soubor s názvem" << filename << " nenalezen";
-
-            //throw runtime_error(s.str());
-            //this->
         }
     };
 
@@ -67,7 +62,6 @@ namespace HiddenFS {
         ExceptionInodeExists(inode_t inode) : std::runtime_error("") {
             std::stringstream s;
             s << "Inode " << inode << " již existuje!";
-            //throw runtime_error(s.str());
         }
     };
 
@@ -76,13 +70,13 @@ namespace HiddenFS {
         ExceptionBlockOutOfRange(block_number_t b) : std::runtime_error("") {
             std::stringstream s;
             s << "Blok " << b << " je mimo rozsah aktuálního souboru!";
-            //throw runtime_error(s.str());
         }
     };
 
     class ExceptionRuntimeError: public std::runtime_error {
     public:
         ExceptionRuntimeError(std::string str) : std::runtime_error(str) {}
+        ExceptionRuntimeError(const char* str) : std::runtime_error(str) {}
     };
 
     class ExceptionDiscFull: public std::runtime_error {

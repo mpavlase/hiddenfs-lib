@@ -115,8 +115,11 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
 
     // výpočet objem rámců, které je možno použít pro uložení datových bloků
     int stat_ret = stat(filename.c_str(), &stBuff);
-    char* msg1 = strerror(stat_ret);
-    char* msg2 = strerror(errno);
+    if(stat_ret == -1) {
+        char* errMsg = strerror(errno);
+        std::cerr << errMsg;
+        throw HiddenFS::ExceptionRuntimeError(errMsg);
+    }
 
     context->userContext = new mp3context;
     ((mp3context*) context->userContext)->tag = new ID3_Tag((const char*)filename.c_str());

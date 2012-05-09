@@ -46,17 +46,14 @@ namespace HiddenFS {
         // zjištění počtu dále zpracovaných bloků
         // iterace přes všechny soubory
         for(table_t::const_iterator i = this->table.begin(); i != this->table.end(); i++) {
-            //std::cout << "table size: " << this->table.size() << std::endl;
-            //std::cout << "content: " << i->second.content.size() << std::endl;
 
             // iterace přes všechny fragmenty souboru
             for(std::map<fragment_t, std::vector<vBlock*> >::const_iterator j = i->second.content.begin(); j != i->second.content.end(); j++) {
                 // iterace přes všechny bloky fragmentů
-                //std::cout << "bloky fragmenů: " << j->second.size() << std::endl;
 
                 for(std::vector<vBlock*>::const_iterator k = j->second.begin(); k != j->second.end(); k++) {
-                    // hrubá kopie struktury
 
+                    // hrubá kopie struktury
                     memset(&chain, '\0', sizeof(chain));
                     memset(stream, '\0', sizeof(stream));
                     // # dump právě jedné složky do bufferu
@@ -67,10 +64,6 @@ namespace HiddenFS {
                     size += sizeof(i->first);
                     // dump 'vBlock'
                     serialize_vBlock(*k, &vBlockBuff, &vBlockBuffSize);
-
-                    //std::cout << "#:";
-                    //std::cout.write((char*) vBlockBuff, vBlockBuffSize);
-                    //std::cout << "\n";
 
                     memcpy(stream + size, vBlockBuff, vBlockBuffSize);
                     size += vBlockBuffSize;
@@ -112,49 +105,6 @@ namespace HiddenFS {
                 memcpy(chain.content, stream, size);
 
                 output->push_back(chain);
-
-                /*
-                memset(&chain, '\0', sizeof(chain));
-
-                // # dump právě jedné složky do bufferu
-                size = 0;
-
-                // dump 'inode'
-                stream.sputn((const char*) (&i->first), sizeof(i->first));
-                size += sizeof(i->first);
-
-                // -----
-                // stream.sgetn((char*) tmpBuff, size);
-                // std::cout.write(tmpBuff, size).flush();
-                // -----
-
-                // dump 'vBlock'
-                vBlockBuff = new bytestream_t[SIZEOF_vBlock];
-                memset(vBlockBuff, '?', SIZEOF_vBlock);
-                stream.sputn((char*) vBlockBuff, SIZEOF_vBlock);
-                size += SIZEOF_vBlock;
-
-
-                // -----
-                // stream.sgetn((char*) tmpBuff, size);
-                // std::cout.write(tmpBuff, size).flush();
-                // -----
-
-                // kopie obsahu
-                chain.content = new bytestream_t[size];
-                chain.length = size;
-
-                stream.sgetn((char*) tmpBuff, size);
-                std::cout.write(tmpBuff, size).flush();
-
-
-                //stream.sgetn((char*) chain.content, size);
-                //std::cout.write((char*) chain.content, size).flush();
-
-                delete vBlockBuff;
-
-                output->push_back(chain);
-                */
             }
         }
     }
@@ -238,6 +188,26 @@ namespace HiddenFS {
         } else {
             throw ExceptionInodeExists(inode);
         }
+    }
+
+    void contentTable::removeFile(inode_t inode) {
+        // uvolnění obsahu, pokud existuje
+        this->table.erase(inode);
+        /*
+        this->findAllBlocks(inode, blocks);
+
+        // zkopírování bloků obsahu
+        std::map<fragment_t, std::vector<vBlock*> >::iterator i;
+        for(i = this->table[inode].content.begin(); i != this->table[inode].content.end(); i++) {
+            blocks.insert(i->second.begin(), i->second.end());
+        }
+
+        if(blocks.empty()) {
+            this->table.erase(inode);
+        } else {
+            throw ExceptionInodeExists(inode);
+        }
+        */
     }
 
     void contentTable::findAnyReservedBlock(inode_t& inode, vBlock*& block) {

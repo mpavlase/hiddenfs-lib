@@ -38,18 +38,18 @@ namespace HiddenFS {
     std::string executableFilename;
 
     static void usage(std::ostream& s) {
-        s << HiddenFS::executableFilename << " -s PATH1 -m PATH2 [-p PASS] [-c|-r [-f]] [-h]\n\n";
+        s << HiddenFS::executableFilename << " -s /path/to/storage -m /path/to/mountpoin [-p PASS] [-c|-r [-f]] [-h]\n\n";
         s << "Dostupné parametry:\n";
-        s << "\t-c, --create\n\t\tVytvoří nový systém souborů chráněný heslem\n\n";
-        s << "\t-f, --force\n\t\tOdstraní bloky bez potvrzení. Funkční pouze s volbou -r\n\n";
-        s << "\t-h, --help\n\t\tZobrazí tuto nápovědu\n";
-        s << "\t-m PATH, --mountpoint=PATH\n\t\tmountpoint, prázdný adresář pro připojení souborového systému\n";
+        s << "\t-c, --create\n\t\tVytvoří nový systém souborů chráněný heslem.\n\n";
+        s << "\t-f, --force\n\t\tOdstraní souborový systém bez potvrzení. Funkční pouze s volbou -r.\n\n";
+        s << "\t-h, --help\n\t\tZobrazí tuto nápovědu.\n\n";
+        s << "\t-m PATH, --mountpoint=PATH\n\t\tmountpoint, prázdný adresář pro připojení souborového systému.\n\n";
         s << "\t-p PASS, --password=PASS\n\t\tNastaví heslo pro dešifrování obsahu,";
         s << " v kombinaci s -c\n\t\tse použije toto heslo jako šifrovací pro nový";
-        s << " souborový systém.\n\t\tPokud není přepínač nastaven, čte se ze standartního vstupu\n\n";
-        s << "\t-r, --remove\n\t\tOdstraní všechny obsazené bloky i vnitřní struktury\n\n";
-        s << "\t-s PATH, --storage=PATH\n\t\tNastaví cestu k úložišti na PATH\n\n";
-        s << "\n";
+        s << " souborový systém.\n\t\tPokud není přepínač nastaven, čte se ze standartního vstupu.\n\n";
+        s << "\t-r, --remove\n\t\tOdstraní všechny obsazené bloky i vnitřní struktury.\n\n";
+        s << "\t-s PATH, --storage=PATH\n\t\tNastaví cestu k úložišti na PATH.\n\n";
+        //s << "\n";
     }
 
     // hotovo
@@ -1653,11 +1653,13 @@ namespace HiddenFS {
         try {
             */
             this->HT->find(hash, &filename);
-            std::cout << "Zapisuju ";
-            if(idByteIsChain(idByte))           std::cout << "[chain ]";
-            if(idByteIsDataBlock(idByte))       std::cout << "[data  ]";
-            if(idByteIsSuperBlock(idByte))      std::cout << "[superB]";
-            std::cout << " blok=" << block << ", len=" << length << " do: " << filename << std::endl;
+            if(HiddenFS::flagFuseDebug) {
+                std::cout << "Zapisuju ";
+                if(idByteIsChain(idByte))           std::cout << "[chain ]";
+                if(idByteIsDataBlock(idByte))       std::cout << "[data  ]";
+                if(idByteIsSuperBlock(idByte))      std::cout << "[superB]";
+                std::cout << " blok=" << block << ", len=" << length << " do: " << filename << std::endl;
+            }
 
             try {
                 context = this->HT->getContext(hash);

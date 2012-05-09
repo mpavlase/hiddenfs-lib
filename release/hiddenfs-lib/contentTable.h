@@ -81,6 +81,13 @@ namespace HiddenFS {
         void newEmptyContent(inode_t inode);
 
         /**
+         * Odstraní inode z tabulky. Metoda volající tuto zodpovídá za uvolnění
+         * naalokovaných bloků.
+         * @param inode identifikace souboru, který chceme odstranit
+         */
+        void removeFile(inode_t inode);
+
+        /**
          * Přiřadí blok k inode (sama uvnitř volá setBlockAsUsed)
          * @param inode identifikace souboru, kterému rozšiřujeme obsah
          * @param block
@@ -210,7 +217,8 @@ namespace HiddenFS {
         }
 
         /**
-         * Odstraní blok ze všech pomocných seznamů, takže se jeví jako neobsazený
+         * Odstraní blok z pomocného seznamu uchovávající rezerovované bloky,
+         * takže se jeví jako neobsazený
          * @param inode identifikace souboru, kterému tento blok patří
          * @param block operovaný blok
          */

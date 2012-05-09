@@ -1,0 +1,39 @@
+HiddenFS-lib - Hidden filesystem library
+Knihovna pro implementaci skrytého souborového systému
+=====================
+Autor:  Martin Pavlásek, 2012
+
+
+Souhrn
+---------------------
+Knihovna psaná v jazyce C++, využívajá rozhraní FUSE, která umožňuje ukládat
+soubory do jiných prostřednictvím úložiště, které si lze implementovat podle potřeby,
+přiložený příklad pracuje s ID3 tagy souborů MP3.
+
+
+Závislosti
+---------------------
+Pro kompilaci je nutné mít nainstalovány následující knihovny (balíčky):
+- libcrypto++-dev
+- libid3-dev
+- libfuse-dev
+- gcc 4.3 a vyšší
+- GNU Make
+
+
+Kompilace a použití
+---------------------
+V Makefile je nutné upravit proměnnou PROJECT na název zdrojového souboru
+s funkcí main(). Výsledný program po kompilaci má příponu '.bin', dostupné parametry
+se zobrazí při spuštění s přepínašem '-h'. Kompilace se provádí běžným GNU Makefile,
+takže stačí zadat:
+$ make
+
+Pro spuštění je nutné zadat několik parametrů:
+$ ./[vaseImplementaceUloziste].bin -s ./pathToStorage -m ./pathToMountPoint
+
+Program se dotáže na heslo (pokud nebylo nastaveno přepínačem '-p') a poté přechází
+na pozadí.
+
+Odpojení svazku se provádí skrze utilitu fusermount
+$ fusermount -u ./pathToMountPoint

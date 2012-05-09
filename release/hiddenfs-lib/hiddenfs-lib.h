@@ -19,8 +19,6 @@
 
 #define GET_INSTANCE (hiddenFs*) fuse_get_context()->private_data
 
-//#define BLOCK_LENGH (1 << 10)
-
 namespace HiddenFS {
     class hiddenFs {
     public:
@@ -104,6 +102,7 @@ namespace HiddenFS {
 
         fileWriteBuff_t fileWriteBuff;
 
+        /** struktura pro uskladnění hodnot z parametrů příkazové řádky */
         struct optionsStruct options;
 
         /**
@@ -479,7 +478,8 @@ namespace HiddenFS {
         }
 
         /**
-         * Kompletně odstraní obsah souboru i včetně metadat ve structureTable
+         * Kompletně odstraní obsah souboru i včetně metadat ve structure
+         * i content table
          * @param inode identifikace souboru pro smazání
          */
         void removeFile(inode_t inode) {
@@ -491,7 +491,11 @@ namespace HiddenFS {
                 for(std::set<vBlock*>::iterator i = blocks.begin(); i != blocks.end(); i++) {
                     this->removeBlock((*i)->hash, (*i)->block);
                     this->CT->setBlockAsUnused(inode, *i);
+
+                    delete *i;
                 }
+
+                this->CT->removeFile(inode);
             } catch(ExceptionFileNotFound&) {}
 
             // uvolnění samotného záznamu
