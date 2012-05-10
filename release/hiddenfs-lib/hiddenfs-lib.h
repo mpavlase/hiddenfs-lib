@@ -134,6 +134,7 @@ namespace HiddenFS {
          * Blok se nesmí nacházet v souboru určeném hashem. Pokud takový blok neexistuje, vyhazuje se výjimka ExceptionBlockNotFound,
          * @param block metoda naplní údaje o nalezeném bloku
          * @param excluded seznam fyzických souborů, které se nesmí použít
+         * @deprecated není implementováno!
          */
         void allocatorFindFreeBlock_differentHash(vBlock*& block, std::set<hash_ascii_t>& excluded);
 
@@ -361,10 +362,13 @@ namespace HiddenFS {
          * @param location umístění jednoho článku řetězu pro načtení
          * @param next naplní ukazatel dalšího článku řetězu
          * @param chain metoda rozšíří řetěz entitami o další obsah, nemaže původní obsah
+         * @param onlyReadNext při nastavené hodnotě true se neprovádí
+         * rekonstrukce řetězce, ale obnova končí po načtení umístění dalšího článku řetězu
+         * @throw ExceptionBlockNotUsed vyhazuje pokud se snažíme načíst dosud neobsazený blok
          * @throw ExceptionRuntimeError pokud čtení z bloku 'location' nebylo
          * z nějakého důvodu korektní
          */
-        void chainListRestore(vBlock* location, vBlock*& next, chainList_t& chain);
+        void chainListRestore(vBlock* location, vBlock*& next, chainList_t& chain, bool onlyReadNext = false);
 
         /**
          * Pokusí se načíst kompletní řetěz entit
