@@ -33,17 +33,14 @@ public:
 
     mp3fs(HiddenFS::IEncryption* i) : HiddenFS::hiddenFs(i) {
         this->init();
-   //     this->FIRST_BLOCK_NO = HiddenFS::hiddenFs::FIRST_BLOCK_NO;
     };
     mp3fs() : HiddenFS::hiddenFs(NULL) {
         this->init();
- //       this->FIRST_BLOCK_NO = HiddenFS::hiddenFs::FIRST_BLOCK_NO;
     };
 
     /** množství skrytých dat na jeden fyzický soubor */
     static const float STEGO_RATIO = 0.1;
     static const char PATH_DELIMITER = '/';
-    //static HiddenFS::block_number_t FIRST_BLOCK_NO;
     typedef struct {
         ID3_Tag* tag;
     } mp3context;
@@ -59,24 +56,11 @@ protected:
         ((mp3context*) context->userContext)->tag->Update();
     }
 
-    /**
-     * Generuje název souboru podel čísla bloku
-     * @param block identifikátor bloku
-     * @return řetězec pro název souboru v mezi ID3 tagy
-     */
-    std::string genFilenameByBlock(HiddenFS::block_number_t block) {
-        std::stringstream ss;
-        ss << "B_";
-        ss << block;
-
-        return ss.str();
-    }
-
 private:
     /**
-     * Convert all chars of string to lowercase
-     * @param input input strint
-     * @return lowercase string
+     * Převádí vstupní řetězec na malá písmena
+     * @param input vstupní řetězec
+     * @return
      */
     std::string toLowerString(std::string input) const {
         std::string output = input;
@@ -89,10 +73,10 @@ private:
     }
 
     /**
-     * Recursive pass through directory and searches files by filter
-     * @param path input directory
-     * @param filterParam find files only matching for this extensions
-     * @param output list of found files
+     * Rekurzivně prochází adresář a ukládá do výstupu cesty k souborům vyhovující filtru
+     * @param path vstupní adresáč
+     * @param filterParam seznam filtrů přípon souborů
+     * @param output metoda naplní tento seznam vyhovujícími cestami
      */
     void scanDir(std::string path, std::vector<std::string> &filter, dirlist_t &output);
 
@@ -128,13 +112,9 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     size_t sumGEOB = 0;
 
     while((frameX = itt->GetNext()) != NULL) {
-        //std::cout << "rámec: " << frameX->GetTextID();
         if(frameX->GetID() == ID3FID_GENERALOBJECT) {
             sumGEOB += frameX->GetField(ID3FN_DATA)->BinSize();
-            //std::cout << " obsah GEOBu: " << frameX->GetField(ID3FN_DATA)->GetRawBinary() << "\n ";
-            //std::cout << "id=" << ", size=" << frameX->GetField(ID3FN_DATA)->BinSize() << ", blokNo=" << frameX->GetField(ID3FN_FILENAME)->GetRawText() << "\n";
         }
-        //std::cout << "\n";
     }
 
     unsigned int pureContentLength = stBuff.st_size - sumGEOB;
@@ -175,11 +155,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
             actBlock = *setIt;
             diffBlock = actBlock - lastBlock;
 
-            //std::cout << "#[" << actBlock << "]\t";
-
             if(diffBlock > 1) {
-                //assert(diffBlock > 0);
-
                 // dopočítání čísel bloků v mezeře (jsou volnými bloky)
                 for(iterBlock = lastBlock; iterBlock != actBlock; iterBlock++) {
                     // nesmíme překročit maximální počet bloků na soubor
@@ -187,7 +163,6 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
                         break;
                     }
 
-                   //std::cout << ".[" << iterBlock << "]\t";
                     context->avaliableBlocks.insert(iterBlock);
                 }
 
@@ -204,7 +179,6 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
 
         for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
 
-            //std::cout << ".[" << iterBlock << "]\t";
             context->avaliableBlocks.insert(iterBlock);
         }
     }
@@ -213,31 +187,10 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     if(!(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks)) {
         for(iterBlock = lastBlock; !(context->avaliableBlocks.size() + context->usedBlocks.size() >= context->maxBlocks); iterBlock++) {
             if(context->usedBlocks.find(iterBlock) == context->usedBlocks.end()) {
-                //std::cout << ".[" << iterBlock << "]\t";
                 context->avaliableBlocks.insert(iterBlock);
             }
         }
     }
-
-    /*
-    std::cout << "file size: " << stBuff.st_size << ", sum geob: " << sumGEOB << ", blockLen = " << BLOCK_MAX_LENGTH;
-    std::cout << ", poč.avaliable: " << context->avaliableBlocks.size();
-    std::cout << ", max bloku: " << context->maxBlocks << ", poč. volných bloků:" << context->avaliableBlocks.size() << "\n";
-
-    std::cout << "CREATE CONTEXT pro " << filename;
-    std::cout << "used = ";
-    for(std::set<HiddenFS::block_number_t>::iterator setIt = context->usedBlocks.begin(); setIt != context->usedBlocks.end(); setIt++) {
-        std::cout << *setIt << ", ";
-    }
-
-    std::cout << "\navaliable = ";
-
-    for(std::set<HiddenFS::block_number_t>::iterator setIt = context->avaliableBlocks.begin(); setIt != context->avaliableBlocks.end(); setIt++) {
-        std::cout << *setIt << ", ";
-    }
-
-    std::cout << "\n";
-    */
 
     return context;
 }
@@ -292,12 +245,9 @@ void mp3fs::scanDir(std::string path, std::vector<std::string> &filter, dirlist_
             pos = filenameLower.rfind(filterLower);
 
             if(pos != std::string::npos && pos == (filename.length() - filterLower.length())) {
-                //cout << path  << filename << " ...ok" << endl;
                 output.push_back(filepath);
 
                 break;
-            } else {
-                //cout << path << filenameLower << " ## mě nezajímá" <<  endl;
             }
         }
     }
@@ -354,7 +304,6 @@ size_t mp3fs::readBlock(HiddenFS::context_t* context, HiddenFS::block_number_t b
 
     size = (frame->Field(ID3FN_DATA).BinSize() > length) ? length : frame->Field(ID3FN_DATA).BinSize();
     memcpy(buff, frame->Field(ID3FN_DATA).GetRawBinary(), size);
-    //std::cout.write((const char*) frame->Field(ID3FN_DATA).GetRawBinary(), size);
 
     return size;
 }
