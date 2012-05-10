@@ -106,7 +106,7 @@ HiddenFS::context_t* mp3fs::createContext(std::string filename) {
     int blok;
     struct stat stBuff;
     int counter = 0;
-    ID3_Frame* first;
+    ID3_Frame* first = NULL;
     HiddenFS::block_number_t lastBlock;
     HiddenFS::block_number_t actBlock, diffBlock, iterBlock;
     ID3_Frame* frame;
@@ -449,22 +449,17 @@ void mp3fs::storageRefreshIndex(std::string path) {
         f.seekg(fileLength - ID3v1_offset);
         f.read(id3v1_buffer, ID3v1_identificationLen);
 
-        //std::cout << "ok2? " << f.good() << "\n";
         if(memcmp(id3v1_buffer, ID3v1_identification, ID3v1_identificationLen) == 0) {
             offsetFromEnd = ID3v1_offset;
-            //std::cout << *i << " obsahuje ID3v1 tagy.\n";
         }
 
-        //std::cout << "ok3? " << f.good() << "\ndélka: " << fileLength << "\n";
 
         if(fileLength > fileMinLength) {
             hashOutput.clear();
 
-            //std::cout << "pozice1x: " << f.tellg() << "\n";
             f.seekg(0, ifstream::beg);
             f.seekg(fileLength - blockOffset - offsetFromEnd);
             memset(blok, '\0', blockAmount);
-            //std::cout << "pozice2: " << f.tellg() << "\n";
             f.read(blok, blockAmount);
 
             encoded.clear();
@@ -483,31 +478,12 @@ void mp3fs::storageRefreshIndex(std::string path) {
                 true,
                 new CryptoPP::HashFilter(
                     hash,
-//                    new CryptoPP::HexEncoder(
-                        new CryptoPP::StringSink(hashOutput)
-//                    )
+                    new CryptoPP::StringSink(hashOutput)
                 )
             );
 
             HiddenFS::hash_ascii_t h_string;
             HiddenFS::convertHashToAscii(h_string, (HiddenFS::hash_raw_t*) (hashOutput.data()), HiddenFS::hash_raw_t_sizeof);
-            /*
-            std::cout << "hashOutput.size() = " << hashOutput.size() << std::endl << "binárka: _";
-            std::cout.write(hashOutput.data(), hashOutput.size());
-            std::cout << "_\nascii  : _";
-            std::cout.write(h_string.data(), h_string.size());
-            std::cout << "_\n";
-
-            HiddenFS::hash_raw_t* hh[HiddenFS::hash_raw_t_sizeof];
-            this->convertStringToHash((HiddenFS::hash_raw_t*) hh, h_string);
-
-            int rr = memcmp(hh, hashOutput.data(), HiddenFS::hash_raw_t_sizeof);
-            std::cout << "výsledek porovnání: " << rr << " (měl by být 0)" << std::endl;
-
-            assert(false);
-
-            this->convertStringToHash();
-            */
 
             this->HT->add(h_string, *i);
          } else {
@@ -522,19 +498,9 @@ void mp3fs::storageRefreshIndex(std::string path) {
 
 int main(int argc, char* argv[]) {
     int ret;
-    //mp3fs* fs = new mp3fs(new MyEncryption());
     mp3fs* fs = new mp3fs();
 
-    if(false) {
-        std::string a[2];
-        a[0] = "-d";
-        a[1] = "vfs/";
-        const char* argv2[] = {a[0].c_str(), a[1].c_str()};
-        int argc2 = 3;
-        ret = fs->run(argc2, (char**)argv2);
-    } else {
-        ret = fs->run(argc, argv);
-    }
+    ret = fs->run(argc, argv);
 
     delete fs;
 
