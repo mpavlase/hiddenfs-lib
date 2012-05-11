@@ -167,8 +167,8 @@ namespace HiddenFS {
         }
 
         // 1 = délka oddělovače (datový typ char má délku vždy 1)
-        const unsigned int DELIM_LENGTH = 1;
-        unsigned int pos = DELIM_LENGTH;
+        const size_t DELIM_LENGTH = 1;
+        size_t pos = DELIM_LENGTH;
 
         // odseknutí prvního a posledního lomítka
         pos = path.find_first_of(PATH_DELIM);
@@ -211,7 +211,7 @@ namespace HiddenFS {
     }
 
     void structTable::splitPathToFilename(std::string path, inode_t* parent, std::string* filename) {
-        unsigned int pos;
+        size_t pos;
         std::string destPath;
 
         pos = path.find_last_of(PATH_DELIM);

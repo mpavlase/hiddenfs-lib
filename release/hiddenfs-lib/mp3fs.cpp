@@ -436,7 +436,9 @@ void mp3fs::storageRefreshIndex(std::string path) {
 
             this->HT->add(h_string, *i);
          } else {
-            std::cout << "Soubor " << *i << " je moc krátký (délka < " << fileMinLength << " Bytes)!\n";
+            if(HiddenFS::flagFuseDebug) {
+                std::cerr << "Soubor " << *i << " je moc krátký (délka < " << fileMinLength << " Bytes)!\n";
+            }
          }
 
         f.close();
