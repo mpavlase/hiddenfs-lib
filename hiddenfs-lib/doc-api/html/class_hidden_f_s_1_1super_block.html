@@ -1,0 +1,620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace třídy HiddenFS::superBlock</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Třídy</span></a></li>
+      <li><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Seznam&nbsp;tříd</span></a></li>
+      <li><a href="classes.html"><span>Rejstřík&nbsp;tříd</span></a></li>
+      <li><a href="hierarchy.html"><span>Hierarchie&nbsp;tříd</span></a></li>
+      <li><a href="functions.html"><span>Seznam&nbsp;členů&nbsp;tříd</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a>      </li>
+      <li><a class="el" href="class_hidden_f_s_1_1super_block.html">HiddenFS::superBlock</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Třídy</a> &#124;
+<a href="#pub-types">Veřejné typy</a> &#124;
+<a href="#pub-methods">Veřejné metody</a> &#124;
+<a href="#pub-static-attribs">Statické veřejné atributy</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace třídy HiddenFS::superBlock</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="HiddenFS::superBlock" -->
+<p><code>#include &lt;<a class="el" href="super_block_8h_source.html">superBlock.h</a>&gt;</code></p>
+
+<p><a href="class_hidden_f_s_1_1super_block-members.html">Seznam všech členů.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Třídy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_foreign.html">tableForeign</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html">tableItem</a></td></tr>
+<tr><td colspan="2"><h2><a name="pub-types"></a>
+Veřejné typy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __u_char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_foreign.html">tableForeign</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#abf9184874791e8a7d8fdfadb69ed6476">table_foreign_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html">tableItem</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#ae20258755ff5b153fe56b0b840ec59cf">table_known_t</a></td></tr>
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Veřejné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a0118e983269049529b4a1849e4d2bd65">superBlock</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a7b60644696cf55c012d24b322f1964e1">superBlock</a> (const <a class="el" href="class_hidden_f_s_1_1super_block.html">superBlock</a> &amp;orig)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a9d1107b72f56d7d1faa03630dcdc33bb">~superBlock</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#ab9da0746d3321d8d857f95e2266bed6e">add</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *item, size_t itemLength)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Přidá jeden záznam typu SuperBlock, ale v tuto chvíli se ještě nezabýváme obsahem.  <a href="#ab9da0746d3321d8d857f95e2266bed6e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#aea6057f1d0f49f834dd7042c67768620">addKnownItem</a> (std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;chain, <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a> tableType)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Přidá do vnitřního seznamu položky (<a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html">tableItem</a>) patřící tomuto souborovému systému.  <a href="#aea6057f1d0f49f834dd7042c67768620"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a97b08bfb3b43629bddbd3e1d6aff976c">readKnownItems</a> (std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;chain, <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a> tableType)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Naplní seznam 'chain' ukazateli na první bloky řetězů, 'tableType' slouží jako filtr.  <a href="#a97b08bfb3b43629bddbd3e1d6aff976c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a61f91afc9b38073aa837768c5b36f592">clearKnownItems</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a08151ed2e1585c7a6eee5139ffc8121b">hasKnownItems</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Testuje existenci záznamů dešifrovatelných globálně zadaným heslem.  <a href="#a08151ed2e1585c7a6eee5139ffc8121b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a26cb7bfaf8037e1537fa2b24c3f6a346">readItem</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buffer, size_t bufferLength)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Roztřídí obsah do patřičných seznamů: validní položky do knownItems, vše ostatní do foreignItems.  <a href="#a26cb7bfaf8037e1537fa2b24c3f6a346"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a1bfae244d04a0db5d8fda2abb9c28bbe">serialize</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **buffer, size_t *size)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Převede obsah superbloku na binární blok dat.  <a href="#a1bfae244d04a0db5d8fda2abb9c28bbe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#afc363071fcfd421a90bfd6bb466635e8">deserialize</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buffer, size_t size)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí parsování vstupního bufferu a naplní interní tabulku všemi záznamy (i těmi, které nepatří této instanci souborového systému).  <a href="#afc363071fcfd421a90bfd6bb466635e8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a76ac760a3c170112645fe1d3aa755c51">getValidItems</a> (<a class="el" href="class_hidden_f_s_1_1super_block.html#abf9184874791e8a7d8fdfadb69ed6476">table_foreign_t</a> *items)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Skrze parametr vrací pouze validní položky superbloku (tj.  <a href="#a76ac760a3c170112645fe1d3aa755c51"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#acd4844e5e4cd36f4c756ddd81bb90959">setEncryptionInstance</a> (<a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> *inst)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a488a94e86fe5b582f0601645b2f05333">isLoaded</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a06093a4376e9093e0e367e89c3660983">setLoaded</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Používat s rozvahou!  <a href="#a06093a4376e9093e0e367e89c3660983"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Statické veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a4ef8120b9abb49bf1d60b85576dee98c">TABLE_STRUCT_TABLE</a> = 's'</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#ab786266239bf9ea52cf0c9c9171815eb">TABLE_CONTENT_TABLE</a> = 'c'</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1super_block.html#a7417732b1244242de84c38515417b481">RAW_ITEM_SIZE</a> = sizeof(<a class="el" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC::CRC_t</a>) + sizeof(<a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>) + SIZEOF_vBlock</td></tr>
+</table>
+<hr/><h2>Dokumentace k členským typům</h2>
+<a class="anchor" id="a562eeb06e762e5b04e52e667a4b52721"></a><!-- doxytag: member="HiddenFS::superBlock::table_flag" ref="a562eeb06e762e5b04e52e667a4b52721" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef __u_char <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">HiddenFS::superBlock::table_flag</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abf9184874791e8a7d8fdfadb69ed6476"></a><!-- doxytag: member="HiddenFS::superBlock::table_foreign_t" ref="abf9184874791e8a7d8fdfadb69ed6476" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_foreign.html">tableForeign</a>&gt; <a class="el" href="class_hidden_f_s_1_1super_block.html#abf9184874791e8a7d8fdfadb69ed6476">HiddenFS::superBlock::table_foreign_t</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae20258755ff5b153fe56b0b840ec59cf"></a><!-- doxytag: member="HiddenFS::superBlock::table_known_t" ref="ae20258755ff5b153fe56b0b840ec59cf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html">tableItem</a>&gt; <a class="el" href="class_hidden_f_s_1_1super_block.html#ae20258755ff5b153fe56b0b840ec59cf">HiddenFS::superBlock::table_known_t</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Dokumentace konstruktoru a destruktoru</h2>
+<a class="anchor" id="a0118e983269049529b4a1849e4d2bd65"></a><!-- doxytag: member="HiddenFS::superBlock::superBlock" ref="a0118e983269049529b4a1849e4d2bd65" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::superBlock::superBlock </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7b60644696cf55c012d24b322f1964e1"></a><!-- doxytag: member="HiddenFS::superBlock::superBlock" ref="a7b60644696cf55c012d24b322f1964e1" args="(const superBlock &amp;orig)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::superBlock::superBlock </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_hidden_f_s_1_1super_block.html">superBlock</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>orig</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9d1107b72f56d7d1faa03630dcdc33bb"></a><!-- doxytag: member="HiddenFS::superBlock::~superBlock" ref="a9d1107b72f56d7d1faa03630dcdc33bb" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::superBlock::~superBlock </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p></p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k metodám</h2>
+<a class="anchor" id="ab9da0746d3321d8d857f95e2266bed6e"></a><!-- doxytag: member="HiddenFS::superBlock::add" ref="ab9da0746d3321d8d857f95e2266bed6e" args="(bytestream_t *item, size_t itemLength)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::add </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>itemLength</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Přidá jeden záznam typu SuperBlock, ale v tuto chvíli se ještě nezabýváme obsahem. </p>
+<p>Při vkládání se provádí hluboká kopie bufferu. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>item</em>&nbsp;</td><td>vstupní buffer s blokem dat, který by mohl obsahovat záznam superbloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>itemLength</em>&nbsp;</td><td>délka vstupního bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Zastaralé:</a></b></dt><dd></dd></dl>
+
+<p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Zastaralé:</a></b></dt><dd></dd></dl>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="aea6057f1d0f49f834dd7042c67768620"></a><!-- doxytag: member="HiddenFS::superBlock::addKnownItem" ref="aea6057f1d0f49f834dd7042c67768620" args="(std::set&lt; vBlock * &gt; &amp;chain, table_flag tableType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::addKnownItem </td>
+          <td>(</td>
+          <td class="paramtype">std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>&nbsp;</td>
+          <td class="paramname"> <em>tableType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Přidá do vnitřního seznamu položky (<a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html">tableItem</a>) patřící tomuto souborovému systému. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>seznam prvních článků řetězu, tzn. počátky kopií obsahu stejné tabulk </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tableType</em>&nbsp;</td><td>určuje typ tabulky, které jsou </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html#af1e56d4ca6819b44af9079197667e76f">HiddenFS::superBlock::tableItem::first</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">HiddenFS::print_vBlock()</a> a <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html#a5f58bd19f0781cffb639c6dfced871e1">HiddenFS::superBlock::tableItem::table</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a61f91afc9b38073aa837768c5b36f592"></a><!-- doxytag: member="HiddenFS::superBlock::clearKnownItems" ref="a61f91afc9b38073aa837768c5b36f592" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::clearKnownItems </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afc363071fcfd421a90bfd6bb466635e8"></a><!-- doxytag: member="HiddenFS::superBlock::deserialize" ref="afc363071fcfd421a90bfd6bb466635e8" args="(bytestream_t *buffer, size_t size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::deserialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí parsování vstupního bufferu a naplní interní tabulku všemi záznamy (i těmi, které nepatří této instanci souborového systému). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>buffer</em>&nbsp;</td><td>blok dat, který je třeba rozparsovat </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>size</em>&nbsp;</td><td>délka bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">HiddenFS::hiddenFs::BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a7417732b1244242de84c38515417b481">RAW_ITEM_SIZE</a> a <a class="el" href="class_hidden_f_s_1_1super_block.html#a26cb7bfaf8037e1537fa2b24c3f6a346">readItem()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a76ac760a3c170112645fe1d3aa755c51"></a><!-- doxytag: member="HiddenFS::superBlock::getValidItems" ref="a76ac760a3c170112645fe1d3aa755c51" args="(table_foreign_t *items)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::getValidItems </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_hidden_f_s_1_1super_block.html#abf9184874791e8a7d8fdfadb69ed6476">table_foreign_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>items</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Skrze parametr vrací pouze validní položky superbloku (tj. </p>
+<p>pouze ty, které se podařilo rozšifrovat) </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>items</em>&nbsp;</td><td>vektor s nalezenými položkami </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a08151ed2e1585c7a6eee5139ffc8121b"></a><!-- doxytag: member="HiddenFS::superBlock::hasKnownItems" ref="a08151ed2e1585c7a6eee5139ffc8121b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool HiddenFS::superBlock::hasKnownItems </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Testuje existenci záznamů dešifrovatelných globálně zadaným heslem. </p>
+
+</div>
+</div>
+<a class="anchor" id="a488a94e86fe5b582f0601645b2f05333"></a><!-- doxytag: member="HiddenFS::superBlock::isLoaded" ref="a488a94e86fe5b582f0601645b2f05333" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool HiddenFS::superBlock::isLoaded </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a26cb7bfaf8037e1537fa2b24c3f6a346"></a><!-- doxytag: member="HiddenFS::superBlock::readItem" ref="a26cb7bfaf8037e1537fa2b24c3f6a346" args="(bytestream_t *buffer, size_t bufferLength)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::readItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>bufferLength</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Roztřídí obsah do patřičných seznamů: validní položky do knownItems, vše ostatní do foreignItems. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>buffer</em>&nbsp;</td><td>vstup dat pro kontrolu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>bufferLength</em>&nbsp;</td><td>délka vstupního bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#ab71d62e1c27f9df0f88b17c2475d3e2f">HiddenFS::CRC::calculate()</a>, <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_foreign.html#a3743c4499a481f9e193229674abd9e40">HiddenFS::superBlock::tableForeign::content</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#abdbfe8944ea93ad71276fc9ce7fd7d32">HiddenFS::IEncryption::decrypt()</a>, <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html#af1e56d4ca6819b44af9079197667e76f">HiddenFS::superBlock::tableItem::first</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_foreign.html#a93fe5d5c3fffdeddca9a7b4a74b1bd4f">HiddenFS::superBlock::tableForeign::length</a>, <a class="el" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">HiddenFS::print_vBlock()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a7417732b1244242de84c38515417b481">RAW_ITEM_SIZE</a>, <a class="el" href="struct_hidden_f_s_1_1super_block_1_1table_item.html#a5f58bd19f0781cffb639c6dfced871e1">HiddenFS::superBlock::tableItem::table</a> a <a class="el" href="namespace_hidden_f_s.html#ad4b984cb2916ae3e926369d9e40f9fb4">HiddenFS::unserialize_vBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a97b08bfb3b43629bddbd3e1d6aff976c"></a><!-- doxytag: member="HiddenFS::superBlock::readKnownItems" ref="a97b08bfb3b43629bddbd3e1d6aff976c" args="(std::set&lt; vBlock * &gt; &amp;chain, table_flag tableType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::readKnownItems </td>
+          <td>(</td>
+          <td class="paramtype">std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>&nbsp;</td>
+          <td class="paramname"> <em>tableType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Naplní seznam 'chain' ukazateli na první bloky řetězů, 'tableType' slouží jako filtr. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>metoda naplní tento seznam </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tableType</em>&nbsp;</td><td>filtr, podle kterého budou do 'chain' vloženy ukazatele </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a> a <a class="el" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">HiddenFS::print_vBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1bfae244d04a0db5d8fda2abb9c28bbe"></a><!-- doxytag: member="HiddenFS::superBlock::serialize" ref="a1bfae244d04a0db5d8fda2abb9c28bbe" args="(bytestream_t **buffer, size_t *size)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::serialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>size</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Převede obsah superbloku na binární blok dat. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>buffer</em>&nbsp;</td><td>výstupní buffer pro serializovaná data, metoda sama alokuje dostatečnou kapacitu ukazatele </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>size</em>&nbsp;</td><td>délka bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">HiddenFS::hiddenFs::BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#ab71d62e1c27f9df0f88b17c2475d3e2f">HiddenFS::CRC::calculate()</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a254f72c4911a6d7a5bbd8b2747bfc6fb">HiddenFS::IEncryption::encrypt()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a7417732b1244242de84c38515417b481">RAW_ITEM_SIZE</a> a <a class="el" href="namespace_hidden_f_s.html#a0bbb48398895d30788a3d279c7bd642f">HiddenFS::serialize_vBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acd4844e5e4cd36f4c756ddd81bb90959"></a><!-- doxytag: member="HiddenFS::superBlock::setEncryptionInstance" ref="acd4844e5e4cd36f4c756ddd81bb90959" args="(IEncryption *inst)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::setEncryptionInstance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> *&nbsp;</td>
+          <td class="paramname"> <em>inst</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a06093a4376e9093e0e367e89c3660983"></a><!-- doxytag: member="HiddenFS::superBlock::setLoaded" ref="a06093a4376e9093e0e367e89c3660983" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::superBlock::setLoaded </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Používat s rozvahou! </p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k datovým členům</h2>
+<a class="anchor" id="a7417732b1244242de84c38515417b481"></a><!-- doxytag: member="HiddenFS::superBlock::RAW_ITEM_SIZE" ref="a7417732b1244242de84c38515417b481" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t <a class="el" href="class_hidden_f_s_1_1super_block.html#a7417732b1244242de84c38515417b481">HiddenFS::superBlock::RAW_ITEM_SIZE</a> = sizeof(<a class="el" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC::CRC_t</a>) + sizeof(<a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a>) + SIZEOF_vBlock<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab786266239bf9ea52cf0c9c9171815eb"></a><!-- doxytag: member="HiddenFS::superBlock::TABLE_CONTENT_TABLE" ref="ab786266239bf9ea52cf0c9c9171815eb" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a> <a class="el" href="class_hidden_f_s_1_1super_block.html#ab786266239bf9ea52cf0c9c9171815eb">HiddenFS::superBlock::TABLE_CONTENT_TABLE</a> = 'c'<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4ef8120b9abb49bf1d60b85576dee98c"></a><!-- doxytag: member="HiddenFS::superBlock::TABLE_STRUCT_TABLE" ref="a4ef8120b9abb49bf1d60b85576dee98c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="class_hidden_f_s_1_1super_block.html#a562eeb06e762e5b04e52e667a4b52721">table_flag</a> <a class="el" href="class_hidden_f_s_1_1super_block.html#a4ef8120b9abb49bf1d60b85576dee98c">HiddenFS::superBlock::TABLE_STRUCT_TABLE</a> = 's'<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/>Dokumentace pro tuto třídu byla generována z následujících souborů:<ul>
+<li><a class="el" href="super_block_8h_source.html">superBlock.h</a></li>
+<li><a class="el" href="super_block_8cpp.html">superBlock.cpp</a></li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:27 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

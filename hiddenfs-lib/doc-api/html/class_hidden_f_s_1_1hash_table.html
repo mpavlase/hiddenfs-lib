@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace třídy HiddenFS::hashTable</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Třídy</span></a></li>
+      <li><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Seznam&nbsp;tříd</span></a></li>
+      <li><a href="classes.html"><span>Rejstřík&nbsp;tříd</span></a></li>
+      <li><a href="hierarchy.html"><span>Hierarchie&nbsp;tříd</span></a></li>
+      <li><a href="functions.html"><span>Seznam&nbsp;členů&nbsp;tříd</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a>      </li>
+      <li><a class="el" href="class_hidden_f_s_1_1hash_table.html">HiddenFS::hashTable</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Třídy</a> &#124;
+<a href="#pub-types">Veřejné typy</a> &#124;
+<a href="#pub-methods">Veřejné metody</a> &#124;
+<a href="#pub-attribs">Veřejné atributy</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace třídy HiddenFS::hashTable</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="HiddenFS::hashTable" -->
+<p>Obousměrné mapování hash a adresy ke skutečnému souboru.  
+<a href="#_details">...</a></p>
+
+<p><code>#include &lt;<a class="el" href="hash_table_8h_source.html">hashTable.h</a>&gt;</code></p>
+
+<p><a href="class_hidden_f_s_1_1hash_table-members.html">Seznam všech členů.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Třídy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html">tableItem</a></td></tr>
+<tr><td colspan="2"><h2><a name="pub-types"></a>
+Veřejné typy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>, <br class="typebreak"/>
+<a class="el" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html">tableItem</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a1adeb113dff827d74df3d1e98b8d6d01">table_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef table_t::const_iterator&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a></td></tr>
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Veřejné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#ab73c9fca1f0cce4a6ae060b97a8210a0">hashTable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#ad1bfc443a5a34352d49a856ffc6840c7">hashTable</a> (const <a class="el" href="class_hidden_f_s_1_1hash_table.html">hashTable</a> &amp;orig)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#aac025b93e99baf6d0083fc4f4dd7eac1">auxUse</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Modifikací pomocných tabulek označí blok jako obsazený.  <a href="#aac025b93e99baf6d0083fc4f4dd7eac1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a11cdf9b553955891540b46c6a0dad1f8">auxFree</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Modifikací pomocných tabulek označí blok jako volný (tzn.  <a href="#a11cdf9b553955891540b46c6a0dad1f8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">find</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, std::string *filename) const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledání v tabulce (mapování hash -&gt; název souboru).  <a href="#a0664391fe9bcf0886225cfd4c5776dbc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a3a1f1984d0b8681404303d1269931b11">find</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Metoda vrací iterátor prvku podle hash.  <a href="#a3a1f1984d0b8681404303d1269931b11"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a391c866a72490be4f2e56fa485428c90">add</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, std::string filename)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vloží nový záznam do hash tabulky.  <a href="#a391c866a72490be4f2e56fa485428c90"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a2842e6d2899cb29139778b6ad6ea7878">print</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">User friendly zobrazení obsahu tabulky - používat pouze pro ladění!  <a href="#a2842e6d2899cb29139778b6ad6ea7878"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">setContext</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Přiřadí kontext k souboru určenému hashem).  <a href="#a3271c90531a4cb3a526923f845e8fde0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a9c13078ffa9cd6ea82a2976b78600801">clearContext</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Smaže odkaz na kontext, ale původní ukazatel už neuvolňuje.  <a href="#a9c13078ffa9cd6ea82a2976b78600801"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">getContext</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vrací kontext k souboru určeném hashem, pokud existuje.  <a href="#aaf19085380d3db66ba1d3fb6caf6f6b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#aeacbf2678eb4a4969c49c1615a67aea3">clear</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Remove all items from table.  <a href="#aeacbf2678eb4a4969c49c1615a67aea3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#ad684a9778de149456a41390fa49e43d9">~hashTable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">begin</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">end</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#ae6ae6bc912125f073d7b06dcf9e5d48d">size</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#adcc3a4227965cdf25d9878bf526de9c3">lastIndexed</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd">firstIndexing</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Příznak pro identifikaci prvního indexování.  <a href="#a91014f01fb7cc634b348b59fa70741cd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">auxList_unused</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).  <a href="#a04ebb358f37b160f00cf38bc8ab035a8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">auxList_partlyUsed</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.  <a href="#aec091a9a06350466850570ac2da27653"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Detailní popis</h2>
+<p>Obousměrné mapování hash a adresy ke skutečnému souboru. </p>
+<hr/><h2>Dokumentace k členským typům</h2>
+<a class="anchor" id="a1adeb113dff827d74df3d1e98b8d6d01"></a><!-- doxytag: member="HiddenFS::hashTable::table_t" ref="a1adeb113dff827d74df3d1e98b8d6d01" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::map&lt;<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>, <a class="el" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html">tableItem</a>&gt; <a class="el" href="class_hidden_f_s_1_1hash_table.html#a1adeb113dff827d74df3d1e98b8d6d01">HiddenFS::hashTable::table_t</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a54bb86d284fde0ba4eace0ced6c2f32f"></a><!-- doxytag: member="HiddenFS::hashTable::table_t_constiterator" ref="a54bb86d284fde0ba4eace0ced6c2f32f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef table_t::const_iterator <a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">HiddenFS::hashTable::table_t_constiterator</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Dokumentace konstruktoru a destruktoru</h2>
+<a class="anchor" id="ab73c9fca1f0cce4a6ae060b97a8210a0"></a><!-- doxytag: member="HiddenFS::hashTable::hashTable" ref="ab73c9fca1f0cce4a6ae060b97a8210a0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::hashTable::hashTable </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd">firstIndexing</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad1bfc443a5a34352d49a856ffc6840c7"></a><!-- doxytag: member="HiddenFS::hashTable::hashTable" ref="ad1bfc443a5a34352d49a856ffc6840c7" args="(const hashTable &amp;orig)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::hashTable::hashTable </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_hidden_f_s_1_1hash_table.html">hashTable</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>orig</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad684a9778de149456a41390fa49e43d9"></a><!-- doxytag: member="HiddenFS::hashTable::~hashTable" ref="ad684a9778de149456a41390fa49e43d9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::hashTable::~hashTable </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Dokumentace k metodám</h2>
+<a class="anchor" id="a391c866a72490be4f2e56fa485428c90"></a><!-- doxytag: member="HiddenFS::hashTable::add" ref="a391c866a72490be4f2e56fa485428c90" args="(hash_ascii_t hash, std::string filename)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::add </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&nbsp;</td>
+          <td class="paramname"> <em>filename</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vloží nový záznam do hash tabulky. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>vypočítaný hash z obsahu souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>filename</em>&nbsp;</td><td>umístění skutečného souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a11cdf9b553955891540b46c6a0dad1f8"></a><!-- doxytag: member="HiddenFS::hashTable::auxFree" ref="a11cdf9b553955891540b46c6a0dad1f8" args="(hash_ascii_t hash, block_number_t block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::auxFree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Modifikací pomocných tabulek označí blok jako volný (tzn. </p>
+<p>k dalšímu použití). Pro zajištění konzistence metadat je nutné tuto metodu volat těsně po skutečně provedené operaci. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>jednoznačná identifikace skutečného souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>číslo bloku, kteý označit jako volný </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">auxList_partlyUsed</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">auxList_unused</a>, <a class="el" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a">HiddenFS::context_t::avaliableBlocks</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">getContext()</a> a <a class="el" href="struct_hidden_f_s_1_1context__t.html#a522ee9054cd69412ff2ee550c867b315">HiddenFS::context_t::maxBlocks</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aac025b93e99baf6d0083fc4f4dd7eac1"></a><!-- doxytag: member="HiddenFS::hashTable::auxUse" ref="aac025b93e99baf6d0083fc4f4dd7eac1" args="(hash_ascii_t hash, block_number_t block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::auxUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Modifikací pomocných tabulek označí blok jako obsazený. </p>
+<p>Pro zajištění konzistence metadat je nutné tuto metodu volat těsně po skutečně provedené operaci. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>jednoznačná identifikace skutečného souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>číslo bloku, kteý označit jako obsazený </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">auxList_partlyUsed</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">auxList_unused</a>, <a class="el" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a">HiddenFS::context_t::avaliableBlocks</a> a <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">getContext()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1ce5994606141bd52f4716d20c518087"></a><!-- doxytag: member="HiddenFS::hashTable::begin" ref="a1ce5994606141bd52f4716d20c518087" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> HiddenFS::hashTable::begin </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aeacbf2678eb4a4969c49c1615a67aea3"></a><!-- doxytag: member="HiddenFS::hashTable::clear" ref="aeacbf2678eb4a4969c49c1615a67aea3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::clear </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Remove all items from table. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9c13078ffa9cd6ea82a2976b78600801"></a><!-- doxytag: member="HiddenFS::hashTable::clearContext" ref="a9c13078ffa9cd6ea82a2976b78600801" args="(hash_ascii_t hash)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::clearContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Smaže odkaz na kontext, ale původní ukazatel už neuvolňuje. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>identifikace souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">setContext()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa78dd6154f5df09955370185949c02f8"></a><!-- doxytag: member="HiddenFS::hashTable::end" ref="aa78dd6154f5df09955370185949c02f8" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> HiddenFS::hashTable::end </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3a1f1984d0b8681404303d1269931b11"></a><!-- doxytag: member="HiddenFS::hashTable::find" ref="a3a1f1984d0b8681404303d1269931b11" args="(hash_ascii_t hash)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> HiddenFS::hashTable::find </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Metoda vrací iterátor prvku podle hash. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>jednoznačná identifikace hledaného souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>konstantní iterátor </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0664391fe9bcf0886225cfd4c5776dbc"></a><!-- doxytag: member="HiddenFS::hashTable::find" ref="a0664391fe9bcf0886225cfd4c5776dbc" args="(hash_ascii_t hash, std::string *filename) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::find </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string *&nbsp;</td>
+          <td class="paramname"> <em>filename</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledání v tabulce (mapování hash -&gt; název souboru). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>hash řetězec souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_file_not_found.html">ExceptionFileNotFound</a></em>&nbsp;</td><td>pokud soubor ve vnitřní tabulce neexistuje </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>filename</em>&nbsp;</td><td>skrze tento parametr metoda vrací umístění skutečného souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aaf19085380d3db66ba1d3fb6caf6f6b6"></a><!-- doxytag: member="HiddenFS::hashTable::getContext" ref="aaf19085380d3db66ba1d3fb6caf6f6b6" args="(hash_ascii_t hash)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* HiddenFS::hashTable::getContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vrací kontext k souboru určeném hashem, pokud existuje. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>identifikace souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud kontext neexistuje </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>ukazatel na instanci kontextu k souboru </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2842e6d2899cb29139778b6ad6ea7878"></a><!-- doxytag: member="HiddenFS::hashTable::print" ref="a2842e6d2899cb29139778b6ad6ea7878" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::print </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>User friendly zobrazení obsahu tabulky - používat pouze pro ladění! </p>
+
+</div>
+</div>
+<a class="anchor" id="a3271c90531a4cb3a526923f845e8fde0"></a><!-- doxytag: member="HiddenFS::hashTable::setContext" ref="a3271c90531a4cb3a526923f845e8fde0" args="(hash_ascii_t hash, context_t *context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hashTable::setContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Přiřadí kontext k souboru určenému hashem). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">auxList_partlyUsed</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">auxList_unused</a>, <a class="el" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a">HiddenFS::context_t::avaliableBlocks</a>, <a class="el" href="struct_hidden_f_s_1_1context__t.html#a522ee9054cd69412ff2ee550c867b315">HiddenFS::context_t::maxBlocks</a> a <a class="el" href="struct_hidden_f_s_1_1context__t.html#ae06f88c5786e56e1c816ce79786baefa">HiddenFS::context_t::usedBlocks</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae6ae6bc912125f073d7b06dcf9e5d48d"></a><!-- doxytag: member="HiddenFS::hashTable::size" ref="ae6ae6bc912125f073d7b06dcf9e5d48d" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int HiddenFS::hashTable::size </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Dokumentace k datovým členům</h2>
+<a class="anchor" id="aec091a9a06350466850570ac2da27653"></a><!-- doxytag: member="HiddenFS::hashTable::auxList_partlyUsed" ref="aec091a9a06350466850570ac2da27653" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&gt; <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">HiddenFS::hashTable::auxList_partlyUsed</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok. </p>
+
+</div>
+</div>
+<a class="anchor" id="a04ebb358f37b160f00cf38bc8ab035a8"></a><!-- doxytag: member="HiddenFS::hashTable::auxList_unused" ref="a04ebb358f37b160f00cf38bc8ab035a8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&gt; <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">HiddenFS::hashTable::auxList_unused</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky). </p>
+
+</div>
+</div>
+<a class="anchor" id="a91014f01fb7cc634b348b59fa70741cd"></a><!-- doxytag: member="HiddenFS::hashTable::firstIndexing" ref="a91014f01fb7cc634b348b59fa70741cd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd">HiddenFS::hashTable::firstIndexing</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Příznak pro identifikaci prvního indexování. </p>
+<p>True = indexování již proběhlo alespoň 1x </p>
+
+</div>
+</div>
+<a class="anchor" id="adcc3a4227965cdf25d9878bf526de9c3"></a><!-- doxytag: member="HiddenFS::hashTable::lastIndexed" ref="adcc3a4227965cdf25d9878bf526de9c3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> <a class="el" href="class_hidden_f_s_1_1hash_table.html#adcc3a4227965cdf25d9878bf526de9c3">HiddenFS::hashTable::lastIndexed</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/>Dokumentace pro tuto třídu byla generována z následujících souborů:<ul>
+<li><a class="el" href="hash_table_8h_source.html">hashTable.h</a></li>
+<li><a class="el" href="hash_table_8cpp.html">hashTable.cpp</a></li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

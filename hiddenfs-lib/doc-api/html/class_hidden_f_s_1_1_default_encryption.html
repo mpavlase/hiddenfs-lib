@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace třídy HiddenFS::DefaultEncryption</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Třídy</span></a></li>
+      <li><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Seznam&nbsp;tříd</span></a></li>
+      <li><a href="classes.html"><span>Rejstřík&nbsp;tříd</span></a></li>
+      <li><a href="hierarchy.html"><span>Hierarchie&nbsp;tříd</span></a></li>
+      <li><a href="functions.html"><span>Seznam&nbsp;členů&nbsp;tříd</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a>      </li>
+      <li><a class="el" href="class_hidden_f_s_1_1_default_encryption.html">HiddenFS::DefaultEncryption</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Veřejné metody</a> &#124;
+<a href="#pub-attribs">Veřejné atributy</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace třídy HiddenFS::DefaultEncryption</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="HiddenFS::DefaultEncryption" --><!-- doxytag: inherits="HiddenFS::IEncryption" -->
+<p><code>#include &lt;<a class="el" href="common_8h_source.html">common.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagram dědičnosti pro třídu HiddenFS::DefaultEncryption</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_hidden_f_s_1_1_default_encryption.png" usemap="#HiddenFS::DefaultEncryption_map" alt=""/>
+  <map id="HiddenFS::DefaultEncryption_map" name="HiddenFS::DefaultEncryption_map">
+<area href="class_hidden_f_s_1_1_i_encryption.html" alt="HiddenFS::IEncryption" shape="rect" coords="0,0,175,24"/>
+</map>
+</div>
+
+<p><a href="class_hidden_f_s_1_1_default_encryption-members.html">Seznam všech členů.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Veřejné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a6b6c57e3783e3f5eb6a499ab2aaaeb26">DefaultEncryption</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#acb7efff6cfcce9b8549f0a023a167795">encrypt</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *input, size_t inputSize, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **output, size_t *outputSize)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Obecné rozhraní pro šifrování bloku dat.  <a href="#acb7efff6cfcce9b8549f0a023a167795"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#af7abe91d0ecc876026e2cf521dde984a">decrypt</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *input, size_t inputSize, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **output, size_t *outputSize)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Obecné rozhraní pro dešifrování bloku dat.  <a href="#af7abe91d0ecc876026e2cf521dde984a"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">byte&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a> [CryptoPP::AES::DEFAULT_KEYLENGTH]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">byte&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a> [CryptoPP::AES::BLOCKSIZE]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a></td></tr>
+</table>
+<hr/><h2>Dokumentace konstruktoru a destruktoru</h2>
+<a class="anchor" id="a6b6c57e3783e3f5eb6a499ab2aaaeb26"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::DefaultEncryption" ref="a6b6c57e3783e3f5eb6a499ab2aaaeb26" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::DefaultEncryption::DefaultEncryption </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a> a <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">HiddenFS::IEncryption::keySize</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k metodám</h2>
+<a class="anchor" id="af7abe91d0ecc876026e2cf521dde984a"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::decrypt" ref="af7abe91d0ecc876026e2cf521dde984a" args="(bytestream_t *input, size_t inputSize, bytestream_t **output, size_t *outputSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::DefaultEncryption::decrypt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>inputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>outputSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Obecné rozhraní pro dešifrování bloku dat. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>input</em>&nbsp;</td><td>zašifrovaný blok dat </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>inputSize</em>&nbsp;</td><td>délka bufferu input </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>output</em>&nbsp;</td><td>dešifrovaný vstup, metoda si sama alokuje dostatečný prostor </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>outputSize</em>&nbsp;</td><td>délka výstupního bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementuje <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#abdbfe8944ea93ad71276fc9ce7fd7d32">HiddenFS::IEncryption</a>.</p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">HiddenFS::IEncryption::key</a> a <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">HiddenFS::IEncryption::keySize</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acb7efff6cfcce9b8549f0a023a167795"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::encrypt" ref="acb7efff6cfcce9b8549f0a023a167795" args="(bytestream_t *input, size_t inputSize, bytestream_t **output, size_t *outputSize)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::DefaultEncryption::encrypt </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>inputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>outputSize</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Obecné rozhraní pro šifrování bloku dat. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>input</em>&nbsp;</td><td>vstupní buffer </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>inputSize</em>&nbsp;</td><td>délka vstupního bufferu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>output</em>&nbsp;</td><td>výstupní buffer, metoda si sama alokuje dostatečný prostor </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>outputSize</em>&nbsp;</td><td>délka výstupního bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementuje <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a254f72c4911a6d7a5bbd8b2747bfc6fb">HiddenFS::IEncryption</a>.</p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">HiddenFS::IEncryption::key</a> a <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">HiddenFS::IEncryption::keySize</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k datovým členům</h2>
+<a class="anchor" id="a0582fa942957fa9aa2ee777bf2721bea"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::encIv" ref="a0582fa942957fa9aa2ee777bf2721bea" args="[CryptoPP::AES::BLOCKSIZE]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">HiddenFS::DefaultEncryption::encIv</a>[CryptoPP::AES::BLOCKSIZE]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="add21c6b5e117bdd2c20ea30ae990f141"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::encKey" ref="add21c6b5e117bdd2c20ea30ae990f141" args="[CryptoPP::AES::DEFAULT_KEYLENGTH]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">HiddenFS::DefaultEncryption::encKey</a>[CryptoPP::AES::DEFAULT_KEYLENGTH]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a69dee076b09be0e6e4dfc543faa92283"></a><!-- doxytag: member="HiddenFS::DefaultEncryption::encKeyFilled" ref="a69dee076b09be0e6e4dfc543faa92283" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">HiddenFS::DefaultEncryption::encKeyFilled</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/>Dokumentace pro tuto třídu byla generována z následujícího souboru:<ul>
+<li><a class="el" href="common_8h_source.html">common.h</a></li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

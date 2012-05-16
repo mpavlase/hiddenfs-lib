@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace struktury HiddenFS::vFile</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Třídy</span></a></li>
+      <li><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Seznam&nbsp;tříd</span></a></li>
+      <li><a href="classes.html"><span>Rejstřík&nbsp;tříd</span></a></li>
+      <li><a href="hierarchy.html"><span>Hierarchie&nbsp;tříd</span></a></li>
+      <li><a href="functions.html"><span>Seznam&nbsp;členů&nbsp;tříd</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a>      </li>
+      <li><a class="el" href="struct_hidden_f_s_1_1v_file.html">HiddenFS::vFile</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Veřejné metody</a> &#124;
+<a href="#pub-attribs">Veřejné atributy</a> &#124;
+<a href="#pub-static-attribs">Statické veřejné atributy</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace struktury HiddenFS::vFile</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="HiddenFS::vFile" -->
+<p>Reprezentace virtuálního souboru - skrývaného souboru.  
+<a href="#_details">...</a></p>
+
+<p><code>#include &lt;<a class="el" href="types_8h_source.html">types.h</a>&gt;</code></p>
+
+<p><a href="struct_hidden_f_s_1_1v_file-members.html">Seznam všech členů.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Veřejné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a39a083a865d4d5a3f62f5da8053f01ab">vFile</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">inode</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">i-node identifikátor soboru  <a href="#a404c96ed55542153ed145572ae9c6c45"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a3dea33b8ed4c32417bbc7e48dab1c17a">parent</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">číslo inode rodiče.  <a href="#a3dea33b8ed4c32417bbc7e48dab1c17a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#ae1067a2113143f961b7a5d433ff9945f">size</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">délka souboru v bytech  <a href="#ae1067a2113143f961b7a5d433ff9945f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">filename</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">název skrývaného souboru  <a href="#ac0a40fa20a4b30ee6d58f0af486361b5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">flags</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">příznaky souboru (D, RWX)  <a href="#a30580a497a6bc8984ec05bcf993ee277"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Statické veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a0475a01b475709844740ca7c3362e3ef">FLAG_NONE</a> = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a0b5f1a4aaecea47a38ce7411583cb253">FLAG_READ</a> = 1 &lt;&lt; 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">FLAG_WRITE</a> = 1 &lt;&lt; 1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a8ac6d48ab9ad3ccfe0eb6e3da0d50d56">FLAG_EXECUTE</a> = 1 &lt;&lt; 2</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html#a3fb8dc30df960170042ed6c9df1101e5">FLAG_DIR</a> = 1 &lt;&lt; 3</td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Detailní popis</h2>
+<p>Reprezentace virtuálního souboru - skrývaného souboru. </p>
+<hr/><h2>Dokumentace konstruktoru a destruktoru</h2>
+<a class="anchor" id="a39a083a865d4d5a3f62f5da8053f01ab"></a><!-- doxytag: member="HiddenFS::vFile::vFile" ref="a39a083a865d4d5a3f62f5da8053f01ab" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::vFile::vFile </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">filename</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0475a01b475709844740ca7c3362e3ef">FLAG_NONE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">flags</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">inode</a> a <a class="el" href="struct_hidden_f_s_1_1v_file.html#ae1067a2113143f961b7a5d433ff9945f">size</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k datovým členům</h2>
+<a class="anchor" id="ac0a40fa20a4b30ee6d58f0af486361b5"></a><!-- doxytag: member="HiddenFS::vFile::filename" ref="ac0a40fa20a4b30ee6d58f0af486361b5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">HiddenFS::vFile::filename</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>název skrývaného souboru </p>
+
+</div>
+</div>
+<a class="anchor" id="a3fb8dc30df960170042ed6c9df1101e5"></a><!-- doxytag: member="HiddenFS::vFile::FLAG_DIR" ref="a3fb8dc30df960170042ed6c9df1101e5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a3fb8dc30df960170042ed6c9df1101e5">HiddenFS::vFile::FLAG_DIR</a> = 1 &lt;&lt; 3<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8ac6d48ab9ad3ccfe0eb6e3da0d50d56"></a><!-- doxytag: member="HiddenFS::vFile::FLAG_EXECUTE" ref="a8ac6d48ab9ad3ccfe0eb6e3da0d50d56" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a8ac6d48ab9ad3ccfe0eb6e3da0d50d56">HiddenFS::vFile::FLAG_EXECUTE</a> = 1 &lt;&lt; 2<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0475a01b475709844740ca7c3362e3ef"></a><!-- doxytag: member="HiddenFS::vFile::FLAG_NONE" ref="a0475a01b475709844740ca7c3362e3ef" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0475a01b475709844740ca7c3362e3ef">HiddenFS::vFile::FLAG_NONE</a> = 0<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0b5f1a4aaecea47a38ce7411583cb253"></a><!-- doxytag: member="HiddenFS::vFile::FLAG_READ" ref="a0b5f1a4aaecea47a38ce7411583cb253" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0b5f1a4aaecea47a38ce7411583cb253">HiddenFS::vFile::FLAG_READ</a> = 1 &lt;&lt; 0<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad50d1c0f3cf494a32688146b626ba1d0"></a><!-- doxytag: member="HiddenFS::vFile::FLAG_WRITE" ref="ad50d1c0f3cf494a32688146b626ba1d0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a> = 1 &lt;&lt; 1<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a30580a497a6bc8984ec05bcf993ee277"></a><!-- doxytag: member="HiddenFS::vFile::flags" ref="a30580a497a6bc8984ec05bcf993ee277" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">flags_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>příznaky souboru (D, RWX) </p>
+
+</div>
+</div>
+<a class="anchor" id="a404c96ed55542153ed145572ae9c6c45"></a><!-- doxytag: member="HiddenFS::vFile::inode" ref="a404c96ed55542153ed145572ae9c6c45" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>i-node identifikátor soboru </p>
+
+</div>
+</div>
+<a class="anchor" id="a3dea33b8ed4c32417bbc7e48dab1c17a"></a><!-- doxytag: member="HiddenFS::vFile::parent" ref="a3dea33b8ed4c32417bbc7e48dab1c17a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> <a class="el" href="struct_hidden_f_s_1_1v_file.html#a3dea33b8ed4c32417bbc7e48dab1c17a">HiddenFS::vFile::parent</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>číslo inode rodiče. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae1067a2113143f961b7a5d433ff9945f"></a><!-- doxytag: member="HiddenFS::vFile::size" ref="ae1067a2113143f961b7a5d433ff9945f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="struct_hidden_f_s_1_1v_file.html#ae1067a2113143f961b7a5d433ff9945f">HiddenFS::vFile::size</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>délka souboru v bytech </p>
+
+</div>
+</div>
+<hr/>Dokumentace pro tuto strukturu (struct) byla generována z následujícího souboru:<ul>
+<li><a class="el" href="types_8h_source.html">types.h</a></li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:27 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

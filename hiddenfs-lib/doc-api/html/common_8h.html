@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace souboru common.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li><a href="annotated.html"><span>Třídy</span></a></li>
+      <li class="current"><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Seznam&nbsp;souborů</span></a></li>
+      <li><a href="globals.html"><span>Symboly&nbsp;v&nbsp;souborech</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Třídy</a> &#124;
+<a href="#namespaces">Prostory jmen</a> &#124;
+<a href="#define-members">Definice maker</a> &#124;
+<a href="#func-members">Funkce</a> &#124;
+<a href="#var-members">Proměnné</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace souboru common.h</h1>  </div>
+</div>
+<div class="contents">
+<code>#include &lt;assert.h&gt;</code><br/>
+<code>#include &lt;cryptopp/hex.h&gt;</code><br/>
+<code>#include &lt;cstdlib&gt;</code><br/>
+<code>#include &lt;cstring&gt;</code><br/>
+<code>#include &lt;errno.h&gt;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;cryptopp/sha.h&gt;</code><br/>
+<code>#include &lt;cryptopp/filters.h&gt;</code><br/>
+<code>#include &lt;cryptopp/aes.h&gt;</code><br/>
+<code>#include &lt;cryptopp/modes.h&gt;</code><br/>
+<code>#include &quot;<a class="el" href="exceptions_8h_source.html">exceptions.h</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br/>
+
+<p><a href="common_8h_source.html">Zobrazit zdrojový text tohoto souboru.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Třídy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_c_r_c.html">HiddenFS::CRC</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Objekt zastřešující výpočet kontrolního <a class="el" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a> součtu Implementace převzata z RFC 1952.  <a href="class_hidden_f_s_1_1_c_r_c.html#_details">...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_i_encryption.html">HiddenFS::IEncryption</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1_default_encryption.html">HiddenFS::DefaultEncryption</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1chain_of_entities.html">HiddenFS::chainOfEntities</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Jedna složka spojového seznamu pro uložení serializovaných entit (=řádků) tabulek.  <a href="struct_hidden_f_s_1_1chain_of_entities.html#_details">...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="namespaces"></a>
+Prostory jmen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">namespace &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Definice maker</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_8h.html#afa0714d930692e129619f1af5255eca6">DD</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_8h.html#aebd9f147a28718daf090e7e26f2ed223">_D</a>(f)&nbsp;&nbsp;&nbsp;std::cerr &lt;&lt; &quot;DEBUG: &quot; &lt;&lt; f &lt;&lt; &quot;\n&quot;;</td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Funkce</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ab955c5c79afd7d527d1ff749b3ef0686">HiddenFS::print_vFile</a> (vFile *f)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">HiddenFS::print_vBlock</a> (vBlock *b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a6e51d5bf2e6ec3345e359acb6704eb06">HiddenFS::pBytes</a> (bytestream_t *input, size_t len)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">User-friendly tisk (HEX i ASCII) bloku binárních dat.  <a href="#a6e51d5bf2e6ec3345e359acb6704eb06"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a0bbb48398895d30788a3d279c7bd642f">HiddenFS::serialize_vBlock</a> (vBlock *input, bytestream_t **output, size_t *size)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Převod struktury <a class="el" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a> na blok bytů.  <a href="#a0bbb48398895d30788a3d279c7bd642f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ad4b984cb2916ae3e926369d9e40f9fb4">HiddenFS::unserialize_vBlock</a> (bytestream_t *input, size_t size, vBlock **output)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí převod binárního bloku dat zpět na strukturu <a class="el" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>.  <a href="#ad4b984cb2916ae3e926369d9e40f9fb4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a0bcebe592aa6c0b0cfd0eccb8a99b776">HiddenFS::idByteIsSuperBlock</a> (id_byte_t b)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Funkce testuje hodnotu parametru, zda je v rozsahu pro superblock.  <a href="#a0bcebe592aa6c0b0cfd0eccb8a99b776"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a9636982fe7ee11dc16adefcce331a482">HiddenFS::idByteIsDataBlock</a> (id_byte_t b)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Funkce testuje hodnotu parametru, zda je v rozsahu pro běžný datový blok.  <a href="#a9636982fe7ee11dc16adefcce331a482"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a3d509d9d8b259d97cec78b444a8e7271">HiddenFS::idByteIsChain</a> (id_byte_t b)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Funkce testuje hodnotu parametru, zda je v rozsahu pro řetěz entit.  <a href="#a3d509d9d8b259d97cec78b444a8e7271"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const id_byte_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a5778bd9b2677dc929f3323260ac0140c">HiddenFS::idByteMaxValue</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vrací nejvyšší dosažitelnou hodnotu dle datového typu.  <a href="#a5778bd9b2677dc929f3323260ac0140c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">id_byte_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a77917bed84abb619de292abe48865022">HiddenFS::idByteGenDataBlock</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generuje hodnotu platnou pro běžný datový blok.  <a href="#a77917bed84abb619de292abe48865022"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">id_byte_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a95e28e29209ad5cd6592ca56ddb730ee">HiddenFS::idByteGenSuperBlock</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generuje hodnotu v rozsahu platném pro superblock.  <a href="#a95e28e29209ad5cd6592ca56ddb730ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">id_byte_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a04e250a21816a9a9b41a1336165dcf72">HiddenFS::idByteGenChain</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Generuje hodnotu v rozsahu platném pro řetěz entit.  <a href="#a04e250a21816a9a9b41a1336165dcf72"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#affbfade8f9a685e3bd69975ea9a45316">HiddenFS::convertHashToAscii</a> (hash_ascii_t &amp;output, const hash_raw_t *input, size_t inputLength)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Převede hash souboru (může být binární) do podoby běžného ASCII.  <a href="#affbfade8f9a685e3bd69975ea9a45316"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a43b5e4384039835f5bcae74a1efddd2d">HiddenFS::convertAsciiToHash</a> (hash_raw_t *output, hash_ascii_t &amp;input)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Převod ASCII řetězce reprezentující hash do jeho původní (binární) podoby.  <a href="#a43b5e4384039835f5bcae74a1efddd2d"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Proměnné</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a></td></tr>
+</table>
+<hr/><h2>Dokumentace k definicím maker</h2>
+<a class="anchor" id="aebd9f147a28718daf090e7e26f2ed223"></a><!-- doxytag: member="common.h::_D" ref="aebd9f147a28718daf090e7e26f2ed223" args="(f)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _D</td>
+          <td>(</td>
+          <td class="paramtype">&nbsp;</td>
+          <td class="paramname">f</td>
+          <td>&nbsp;)&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;std::cerr &lt;&lt; &quot;DEBUG: &quot; &lt;&lt; f &lt;&lt; &quot;\n&quot;;</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afa0714d930692e129619f1af5255eca6"></a><!-- doxytag: member="common.h::DD" ref="afa0714d930692e129619f1af5255eca6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DD</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl class="author"><dt><b>Autor:</b></dt><dd>Martin Pavlásek (<a href="mailto:xpavla07@stud.fit.vutbr.cz">xpavla07@stud.fit.vutbr.cz</a>)</dd></dl>
+<p>Created on 24. březen 2012 </p>
+
+</div>
+</div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

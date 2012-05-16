@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Zdrojový soubor common.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li><a href="annotated.html"><span>Třídy</span></a></li>
+      <li class="current"><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Seznam&nbsp;souborů</span></a></li>
+      <li><a href="globals.html"><span>Symboly&nbsp;v&nbsp;souborech</span></a></li>
+    </ul>
+  </div>
+<div class="header">
+  <div class="headertitle">
+<h1>common.h</h1>  </div>
+</div>
+<div class="contents">
+<a href="common_8h.html">Zobrazit dokumentaci tohoto souboru.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00007"></a>00007 <span class="preprocessor">#ifndef COMMON_H</span>
+<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#define COMMON_H</span>
+<a name="l00009"></a>00009 <span class="preprocessor"></span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;assert.h&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;cryptopp/hex.h&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;cstdlib&gt;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &lt;cstring&gt;</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#include &lt;errno.h&gt;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include &lt;string&gt;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020 <span class="preprocessor">#include &lt;cryptopp/sha.h&gt;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &lt;cryptopp/filters.h&gt;</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &lt;cryptopp/aes.h&gt;</span>
+<a name="l00023"></a>00023 <span class="preprocessor">#include &lt;cryptopp/modes.h&gt;</span>
+<a name="l00024"></a>00024 <span class="preprocessor">#include &lt;cryptopp/hex.h&gt;</span>
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="exceptions_8h.html">exceptions.h</a>&quot;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#include &quot;<a class="code" href="types_8h.html">types.h</a>&quot;</span>
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029 <span class="comment">//DD = DisplayDebug</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="preprocessor">#ifdef D_ENABLE</span>
+<a name="l00032"></a>00032 <span class="preprocessor"></span><span class="preprocessor">#ifndef DD</span>
+<a name="l00033"></a>00033 <span class="preprocessor"></span><span class="preprocessor">#define DD //</span>
+<a name="l00034"></a>00034 <span class="preprocessor"></span><span class="preprocessor">#else</span>
+<a name="l00035"></a>00035 <span class="preprocessor"></span><span class="preprocessor">#define DD</span>
+<a name="l00036"></a>00036 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00037"></a>00037 <span class="preprocessor"></span>
+<a name="l00038"></a>00038 <span class="preprocessor">#else</span>
+<a name="l00039"></a>00039 <span class="preprocessor"></span>
+<a name="l00040"></a>00040 <span class="preprocessor">#ifndef DD</span>
+<a name="l00041"></a><a class="code" href="common_8h.html#afa0714d930692e129619f1af5255eca6">00041</a> <span class="preprocessor"></span><span class="preprocessor">#define DD</span>
+<a name="l00042"></a>00042 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00043"></a>00043 <span class="preprocessor"></span>
+<a name="l00044"></a>00044 <span class="preprocessor">#endif</span>
+<a name="l00045"></a>00045 <span class="preprocessor"></span>
+<a name="l00046"></a>00046 <span class="keyword">namespace </span>HiddenFS {
+<a name="l00047"></a><a class="code" href="common_8h.html#aebd9f147a28718daf090e7e26f2ed223">00047</a> <span class="preprocessor">    #define _D(f) std::cerr &lt;&lt; &quot;DEBUG: &quot; &lt;&lt; f &lt;&lt; &quot;\n&quot;;</span>
+<a name="l00048"></a>00048 <span class="preprocessor"></span>
+<a name="l00049"></a>00049     <span class="keyword">extern</span> <span class="keywordtype">bool</span> <a class="code" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">flagFuseDebug</a>;
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051     std::string <a class="code" href="namespace_hidden_f_s.html#ab955c5c79afd7d527d1ff749b3ef0686">print_vFile</a>(vFile* f);
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053     std::string <a class="code" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">print_vBlock</a>(vBlock* b);
+<a name="l00054"></a>00054 
+<a name="l00060"></a>00060     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#a6e51d5bf2e6ec3345e359acb6704eb06" title="User-friendly tisk (HEX i ASCII) bloku binárních dat.">pBytes</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> len);
+<a name="l00061"></a>00061 
+<a name="l00068"></a>00068     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#a0bbb48398895d30788a3d279c7bd642f" title="Převod struktury vBlock na blok bytů.">serialize_vBlock</a>(vBlock* input, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* size);
+<a name="l00069"></a>00069 
+<a name="l00076"></a>00076     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#ad4b984cb2916ae3e926369d9e40f9fb4" title="Provádí převod binárního bloku dat zpět na strukturu vBlock.">unserialize_vBlock</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> size, vBlock** output);
+<a name="l00077"></a>00077 
+<a name="l00083"></a><a class="code" href="class_hidden_f_s_1_1_c_r_c.html">00083</a>     <span class="keyword">class </span><a class="code" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a> {
+<a name="l00084"></a>00084     <span class="keyword">public</span>:
+<a name="l00085"></a><a class="code" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">00085</a>         <span class="keyword">typedef</span> __uint32_t CRC_t;
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087         <span class="comment">/* Return the CRC of the bytes buf[0..len-1]. */</span>
+<a name="l00088"></a>00088         <a class="code" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC_t</a> <a class="code" href="class_hidden_f_s_1_1_c_r_c.html#ab71d62e1c27f9df0f88b17c2475d3e2f">calculate</a>(__u_char *buf, <span class="keywordtype">int</span> len);
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090         <a class="code" href="class_hidden_f_s_1_1_c_r_c.html#a5eafa3da391d6a718d7103b47401eb45">CRC</a>();
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092     <span class="keyword">private</span>:
+<a name="l00093"></a>00093         <span class="comment">/* Table of CRCs of all 8-bit messages. */</span>
+<a name="l00094"></a>00094         <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> crc_table[256];
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096         <span class="comment">/* Make the table for a fast CRC. */</span>
+<a name="l00097"></a>00097         <span class="keywordtype">void</span> make_crc_table();
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099         <span class="comment">/*</span>
+<a name="l00100"></a>00100 <span class="comment">         Update a running crc with the bytes buf[0..len-1] and return</span>
+<a name="l00101"></a>00101 <span class="comment">        the updated crc. The crc should be initialized to zero. Pre- and</span>
+<a name="l00102"></a>00102 <span class="comment">        post-conditioning (one&#39;s complement) is performed within this</span>
+<a name="l00103"></a>00103 <span class="comment">        function so it shouldn&#39;t be done by the caller. Usage example:</span>
+<a name="l00104"></a>00104 <span class="comment"></span>
+<a name="l00105"></a>00105 <span class="comment">         unsigned long crc = 0L;</span>
+<a name="l00106"></a>00106 <span class="comment"></span>
+<a name="l00107"></a>00107 <span class="comment">         while (read_buffer(buffer, length) != EOF) {</span>
+<a name="l00108"></a>00108 <span class="comment">           crc = update_crc(crc, buffer, length);</span>
+<a name="l00109"></a>00109 <span class="comment">         }</span>
+<a name="l00110"></a>00110 <span class="comment">         if (crc != original_crc) error();</span>
+<a name="l00111"></a>00111 <span class="comment">        */</span>
+<a name="l00112"></a>00112         <a class="code" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC_t</a> update_crc(<a class="code" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC_t</a> crc, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *buf, <span class="keywordtype">int</span> len);
+<a name="l00113"></a>00113     };
+<a name="l00114"></a>00114 
+<a name="l00115"></a><a class="code" href="class_hidden_f_s_1_1_i_encryption.html">00115</a>     <span class="keyword">class </span><a class="code" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> {
+<a name="l00116"></a>00116     <span class="keyword">public</span>:
+<a name="l00117"></a><a class="code" href="class_hidden_f_s_1_1_i_encryption.html#aeb701a7e3836e5f876188fb082f44201">00117</a>         <span class="keyword">virtual</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#aeb701a7e3836e5f876188fb082f44201">~IEncryption</a>() {
+<a name="l00118"></a>00118             <span class="keyword">delete</span> this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">key</a>;
+<a name="l00119"></a>00119         };
+<a name="l00123"></a><a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a8b6959637990e1ce3f9e1bc7c88d6002">00123</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a8b6959637990e1ce3f9e1bc7c88d6002" title="Uložení šifrovacího klíče do nitra objektu.">setKey</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">key</a>, <span class="keywordtype">size_t</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">keySize</a>) {
+<a name="l00124"></a>00124             <span class="keywordflow">if</span>(<a class="code" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">flagFuseDebug</a>) {
+<a name="l00125"></a>00125                 std::cout &lt;&lt; <span class="stringliteral">&quot;IEncryption::setKey = &quot;</span> &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;
+<a name="l00126"></a>00126             }
+<a name="l00127"></a>00127             <span class="comment">//HiddenFS::pBytes(key, keySize);</span>
+<a name="l00128"></a>00128             this-&gt;key = <span class="keyword">new</span> <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>[keySize];
+<a name="l00129"></a>00129             this-&gt;keySize = keySize;
+<a name="l00130"></a>00130             memcpy(this-&gt;key, key, this-&gt;keySize);
+<a name="l00131"></a>00131         };
+<a name="l00132"></a>00132 
+<a name="l00140"></a>00140         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a254f72c4911a6d7a5bbd8b2747bfc6fb" title="Obecné rozhraní pro šifrování bloku dat.">encrypt</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> inputSize, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* outputSize) = 0;
+<a name="l00141"></a>00141 
+<a name="l00149"></a>00149         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#abdbfe8944ea93ad71276fc9ce7fd7d32" title="Obecné rozhraní pro dešifrování bloku dat.">decrypt</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> inputSize, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* outputSize) = 0;
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151     <span class="keyword">protected</span> :
+<a name="l00152"></a><a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">00152</a>         <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">key</a>;
+<a name="l00153"></a><a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">00153</a>         <span class="keywordtype">size_t</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">keySize</a>;
+<a name="l00154"></a>00154     };
+<a name="l00155"></a>00155 
+<a name="l00156"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html">00156</a>     <span class="keyword">class </span><a class="code" href="class_hidden_f_s_1_1_default_encryption.html">DefaultEncryption</a> : <span class="keyword">public</span> <a class="code" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> {
+<a name="l00157"></a>00157     <span class="keyword">public</span>:
+<a name="l00158"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">00158</a>         byte <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>[CryptoPP::AES::DEFAULT_KEYLENGTH];
+<a name="l00159"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">00159</a>         byte <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>[CryptoPP::AES::BLOCKSIZE];
+<a name="l00160"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">00160</a>         <span class="keywordtype">bool</span> <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a>;
+<a name="l00161"></a>00161 
+<a name="l00162"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a6b6c57e3783e3f5eb6a499ab2aaaeb26">00162</a>         <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a6b6c57e3783e3f5eb6a499ab2aaaeb26">DefaultEncryption</a>() : <a class="code" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a>() {
+<a name="l00163"></a>00163             assert((<span class="keywordtype">unsigned</span> <span class="keywordtype">size_t</span>)this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">keySize</a> &lt;= (<span class="keywordtype">unsigned</span> <span class="keywordtype">size_t</span>)CryptoPP::AES::DEFAULT_KEYLENGTH);
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165             memset(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <span class="charliteral">&#39;\0&#39;</span>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>));
+<a name="l00166"></a>00166             <span class="comment">//prng.GenerateBlock(key, sizeof(key));</span>
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168             memset(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <span class="charliteral">&#39;\0&#39;</span>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>));
+<a name="l00169"></a>00169             <span class="comment">//prng.GenerateBlock(iv, sizeof(iv));</span>
+<a name="l00170"></a>00170             this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a> = <span class="keyword">false</span>;
+<a name="l00171"></a>00171         }
+<a name="l00172"></a>00172 
+<a name="l00173"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#acb7efff6cfcce9b8549f0a023a167795">00173</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#acb7efff6cfcce9b8549f0a023a167795" title="Obecné rozhraní pro šifrování bloku dat.">encrypt</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> inputSize, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* outputSize) {
+<a name="l00174"></a>00174             std::string cipher;
+<a name="l00175"></a>00175             <span class="keywordflow">if</span>(!this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a>) {
+<a name="l00176"></a>00176                 memcpy(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">key</a>, this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">keySize</a>);
+<a name="l00177"></a>00177                 this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a> = <span class="keyword">true</span>;
+<a name="l00178"></a>00178             }
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180             assert(input != NULL);
+<a name="l00181"></a>00181             assert(outputSize != NULL);
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183             <span class="keywordflow">try</span> {
+<a name="l00184"></a>00184                 CryptoPP::OFB_Mode&lt; CryptoPP::AES &gt;::Encryption e;
+<a name="l00185"></a>00185                 e.SetKeyWithIV(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>), this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>));
+<a name="l00186"></a>00186 
+<a name="l00187"></a>00187                 <span class="comment">// OFB mode must not use padding. Specifying</span>
+<a name="l00188"></a>00188                 <span class="comment">//  a scheme will result in an exception</span>
+<a name="l00189"></a>00189                 CryptoPP::StringSource((<span class="keyword">const</span> byte*) input, inputSize, <span class="keyword">true</span>,
+<a name="l00190"></a>00190                     <span class="keyword">new</span> CryptoPP::StreamTransformationFilter(e,
+<a name="l00191"></a>00191                         <span class="keyword">new</span> CryptoPP::StringSink(cipher)
+<a name="l00192"></a>00192                     ) <span class="comment">// StreamTransformationFilter</span>
+<a name="l00193"></a>00193                 ); <span class="comment">// StringSource</span>
+<a name="l00194"></a>00194 
+<a name="l00195"></a>00195                 *outputSize = cipher.length();
+<a name="l00196"></a>00196                 *output = <span class="keyword">new</span> <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>[*outputSize];
+<a name="l00197"></a>00197                 cipher.copy((<span class="keywordtype">char</span>*)*output, *outputSize, 0);
+<a name="l00198"></a>00198             } <span class="keywordflow">catch</span>(<span class="keyword">const</span> CryptoPP::Exception&amp; e) {
+<a name="l00199"></a>00199                 std::cerr &lt;&lt; e.what() &lt;&lt; std::endl;
+<a name="l00200"></a>00200                 exit(1);
+<a name="l00201"></a>00201             }
+<a name="l00202"></a>00202         };
+<a name="l00203"></a>00203 
+<a name="l00204"></a><a class="code" href="class_hidden_f_s_1_1_default_encryption.html#af7abe91d0ecc876026e2cf521dde984a">00204</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1_default_encryption.html#af7abe91d0ecc876026e2cf521dde984a" title="Obecné rozhraní pro dešifrování bloku dat.">decrypt</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> inputSize, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* outputSize) {
+<a name="l00205"></a>00205             std::string recovered;
+<a name="l00206"></a>00206             <span class="keywordflow">if</span>(!this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a>) {
+<a name="l00207"></a>00207                 memcpy(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a6881a77eefb6c8bd69bcac6fc127593c">key</a>, this-&gt;<a class="code" href="class_hidden_f_s_1_1_i_encryption.html#a72aa04d11186d65c3338cf4817278575">keySize</a>);
+<a name="l00208"></a>00208                 this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a69dee076b09be0e6e4dfc543faa92283">encKeyFilled</a> = <span class="keyword">true</span>;
+<a name="l00209"></a>00209             }
+<a name="l00210"></a>00210 
+<a name="l00211"></a>00211             <span class="keywordflow">try</span> {
+<a name="l00212"></a>00212                 CryptoPP::OFB_Mode&lt; CryptoPP::AES &gt;::Decryption d;
+<a name="l00213"></a>00213                 d.SetKeyWithIV(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#add21c6b5e117bdd2c20ea30ae990f141">encKey</a>), this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>, <span class="keyword">sizeof</span>(this-&gt;<a class="code" href="class_hidden_f_s_1_1_default_encryption.html#a0582fa942957fa9aa2ee777bf2721bea">encIv</a>));
+<a name="l00214"></a>00214 
+<a name="l00215"></a>00215                 <span class="comment">// The StreamTransformationFilter removes</span>
+<a name="l00216"></a>00216                 <span class="comment">//  padding as required.</span>
+<a name="l00217"></a>00217                 CryptoPP::StringSource s((<span class="keyword">const</span> byte*) input, inputSize, <span class="keyword">true</span>,
+<a name="l00218"></a>00218                     <span class="keyword">new</span> CryptoPP::StreamTransformationFilter(d,
+<a name="l00219"></a>00219                         <span class="keyword">new</span> CryptoPP::StringSink(recovered)
+<a name="l00220"></a>00220                     ) <span class="comment">// StreamTransformationFilter</span>
+<a name="l00221"></a>00221                 ); <span class="comment">// StringSource</span>
+<a name="l00222"></a>00222 
+<a name="l00223"></a>00223                 *outputSize = recovered.length();
+<a name="l00224"></a>00224                 *output = <span class="keyword">new</span> <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>[*outputSize];
+<a name="l00225"></a>00225                 recovered.copy((<span class="keywordtype">char</span>*)*output, *outputSize, 0);
+<a name="l00226"></a>00226             } <span class="keywordflow">catch</span>(<span class="keyword">const</span> CryptoPP::Exception&amp; e) {
+<a name="l00227"></a>00227                 std::cerr &lt;&lt; e.what() &lt;&lt; std::endl;
+<a name="l00228"></a>00228                 exit(1);
+<a name="l00229"></a>00229             }
+<a name="l00230"></a>00230         };
+<a name="l00231"></a>00231     };
+<a name="l00232"></a>00232 
+<a name="l00238"></a><a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html">00238</a>     <span class="keyword">struct </span><a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html" title="Jedna složka spojového seznamu pro uložení serializovaných entit (=řádků) tabulek.">chainOfEntities</a> {
+<a name="l00240"></a><a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#a255997d0ad0e3f63d9a7bc927840cda9">00240</a>         __uint32_t <a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#a255997d0ad0e3f63d9a7bc927840cda9" title="Počet entit v aktuálním článku řetězu.">count</a>;
+<a name="l00241"></a>00241 
+<a name="l00244"></a><a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#ae6e56d4b7e820d5da41ac6b547071ab6">00244</a>         <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a> <a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#ae6e56d4b7e820d5da41ac6b547071ab6" title="Umístění následujícího článku řetězu, pokud je celý nastaven na &amp;#39;&amp;#39;, Aktuální článek je posled...">next</a>;
+<a name="l00245"></a>00245 
+<a name="l00248"></a><a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#a1e2a5c0bb54849a01e6fdd2de7a4dc7c">00248</a>         __u_char* <a class="code" href="struct_hidden_f_s_1_1chain_of_entities.html#a1e2a5c0bb54849a01e6fdd2de7a4dc7c" title="Ukazatel na dump entit.">entities</a>;
+<a name="l00249"></a>00249     };
+<a name="l00250"></a>00250 
+<a name="l00257"></a>00257     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#a0bbb48398895d30788a3d279c7bd642f" title="Převod struktury vBlock na blok bytů.">serialize_vBlock</a>(<a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>* input, <a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>** output, <span class="keywordtype">size_t</span>* size);
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259 
+<a name="l00266"></a>00266     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#ad4b984cb2916ae3e926369d9e40f9fb4" title="Provádí převod binárního bloku dat zpět na strukturu vBlock.">unserialize_vBlock</a>(<a class="code" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7" title="datový typ &amp;quot;jednotky&amp;quot; pro manipulaci s binárním obsahem (unsigned char)">bytestream_t</a>* input, <span class="keywordtype">size_t</span> size, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>** output);
+<a name="l00267"></a>00267 
+<a name="l00271"></a>00271     <span class="keywordtype">bool</span> <a class="code" href="namespace_hidden_f_s.html#a0bcebe592aa6c0b0cfd0eccb8a99b776" title="Funkce testuje hodnotu parametru, zda je v rozsahu pro superblock.">idByteIsSuperBlock</a>(<a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> b);
+<a name="l00272"></a>00272 
+<a name="l00276"></a>00276     <span class="keywordtype">bool</span> <a class="code" href="namespace_hidden_f_s.html#a9636982fe7ee11dc16adefcce331a482" title="Funkce testuje hodnotu parametru, zda je v rozsahu pro běžný datový blok.">idByteIsDataBlock</a>(<a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> b);
+<a name="l00277"></a>00277 
+<a name="l00281"></a>00281     <span class="keywordtype">bool</span> <a class="code" href="namespace_hidden_f_s.html#a3d509d9d8b259d97cec78b444a8e7271" title="Funkce testuje hodnotu parametru, zda je v rozsahu pro řetěz entit.">idByteIsChain</a>(<a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> b);
+<a name="l00282"></a>00282 
+<a name="l00286"></a>00286     <span class="keyword">const</span> <a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> <a class="code" href="namespace_hidden_f_s.html#a5778bd9b2677dc929f3323260ac0140c" title="Vrací nejvyšší dosažitelnou hodnotu dle datového typu.">idByteMaxValue</a>();
+<a name="l00287"></a>00287 
+<a name="l00291"></a>00291     <a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> <a class="code" href="namespace_hidden_f_s.html#a77917bed84abb619de292abe48865022" title="Generuje hodnotu platnou pro běžný datový blok.">idByteGenDataBlock</a>();
+<a name="l00292"></a>00292 
+<a name="l00296"></a>00296     <a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> <a class="code" href="namespace_hidden_f_s.html#a95e28e29209ad5cd6592ca56ddb730ee" title="Generuje hodnotu v rozsahu platném pro superblock.">idByteGenSuperBlock</a>();
+<a name="l00297"></a>00297 
+<a name="l00301"></a>00301     <a class="code" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b" title="datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)...">id_byte_t</a> <a class="code" href="namespace_hidden_f_s.html#a04e250a21816a9a9b41a1336165dcf72" title="Generuje hodnotu v rozsahu platném pro řetěz entit.">idByteGenChain</a>();
+<a name="l00302"></a>00302 
+<a name="l00310"></a>00310     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#affbfade8f9a685e3bd69975ea9a45316" title="Převede hash souboru (může být binární) do podoby běžného ASCII.">convertHashToAscii</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a>&amp; output, <span class="keyword">const</span> <a class="code" href="namespace_hidden_f_s.html#afc177eeed20be4ba175a3a04b0432ef9">hash_raw_t</a>* input, <span class="keywordtype">size_t</span> inputLength);
+<a name="l00311"></a>00311 
+<a name="l00317"></a>00317     <span class="keywordtype">void</span> <a class="code" href="namespace_hidden_f_s.html#a43b5e4384039835f5bcae74a1efddd2d" title="Převod ASCII řetězce reprezentující hash do jeho původní (binární) podoby.">convertAsciiToHash</a>(<a class="code" href="namespace_hidden_f_s.html#afc177eeed20be4ba175a3a04b0432ef9">hash_raw_t</a>* output, <a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a>&amp; input);
+<a name="l00318"></a>00318 }
+<a name="l00319"></a>00319 
+<a name="l00320"></a>00320 <span class="preprocessor">#endif  </span><span class="comment">/* COMMON_H */</span>
+<a name="l00321"></a>00321 
+</pre></div></div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

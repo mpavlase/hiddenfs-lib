@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Zdrojový soubor contentTable.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li><a href="annotated.html"><span>Třídy</span></a></li>
+      <li class="current"><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Seznam&nbsp;souborů</span></a></li>
+      <li><a href="globals.html"><span>Symboly&nbsp;v&nbsp;souborech</span></a></li>
+    </ul>
+  </div>
+<div class="header">
+  <div class="headertitle">
+<h1>contentTable.h</h1>  </div>
+</div>
+<div class="contents">
+<a href="content_table_8h.html">Zobrazit dokumentaci tohoto souboru.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00007"></a>00007 <span class="preprocessor">#ifndef CONTENTTABLE_H</span>
+<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#define CONTENTTABLE_H</span>
+<a name="l00009"></a>00009 <span class="preprocessor"></span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;map&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;set&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014 <span class="preprocessor">#include &quot;<a class="code" href="common_8h.html">common.h</a>&quot;</span>
+<a name="l00015"></a>00015 <span class="comment">//#include &quot;hiddenfs-lib.h&quot;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="types_8h.html">types.h</a>&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="exceptions_8h.html">exceptions.h</a>&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="struct_table_8h.html">structTable.h</a>&quot;</span>
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020 <span class="keyword">namespace </span>HiddenFS {
+<a name="l00021"></a><a class="code" href="class_hidden_f_s_1_1content_table.html">00021</a>     <span class="keyword">class </span><a class="code" href="class_hidden_f_s_1_1content_table.html">contentTable</a> {
+<a name="l00022"></a>00022     <span class="keyword">public</span>:
+<a name="l00023"></a><a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html">00023</a>         <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00027"></a><a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#ace38371f61aafc82f71d12c918181a37">00027</a>             std::set&lt;vBlock*&gt; reserved;
+<a name="l00028"></a>00028 
+<a name="l00031"></a><a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#a08ad97c63b280488f12d8d49bf8ca68b">00031</a>             <span class="keywordtype">size_t</span> reservedBytes;
+<a name="l00032"></a>00032 
+<a name="l00036"></a><a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#afffacf7855c70b41d9a6251154c93f5f">00036</a>             std::map&lt;fragment_t, std::vector&lt;vBlock*&gt; &gt; content;
+<a name="l00037"></a>00037         } <a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html">tableItem</a>;
+<a name="l00038"></a>00038 
+<a name="l00040"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#ae2375c9a179ca41ada17a097cfc35f9a">00040</a>         <span class="keyword">typedef</span> std::map&lt;inode_t, tableItem&gt; table_t;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042         <a class="code" href="class_hidden_f_s_1_1content_table.html#ac52eaeffdad49b0504077f386c228e61">contentTable</a>();
+<a name="l00043"></a>00043         <span class="comment">//contentTable(const contentTable&amp; orig);</span>
+<a name="l00044"></a>00044         <span class="keyword">virtual</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#ac46821208d9ee8ef1bb9a1f9d3ae8b65">~contentTable</a>();
+<a name="l00045"></a>00045 
+<a name="l00050"></a>00050         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a5d66b79d277bbf6f3cd330df52a6e2b4" title="Provede dump hlavní tabulky do podoby seznamu entit jednotného formátu.">serialize</a>(<a class="code" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285" title="Abstrakce spojového seznamu, který slouží pro manipulaci s entitami (jakožto prvky obecné délky) vect...">chainList_t</a>* output);
+<a name="l00051"></a>00051 
+<a name="l00057"></a>00057         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a326b24778d6f27d248891a0f437d869d" title="Provádí rekonstrukci seznamu entit a rovnou plní obsah hlavní i všech přidružených pomocných tabulek...">deserialize</a>(<span class="keyword">const</span> <a class="code" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285" title="Abstrakce spojového seznamu, který slouží pro manipulaci s entitami (jakožto prvky obecné délky) vect...">chainList_t</a>&amp; input);
+<a name="l00058"></a>00058 
+<a name="l00062"></a>00062         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a244a5b0ebfa39e398c5b66c75164b93c" title="user-friendly obsah tabulky">print</a>();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064         <span class="comment">/*</span>
+<a name="l00065"></a>00065 <span class="comment">         * Find and iterate through all fragments</span>
+<a name="l00066"></a>00066 <span class="comment">         * @param inode file identified by inode</span>
+<a name="l00067"></a>00067 <span class="comment">         * @param buffer content of file</span>
+<a name="l00068"></a>00068 <span class="comment">         */</span>
+<a name="l00074"></a>00074         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#aaeb90fe2fa5969a978e82dbc63e1c2d7" title="Vrací metadata obsahu k souboru (množina fragmentů, rezervované bloky atd.">getMetadata</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, <a class="code" href="struct_hidden_f_s_1_1content_table_1_1table_item.html">tableItem</a>&amp; content);
+<a name="l00075"></a>00075 
+<a name="l00081"></a>00081         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a327f8ae2243c2fa072aafe1a7a7eb8e4" title="Inicializuje vnitřní struktury pro ukložení fragmentů Je nutné volat ještě před jakoukoli manipulací ...">newEmptyContent</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode);
+<a name="l00082"></a>00082 
+<a name="l00088"></a>00088         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#ad23aeda728b295e40d5f0aa7c2fcd98f" title="Odstraní inode z tabulky.">removeFile</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode);
+<a name="l00089"></a>00089 
+<a name="l00095"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#a29bd90995d77a3a608c63dacd5963824">00095</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a29bd90995d77a3a608c63dacd5963824" title="Přiřadí blok k inode (sama uvnitř volá setBlockAsUsed).">addContent</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>* block) {
+<a name="l00096"></a>00096             <span class="keywordflow">if</span>(block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b" title="příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED)">used</a>) {
+<a name="l00097"></a>00097                 <span class="keywordflow">if</span>(this-&gt;table.find(inode) == this-&gt;table.end()) {
+<a name="l00098"></a>00098                     <span class="keywordflow">throw</span> <a class="code" href="class_hidden_f_s_1_1_exception_file_not_found.html">ExceptionFileNotFound</a>(inode);
+<a name="l00099"></a>00099                 }
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101                 <span class="keywordflow">try</span> {
+<a name="l00102"></a>00102                     this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#a327f8ae2243c2fa072aafe1a7a7eb8e4" title="Inicializuje vnitřní struktury pro ukložení fragmentů Je nutné volat ještě před jakoukoli manipulací ...">newEmptyContent</a>(inode);
+<a name="l00103"></a>00103                 } <span class="keywordflow">catch</span> (<a class="code" href="class_hidden_f_s_1_1_exception_inode_exists.html">ExceptionInodeExists</a>) { }
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105                 <span class="comment">// zde to padá, protože přistupuju do nezinicializvaného pole!</span>
+<a name="l00106"></a>00106                 <span class="comment">// špatně deserializovaná složka .block v vBlock</span>
+<a name="l00107"></a>00107                 this-&gt;table[inode].content[block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#ada106302391f38cbac1f5604e1dd66ad" title="číslo fragmentu virtuálního souboru (může se opakovat v rámci vFile).">fragment</a>].push_back(block);
+<a name="l00108"></a>00108                 this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#a81c9f03f65123a5463cb5cc0012d8c40" title="Zruší bloku příznak &amp;#39;reserved&amp;#39; a odstraní jej z patřičných pomocných seznamů.">setBlockAsUsed</a>(inode, block);
+<a name="l00109"></a>00109             } <span class="keywordflow">else</span> {
+<a name="l00110"></a>00110                 <span class="comment">// následující dva řádky obstarává volání setBlockAsReserved()</span>
+<a name="l00111"></a>00111                 <span class="comment">//this-&gt;table[inode].reserved.insert(block);</span>
+<a name="l00112"></a>00112                 <span class="comment">//this-&gt;table[inode].reservedBytes += block-&gt;length;</span>
+<a name="l00113"></a>00113                 this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#a1b38516df2d49f5cc6d785d61a9b48ad" title="Nastaví bloku příznak &amp;#39;reserved&amp;#39; a zařadí jej do patřičných pomocných seznamů.">setBlockAsReserved</a>(inode, block);
+<a name="l00114"></a>00114             }
+<a name="l00115"></a>00115         }
+<a name="l00116"></a>00116 
+<a name="l00117"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#a96eba7760d839948cc1ab39d7798d6ad">00117</a>         <span class="keywordtype">bool</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a96eba7760d839948cc1ab39d7798d6ad">isInodePresent</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode) {
+<a name="l00118"></a>00118             <span class="keywordflow">return</span> (this-&gt;table.find(inode) != this-&gt;table.end());
+<a name="l00119"></a>00119         }
+<a name="l00120"></a>00120 
+<a name="l00128"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#aacdbfcee342f6d68f99fb0952f893514">00128</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#aacdbfcee342f6d68f99fb0952f893514" title="Vyhledá veškeré bloky obsazené, či rezervované k souboru.">findAllBlocks</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, std::set&lt;vBlock*&gt;&amp; blocks) {
+<a name="l00129"></a>00129             <span class="keywordflow">if</span>(this-&gt;table.find(inode) == this-&gt;table.end()) {
+<a name="l00130"></a>00130                 <span class="keywordflow">throw</span> <a class="code" href="class_hidden_f_s_1_1_exception_file_not_found.html">ExceptionFileNotFound</a>(inode);
+<a name="l00131"></a>00131             }
+<a name="l00132"></a>00132 
+<a name="l00133"></a>00133             <span class="comment">// zkopírování rezervovaných bloků</span>
+<a name="l00134"></a>00134             this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#aadb63839a32cfb4daabad953f5728dd8" title="Naplní parametr reserved seznamem bloků, které má soubor určený inode zarezervovány.">getReservedBlocks</a>(inode, blocks);
+<a name="l00135"></a>00135             <span class="comment">//blocks.insert(this-&gt;table[inode].reserved.begin(), this-&gt;table[inode].reserved.end());</span>
+<a name="l00136"></a>00136 
+<a name="l00137"></a>00137             <span class="comment">// zkopírování bloků obsahu</span>
+<a name="l00138"></a>00138             this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#afdec78e23aa4d70fe371b7325e4f2e13" title="Nalezne všechny obsazené bloky, které tento soubor obsadil.">findUsedBlocks</a>(inode, blocks);
+<a name="l00139"></a>00139         }
+<a name="l00140"></a>00140 
+<a name="l00147"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#afdec78e23aa4d70fe371b7325e4f2e13">00147</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#afdec78e23aa4d70fe371b7325e4f2e13" title="Nalezne všechny obsazené bloky, které tento soubor obsadil.">findUsedBlocks</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, std::set&lt;vBlock*&gt;&amp; blocks) {
+<a name="l00148"></a>00148             <span class="keywordflow">if</span>(this-&gt;table.find(inode) == this-&gt;table.end()) {
+<a name="l00149"></a>00149                 <span class="keywordflow">throw</span> <a class="code" href="class_hidden_f_s_1_1_exception_file_not_found.html">ExceptionFileNotFound</a>(inode);
+<a name="l00150"></a>00150             }
+<a name="l00151"></a>00151 
+<a name="l00152"></a>00152             <span class="comment">// zkopírování bloků obsahu</span>
+<a name="l00153"></a>00153             std::map&lt;fragment_t, std::vector&lt;vBlock*&gt; &gt;::iterator i;
+<a name="l00154"></a>00154             <span class="keywordflow">for</span>(i = this-&gt;table[inode].content.begin(); i != this-&gt;table[inode].content.end(); i++) {
+<a name="l00155"></a>00155                 blocks.insert(i-&gt;second.begin(), i-&gt;second.end());
+<a name="l00156"></a>00156             }
+<a name="l00157"></a>00157         }
+<a name="l00158"></a>00158 
+<a name="l00165"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#aadb63839a32cfb4daabad953f5728dd8">00165</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#aadb63839a32cfb4daabad953f5728dd8" title="Naplní parametr reserved seznamem bloků, které má soubor určený inode zarezervovány.">getReservedBlocks</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, std::set&lt;vBlock*&gt;&amp; reserved) {
+<a name="l00166"></a>00166             <span class="keywordflow">if</span>(this-&gt;table.find(inode) == this-&gt;table.end()) {
+<a name="l00167"></a>00167                 <span class="keywordflow">throw</span> <a class="code" href="class_hidden_f_s_1_1_exception_file_not_found.html">ExceptionFileNotFound</a>(inode);
+<a name="l00168"></a>00168             }
+<a name="l00169"></a>00169 
+<a name="l00170"></a>00170             reserved.insert(this-&gt;table[inode].reserved.begin(), this-&gt;table[inode].reserved.end());
+<a name="l00171"></a>00171         }
+<a name="l00172"></a>00172 
+<a name="l00181"></a>00181         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a5e08e191b0202b0a2cca6d910ea1508b" title="Vyhledá a vrátí jakýkoli (takže první dostupný) zarezervovaný blok bez ohledu na inode, kterému soubor patřil.">findAnyReservedBlock</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a>&amp; inode, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>*&amp; block);
+<a name="l00182"></a>00182 
+<a name="l00188"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#a81c9f03f65123a5463cb5cc0012d8c40">00188</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a81c9f03f65123a5463cb5cc0012d8c40" title="Zruší bloku příznak &amp;#39;reserved&amp;#39; a odstraní jej z patřičných pomocných seznamů.">setBlockAsUsed</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>* block) {
+<a name="l00189"></a>00189             block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b" title="příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED)">used</a> = <span class="keyword">true</span>;
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191             assert(this-&gt;table.find(inode) != this-&gt;table.end());
+<a name="l00192"></a>00192 
+<a name="l00193"></a>00193             <span class="comment">// Byl blok mezi rezervovanými?</span>
+<a name="l00194"></a>00194             <span class="keywordflow">if</span>(this-&gt;table[inode].reserved.find(block) != this-&gt;table[inode].reserved.end()) {
+<a name="l00195"></a>00195                 <span class="comment">// ano byl, proto jej odstraníme ze skupiny rezervovaných</span>
+<a name="l00196"></a>00196                 this-&gt;table[inode].reservedBytes -= block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a345a4bbbd1e3b670e4643f73b4f3516c" title="délka využité části bloku (délka blockContent.content)">length</a>;
+<a name="l00197"></a>00197                 this-&gt;table[inode].reserved.erase(block);
+<a name="l00198"></a>00198             }
+<a name="l00199"></a>00199         }
+<a name="l00200"></a>00200 
+<a name="l00206"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#a1b38516df2d49f5cc6d785d61a9b48ad">00206</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a1b38516df2d49f5cc6d785d61a9b48ad" title="Nastaví bloku příznak &amp;#39;reserved&amp;#39; a zařadí jej do patřičných pomocných seznamů.">setBlockAsReserved</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>* block) {
+<a name="l00207"></a>00207             block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b" title="příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED)">used</a> = <span class="keyword">false</span>;
+<a name="l00208"></a>00208 
+<a name="l00209"></a>00209             assert(this-&gt;table.find(inode) != this-&gt;table.end());
+<a name="l00210"></a>00210 
+<a name="l00211"></a>00211             <span class="comment">// Je blok mezi rezervovanými?</span>
+<a name="l00212"></a>00212             <span class="keywordflow">if</span>(this-&gt;table[inode].reserved.find(block) == this-&gt;table[inode].reserved.end()) {
+<a name="l00213"></a>00213                 <span class="comment">// není, proto jej mezi ně zařadíme</span>
+<a name="l00214"></a>00214                 this-&gt;table[inode].reservedBytes += block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a345a4bbbd1e3b670e4643f73b4f3516c" title="délka využité části bloku (délka blockContent.content)">length</a>;
+<a name="l00215"></a>00215                 this-&gt;table[inode].reserved.insert(block);
+<a name="l00216"></a>00216             }
+<a name="l00217"></a>00217         }
+<a name="l00218"></a>00218 
+<a name="l00225"></a><a class="code" href="class_hidden_f_s_1_1content_table.html#a7b869d2bcdbb64eb4279e2bf90451731">00225</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1content_table.html#a7b869d2bcdbb64eb4279e2bf90451731" title="Odstraní blok z pomocného seznamu uchovávající rezerovované bloky, takže se jeví jako neobsazený...">setBlockAsUnused</a>(<a class="code" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df" title="datový typ pro číslování souborů">inode_t</a> inode, <a class="code" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>* block) {
+<a name="l00226"></a>00226             <span class="comment">/* Principielně tato metoda provádí to samé, co setBlockAsUsed():</span>
+<a name="l00227"></a>00227 <span class="comment">             *  odstraní blok ze seznamu rezervovaných a sníží sumu ve složce reservedBytes */</span>
+<a name="l00228"></a>00228             this-&gt;<a class="code" href="class_hidden_f_s_1_1content_table.html#a81c9f03f65123a5463cb5cc0012d8c40" title="Zruší bloku příznak &amp;#39;reserved&amp;#39; a odstraní jej z patřičných pomocných seznamů.">setBlockAsUsed</a>(inode, block);
+<a name="l00229"></a>00229 
+<a name="l00230"></a>00230             block-&gt;<a class="code" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b" title="příznak, jestli je tento blok použitý (BLOCK_IN_USE), nebo jen rezervovaný (BLOCK_RESERVED)">used</a> = <span class="keyword">false</span>;
+<a name="l00231"></a>00231         }
+<a name="l00232"></a>00232     <span class="keyword">private</span>:
+<a name="l00234"></a>00234         <a class="code" href="class_hidden_f_s_1_1content_table.html#ae2375c9a179ca41ada17a097cfc35f9a" title="datový typ pro mapování pomocných dat k souboru určeným inode">table_t</a> table;
+<a name="l00235"></a>00235     };
+<a name="l00236"></a>00236 }
+<a name="l00237"></a>00237 
+<a name="l00238"></a>00238 <span class="preprocessor">#endif  </span><span class="comment">/* CONTENTTABLE_H */</span>
+<a name="l00239"></a>00239 
+</pre></div></div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

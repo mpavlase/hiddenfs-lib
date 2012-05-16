@@ -1,0 +1,2763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace třídy HiddenFS::hiddenFs</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Třídy</span></a></li>
+      <li><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Seznam&nbsp;tříd</span></a></li>
+      <li><a href="classes.html"><span>Rejstřík&nbsp;tříd</span></a></li>
+      <li><a href="hierarchy.html"><span>Hierarchie&nbsp;tříd</span></a></li>
+      <li><a href="functions.html"><span>Seznam&nbsp;členů&nbsp;tříd</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a>      </li>
+      <li><a class="el" href="class_hidden_f_s_1_1hidden_fs.html">HiddenFS::hiddenFs</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Třídy</a> &#124;
+<a href="#pub-types">Veřejné typy</a> &#124;
+<a href="#pub-methods">Veřejné metody</a> &#124;
+<a href="#pub-static-attribs">Statické veřejné atributy</a> &#124;
+<a href="#pro-methods">Chráněné metody</a> &#124;
+<a href="#pro-static-methods">Statické chráněné metody</a> &#124;
+<a href="#pro-attribs">Chráněné atributy</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace třídy HiddenFS::hiddenFs</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="HiddenFS::hiddenFs" -->
+<p><code>#include &lt;<a class="el" href="hiddenfs-lib_8h_source.html">hiddenfs-lib.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagram dědičnosti pro třídu HiddenFS::hiddenFs</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_hidden_f_s_1_1hidden_fs.png" usemap="#HiddenFS::hiddenFs_map" alt=""/>
+  <map id="HiddenFS::hiddenFs_map" name="HiddenFS::hiddenFs_map">
+<area href="classmp3fs.html" alt="mp3fs" shape="rect" coords="0,56,126,80"/>
+</map>
+</div>
+
+<p><a href="class_hidden_f_s_1_1hidden_fs-members.html">Seznam všech členů.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Třídy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html">fileWriteBuff_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1options_struct.html">optionsStruct</a></td></tr>
+<tr><td colspan="2"><h2><a name="pub-types"></a>
+Veřejné typy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091f">FUSE_ARGS</a> { <br/>
+&nbsp;&nbsp;<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fafc90eec23c24cd0e1ceaee43b3abfa60">KEY_HELP</a>, 
+<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa6d862f86da5c7237c55ce0c8d07b8efa">KEY_CREATE</a>, 
+<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa603245fc6df26ba4d27660064ef71ae7">KEY_FUSE_DEBUG</a>, 
+<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091faeb317ebb7185dbae0db89ffa891e7810">KEY_REMOVE</a>, 
+<br/>
+&nbsp;&nbsp;<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa9bb5cb8d8c9b80e9f885f657bdc6d0a0">KEY_FORCE</a>
+<br/>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC::CRC_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a193a5de294f5650cd022e950333a6c99">checksum_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ kontrolního součtu  <a href="#a193a5de294f5650cd022e950333a6c99"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Veřejné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a562e4bf59bed7975c4270241b55d474d">hiddenFs</a> (<a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> *instance)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Umožňuje nastavit vlastní implementaci šifrování.  <a href="#a562e4bf59bed7975c4270241b55d474d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2723c9c0caea639c65e13d8c65fa9276">~hiddenFs</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6662126078838277abefa5bb600295b">allocatorSetStrategy</a> (unsigned char strategy, unsigned int redundancy)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Nastaví preferovanou strategii pro alokování nových bloků.  <a href="#aa6662126078838277abefa5bb600295b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9b3b3c1999778ce38662ca46af2c4ef0">run</a> (int argc, char *argv[])</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Hlavní výkonná metoda (wrapper nad fuse_main).  <a href="#a9b3b3c1999778ce38662ca46af2c4ef0"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Statické veřejné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a> = BLOCK_MAX_LENGTH - sizeof(<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a193a5de294f5650cd022e950333a6c99">checksum_t</a>) - sizeof(<a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#accc2e098a18dff20fd24f8217db5bcb0">ALLOCATOR_SPEED</a> = 1 &lt;&lt; 0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">maximální využití každého fyzického souboru (více virtuálních souborů v rámci jednoho fyzického)  <a href="#accc2e098a18dff20fd24f8217db5bcb0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a66b76f378c8196f9273a64195fcee70f">ALLOCATOR_SECURITY</a> = 1 &lt;&lt; 1</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">zamezit míchání více bloků virtuálních souborů v rámci jednoho skutečného  <a href="#a66b76f378c8196f9273a64195fcee70f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1a281d07d41e606b17f2567a21ced00f">ALLOCATOR_REDUNDANCY</a> = 1 &lt;&lt; 7</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">uložení jednoho bloku se provede několikanásobně do různých fyzických souborů  <a href="#a1a281d07d41e606b17f2567a21ced00f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad288420ac7dcf4d9cd238e071e231bea">storagePath</a></td></tr>
+<tr><td colspan="2"><h2><a name="pro-methods"></a>
+Chráněné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a68256dce5b0751e8300729b499c4df3e">allocatorAllocate</a> (<a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> inode, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buffer, size_t length)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá (=naalokuje) vhodný počet bloků a zapíše do nich obsah jednotlivých fragmentů.  <a href="#a68256dce5b0751e8300729b499c4df3e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab011d69fdd32a17b75d897853a82b65a">allocatorFindFreeBlock_sameHash</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block, <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Skrze parametr block vrací právě jeden volný blok na základě kritéra: Blok se musí nacházet v souboru určeném hashem.  <a href="#ab011d69fdd32a17b75d897853a82b65a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8b1223e9ed01037e6cb8e74ee3f06f06">allocatorFindFreeBlock_differentHash</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block, std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;excluded)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Skrze parametr block vrací právě jeden volný blok na základě kritéra: Blok se nesmí nacházet v souboru určeném hashem.  <a href="#a8b1223e9ed01037e6cb8e74ee3f06f06"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a31d21ad373a08bd94963f0b3b870d0d8">allocatorFindFreeBlock_any</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Skrze parametr block vrací právě jeden volný blok (jakýkoli volný blok).  <a href="#a31d21ad373a08bd94963f0b3b870d0d8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a844b20041f4b80a98d3bfc2004f2b75d">allocatorFindFreeBlock_any</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block, <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> prefered, std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;excluded)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Skrze parametr block vrací právě jeden volný blok.  <a href="#a844b20041f4b80a98d3bfc2004f2b75d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a52f9fcec733d4b23bc17ce41fc00f2aa">allocatorFindFreeBlock_partUsed</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block, std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;excluded)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá volný blok v částečně obsazeném fyzickém souboru.  <a href="#a52f9fcec733d4b23bc17ce41fc00f2aa"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aec2eb2a0867c6d1397f70ee0b7c0b202">allocatorFindFreeBlock_partUsedPreferred</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block, std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;excluded)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá volný blok v částečně obsazeném fyzickém souboru.  <a href="#aec2eb2a0867c6d1397f70ee0b7c0b202"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5bd3d21c7dbf4c7c0b97d20e3cc512b6">allocatorFindFreeBlock_unused</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá volný blok ve fyzickém souboru, který ještě neobsahuje žádný obsazený blok a naplní tak parametr, který metoda sama alokuje.  <a href="#a5bd3d21c7dbf4c7c0b97d20e3cc512b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab64d4b4f5f9a9871db149e26c111cc25">allocatorFindFreeBlock_unusedPreferred</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá (podle potřeby i naalokuje) blok, který dosud není použitý.  <a href="#ab64d4b4f5f9a9871db149e26c111cc25"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6bb92231d1a034b9d40ef44d03b9507">allocatorFillFreeBlockByHash</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prozkoumá volné bloky v rámci hash a naplní parametr block prvním dostupným blokem.  <a href="#aa6bb92231d1a034b9d40ef44d03b9507"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a853fbeb024230e14be6128ca74d54719">allocatorStealReservedBlock</a> (<a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> &amp;inode, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá a vrací první rezervovaný blok nehledě na to, kterému inode patří.  <a href="#a853fbeb024230e14be6128ca74d54719"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext</a> (std::string filename)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Naalokuje zdroje pro práci se skutečným souborem - otevření souboru, různé inicializace...  <a href="#a16993a635a4c39cb4cc5e7e93c5b08cc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1c004cdeec6fc915641a7fdb37addf30">removeBlock</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pokusí se zcela odstranit zadaný blok z fyzického souboru.  <a href="#a1c004cdeec6fc915641a7fdb37addf30"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af538742c6286e0cffacfaedadea916c7">removeBlock</a> (<a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pokusí se zcela odstranit zadaný blok z fyzického souboru.  <a href="#af538742c6286e0cffacfaedadea916c7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6d7307e168a3a7a32519652b1ccbcc5f">freeContext</a> (<a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Uvolní naalokované prostředky pro skutečný soubor.  <a href="#a6d7307e168a3a7a32519652b1ccbcc5f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a82658cce37ac321b0f527dd5b10ff40b">flushContext</a> (<a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Zapíše změny do skutečného souboru.  <a href="#a82658cce37ac321b0f527dd5b10ff40b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a01c8f6f9db2aa1d35bc73a4ac3399553">readBlock</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **buff, size_t length, <a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> *idByte)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Zabezpečuje přečtení bloku obsahující fragment souboru s kontrolou kontrolního součtu a načtení identifikačního byte.  <a href="#a01c8f6f9db2aa1d35bc73a4ac3399553"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d775afda2e89aab18095a1a2f21b0af">readBlock</a> (<a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buff, size_t length) const =0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí zápis bloku do skutečného souboru, jeho implementace je na uživateli knihovny.  <a href="#a2d775afda2e89aab18095a1a2f21b0af"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a57c853c23c8a0c072fc4733a2d735129">writeBlock</a> (<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> hash, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buff, size_t length, <a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> idByte)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí zápis bloku do skutečného souboru.  <a href="#a57c853c23c8a0c072fc4733a2d735129"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a428e58627e94c8e750d0633d43154df8">writeBlock</a> (<a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *context, <a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a> block, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *buff, size_t length)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí zápis bloku do skutečného souboru, jeho implementace je na uživateli knihovny.  <a href="#a428e58627e94c8e750d0633d43154df8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa4a1bdcb990555a6cf7ff3f6365349b6">storageRefreshIndex</a> (std::string filename)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Naplní hash tabulku (mapování cesty skutečného souboru na jednoznačný řetězec).  <a href="#aa4a1bdcb990555a6cf7ff3f6365349b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad50eaa58544178b7a47ca007f5a74cf7">findUnusedHash</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_UNUSED_CHUNK).  <a href="#ad50eaa58544178b7a47ca007f5a74cf7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a238d36c804e39a1e3a8dfb5ba01aabc1">findPartlyUsedHash</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK).  <a href="#a238d36c804e39a1e3a8dfb5ba01aabc1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0e3dcbb7ef164ba6465a2534987f3cc4">findHashByAuxList</a> (std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;list, const unsigned int limit)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Systematicky prohledává hash table za účelem naplnění některého ze seznamů.  <a href="#a0e3dcbb7ef164ba6465a2534987f3cc4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a56f43c8d58ab876af89b618e60c8ac5e">getContent</a> (<a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> inode, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **buffer, size_t *length)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK).  <a href="#a56f43c8d58ab876af89b618e60c8ac5e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a96771cb9afbb1f38737b802b58f4cb40">packData</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *input, size_t inputSize, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **output, size_t *outputSize, <a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> id_byte)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provede "zabalení" bloku dat a výpočet <a class="el" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a>.  <a href="#a96771cb9afbb1f38737b802b58f4cb40"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0d9334a681a558986a57759770e4ee79">unpackData</a> (<a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *input, size_t inputSize, <a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **output, size_t *outputSize, <a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> *id_byte)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vstupní data rozdělí na <a class="el" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a> část a zbytek, porovná kontrolní součty (v případě nesrovnalostí vyhazuje výjimku XYZ) a výsledek předá do výstupného bufferu.  <a href="#a0d9334a681a558986a57759770e4ee79"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a533505e48058f0f43cd83b8d0dac7b0c">chainListCompleteSave</a> (const <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;chain, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *firstChain=NULL)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí zápis chainListu, je vlastně trochu jiným druhem alokátoru.  <a href="#a533505e48058f0f43cd83b8d0dac7b0c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad113d3c73de31e61cb9c8b6260534f73">chainListRestore</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *location, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;next, <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;chain, bool onlyReadNext=false)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Načte část řetězu entit do 'chain', která se nachází v 'location'.  <a href="#ad113d3c73de31e61cb9c8b6260534f73"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9f8c828e2029de66b2550554039b5515">chainListCompleteRestore</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *first, <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;chain)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Pokusí se načíst kompletní řetěz entit.  <a href="#a9f8c828e2029de66b2550554039b5515"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a19cf6a8b03f001414d84261f2b3db19e">chainListSave</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *location, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *next, const <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;chain)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Uloží řetěz do bloku určeném parametrem location.  <a href="#a19cf6a8b03f001414d84261f2b3db19e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5dd9550461701b44748440bc6ae51adb">chainListAllocate</a> (const <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &amp;hash, <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;output)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vyhledá volný blok podle trochu jiných kritérií, než se používá v allocatorAllocate.  <a href="#a5dd9550461701b44748440bc6ae51adb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad4f8ea011a0cea3cd581feadebe91dad">chainListFree</a> (<a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *first)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Uvolní celý řetězec entit.  <a href="#ad4f8ea011a0cea3cd581feadebe91dad"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aedf7f72b25b7c5072587c46c40b83991">tablesSaveToSB</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Serializuje všechny tabulky (CT, ST), uloží všechny jejich kopie a vloží začátky řetězců do superbloku.  <a href="#aedf7f72b25b7c5072587c46c40b83991"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a660a957d07bbdb947d53ddd3e9a07a7a">tableSave</a> (<a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;content, std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;copies)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Uloží řetěz entit do několika různých kopií (počet podle konstanty TABLES_REDUNDANCY_AMOUNT) a pokud už jsou známy dříve obsazené bloky tímto obsahem, upřednostnit je při ukládání.  <a href="#a660a957d07bbdb947d53ddd3e9a07a7a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Komplexní metoda pro uložení superbloku: provádí serializaci, zápis do stávajících kopií superbloků a podle potřeby doalokování chybějících kopií.  <a href="#a75dfda2d69d93c09c4d836c7b4d4cb18"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a52809b9261682bfa0c59efc8868422f5">tableRestoreFromSB</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provádí rekonstrukci všech tabulek (<a class="el" href="class_hidden_f_s_1_1struct_table.html">structTable</a> i <a class="el" href="class_hidden_f_s_1_1content_table.html">contentTable</a>) z řetězce entit do skutečného obsahu.  <a href="#a52809b9261682bfa0c59efc8868422f5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0550cbdbe06e7f8a2d2948ee44b457a4">removeFile</a> (<a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> inode)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Kompletně odstraní obsah souboru i včetně metadat ve structure i content table.  <a href="#a0550cbdbe06e7f8a2d2948ee44b457a4"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pro-static-methods"></a>
+Statické chráněné metody</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abde481709c7df0bc4af2856b1f42a7ff">setConsoleEcho</a> (bool state)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Povolí/zakáže echo při čtení ze standartního vstupu.  <a href="#abde481709c7df0bc4af2856b1f42a7ff"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ac15bfca9d93d90ef1f98dc36c1e464f9">fuse_chmod</a> (const char *path, mode_t mode)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a7e484c23c8f1302e1fded7d660e4fcae">fuse_chown</a> (const char *path, uid_t uid, gid_t gid)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad2408ef5b28357970eed2de2e7849d85">fuse_create</a> (const char *path, mode_t mode, struct fuse_file_info *file_i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af5efcd49110ff3481b7b46f9055ece88">fuse_flush</a> (const char *path, struct fuse_file_info *info)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a97a7321bc97a4a687753e673e17e7c37">fuse_getattr</a> (const char *path, struct stat *stbuf)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">do stbuf nastavit délku souboru  <a href="#a97a7321bc97a4a687753e673e17e7c37"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9e7e1e53ec7b3c281f5acf0621456dd1">fuse_mkdir</a> (const char *path, mode_t mode)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a40e32e91c3d3d09becc47e109f67419f">fuse_open</a> (const char *path, struct fuse_file_info *file_i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16a6e89b463aa8237207c55e68b95816">fuse_statfs</a> (const char *path, struct statvfs *stat)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a540965af165e6bb2ea342a944e145c29">fuse_read</a> (const char *path, char *buffer, size_t size, off_t length, struct fuse_file_info *file_i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1b93fc7ec4af260444793a29b8ed36da">fuse_readdir</a> (const char *path, void *buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *file_i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a3ba0603de84d6a815ec43e00a3565b72">fuse_rename</a> (const char *from, const char *to)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5e5408179b0129fb6620b01da044dc49">fuse_rmdir</a> (const char *path)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aaf0edc60d10c84065c14b22616e1621d">fuse_truncate</a> (const char *path, off_t length)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa14350d82f9540c70848303174061047">fuse_unlink</a> (const char *path)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a4fd7cf267f6ad29039a0640831c3314b">fuse_utimens</a> (const char *path, const struct timespec tv[2])</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cec39744a31ada363baebae911a1f1f">fuse_write</a> (const char *path, const char *buffer, size_t size, off_t offset, struct fuse_file_info *file_i)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-attribs"></a>
+Chráněné atributy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1content_table.html">contentTable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1struct_table.html">structTable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1hash_table.html">hashTable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1super_block.html">superBlock</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9e311c6ceba49305efb83180e73e83d7">allocatorFlags</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#adbdc084068d5a244bb5104d466691a7f">allocatorRedundancy</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">míra duplikace dat  <a href="#adbdc084068d5a244bb5104d466691a7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aac890270b7b44bda301b0603730ace48">superBlockLocations</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Seznam všech hash, kde se vykytují kopie superbloků.  <a href="#aac890270b7b44bda301b0603730ace48"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1_c_r_c.html">CRC</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">checksum</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">instance objektu pro výpočet kontrolního součtu  <a href="#a22a656ca0121327d73d2c676b60e9824"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html">fileWriteBuff_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">fileWriteBuff</a></td></tr>
+</table>
+<hr/><h2>Dokumentace k členským typům</h2>
+<a class="anchor" id="a193a5de294f5650cd022e950333a6c99"></a><!-- doxytag: member="HiddenFS::hiddenFs::checksum_t" ref="a193a5de294f5650cd022e950333a6c99" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#a90646ce091006e022149e26ba25e9dcf">CRC::CRC_t</a> <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a193a5de294f5650cd022e950333a6c99">HiddenFS::hiddenFs::checksum_t</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>datový typ kontrolního součtu </p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k členským výčtům</h2>
+<a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091f"></a><!-- doxytag: member="HiddenFS::hiddenFs::FUSE_ARGS" ref="a2d5e0e4ee87f363ca544cfa79680091f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091f">HiddenFS::hiddenFs::FUSE_ARGS</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Hodnoty výčtu: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091fafc90eec23c24cd0e1ceaee43b3abfa60"></a><!-- doxytag: member="KEY_HELP" ref="a2d5e0e4ee87f363ca544cfa79680091fafc90eec23c24cd0e1ceaee43b3abfa60" args="" -->KEY_HELP</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091fa6d862f86da5c7237c55ce0c8d07b8efa"></a><!-- doxytag: member="KEY_CREATE" ref="a2d5e0e4ee87f363ca544cfa79680091fa6d862f86da5c7237c55ce0c8d07b8efa" args="" -->KEY_CREATE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091fa603245fc6df26ba4d27660064ef71ae7"></a><!-- doxytag: member="KEY_FUSE_DEBUG" ref="a2d5e0e4ee87f363ca544cfa79680091fa603245fc6df26ba4d27660064ef71ae7" args="" -->KEY_FUSE_DEBUG</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091faeb317ebb7185dbae0db89ffa891e7810"></a><!-- doxytag: member="KEY_REMOVE" ref="a2d5e0e4ee87f363ca544cfa79680091faeb317ebb7185dbae0db89ffa891e7810" args="" -->KEY_REMOVE</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a2d5e0e4ee87f363ca544cfa79680091fa9bb5cb8d8c9b80e9f885f657bdc6d0a0"></a><!-- doxytag: member="KEY_FORCE" ref="a2d5e0e4ee87f363ca544cfa79680091fa9bb5cb8d8c9b80e9f885f657bdc6d0a0" args="" -->KEY_FORCE</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>Dokumentace konstruktoru a destruktoru</h2>
+<a class="anchor" id="a562e4bf59bed7975c4270241b55d474d"></a><!-- doxytag: member="HiddenFS::hiddenFs::hiddenFs" ref="a562e4bf59bed7975c4270241b55d474d" args="(IEncryption *instance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::hiddenFs::hiddenFs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> *&nbsp;</td>
+          <td class="paramname"> <em>instance</em> = <code>NULL</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Umožňuje nastavit vlastní implementaci šifrování. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>instance</em>&nbsp;</td><td>instance objektu implementující rozhraní <a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#accc2e098a18dff20fd24f8217db5bcb0">ALLOCATOR_SPEED</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6662126078838277abefa5bb600295b">allocatorSetStrategy()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">checksum</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#acd4844e5e4cd36f4c756ddd81bb90959">HiddenFS::superBlock::setEncryptionInstance()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2723c9c0caea639c65e13d8c65fa9276"></a><!-- doxytag: member="HiddenFS::hiddenFs::~hiddenFs" ref="a2723c9c0caea639c65e13d8c65fa9276" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">HiddenFS::hiddenFs::~hiddenFs </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">checksum</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k metodám</h2>
+<a class="anchor" id="a68256dce5b0751e8300729b499c4df3e"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorAllocate" ref="a68256dce5b0751e8300729b499c4df3e" args="(inode_t inode, bytestream_t *buffer, size_t length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t HiddenFS::hiddenFs::allocatorAllocate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a>&nbsp;</td>
+          <td class="paramname"> <em>inode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá (=naalokuje) vhodný počet bloků a zapíše do nich obsah jednotlivých fragmentů. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>inode</em>&nbsp;</td><td>inode ukládaného souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buffer</em>&nbsp;</td><td>obsah souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>délka bufferu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>počet skutečně zapsaných bytů </dd></dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1content_table.html#a29bd90995d77a3a608c63dacd5963824">HiddenFS::contentTable::addContent()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a66b76f378c8196f9273a64195fcee70f">ALLOCATOR_SECURITY</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#accc2e098a18dff20fd24f8217db5bcb0">ALLOCATOR_SPEED</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aec2eb2a0867c6d1397f70ee0b7c0b202">allocatorFindFreeBlock_partUsedPreferred()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab64d4b4f5f9a9871db149e26c111cc25">allocatorFindFreeBlock_unusedPreferred()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9e311c6ceba49305efb83180e73e83d7">allocatorFlags</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#adbdc084068d5a244bb5104d466691a7f">allocatorRedundancy</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a853fbeb024230e14be6128ca74d54719">allocatorStealReservedBlock()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#afffacf7855c70b41d9a6251154c93f5f">HiddenFS::contentTable::tableItem::content</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ae21f9fa3e4c5febddd38623e9f9fe85d">HiddenFS::structTable::findFileByInode()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#ada106302391f38cbac1f5604e1dd66ad">HiddenFS::vBlock::fragment</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#aaeb90fe2fa5969a978e82dbc63e1c2d7">HiddenFS::contentTable::getMetadata()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a1791e85927eb2f35912434048bbeecfe">HiddenFS::vBlock::hash</a>, <a class="el" href="namespace_hidden_f_s.html#a77917bed84abb619de292abe48865022">HiddenFS::idByteGenDataBlock()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a345a4bbbd1e3b670e4643f73b4f3516c">HiddenFS::vBlock::length</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1c004cdeec6fc915641a7fdb37addf30">removeBlock()</a>, <a class="el" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#ace38371f61aafc82f71d12c918181a37">HiddenFS::contentTable::tableItem::reserved</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a1b38516df2d49f5cc6d785d61a9b48ad">HiddenFS::contentTable::setBlockAsReserved()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a7b869d2bcdbb64eb4279e2bf90451731">HiddenFS::contentTable::setBlockAsUnused()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a81c9f03f65123a5463cb5cc0012d8c40">HiddenFS::contentTable::setBlockAsUsed()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ae1067a2113143f961b7a5d433ff9945f">HiddenFS::vFile::size</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b">HiddenFS::vBlock::used</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a57c853c23c8a0c072fc4733a2d735129">writeBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa6bb92231d1a034b9d40ef44d03b9507"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFillFreeBlockByHash" ref="aa6bb92231d1a034b9d40ef44d03b9507" args="(hash_ascii_t hash, vBlock *&amp;block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFillFreeBlockByHash </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prozkoumá volné bloky v rámci hash a naplní parametr block prvním dostupným blokem. </p>
+<p>Naplní složky: hash, block, used. Zbylé (fragment a length) inicializuje (obvykle na 0, pro další použití je nutné nastavit na smysluplné hodnoty). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>kde se mají hledat volné bloky </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>skrze tento parametr metoda vrací info o volném bloku, metoda sama alokuje tento ukazatel </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a844b20041f4b80a98d3bfc2004f2b75d"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_any" ref="a844b20041f4b80a98d3bfc2004f2b75d" args="(vBlock *&amp;block, hash_ascii_t prefered, std::set&lt; hash_ascii_t &gt; &amp;excluded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_any </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>prefered</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>excluded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Skrze parametr block vrací právě jeden volný blok. </p>
+<p>Pokusí se nejprve vyhledat v preferovaném souboru (hash) a pokud neuspěje, vyhledá jakýkoli jiný volný blok </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>prefered</em>&nbsp;</td><td>hledání se spouští nejprve na souboru určeném tímto hash </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>excluded</em>&nbsp;</td><td>seznam fyzických souborů, které se nesmí použít </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8b1223e9ed01037e6cb8e74ee3f06f06">allocatorFindFreeBlock_differentHash()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab011d69fdd32a17b75d897853a82b65a">allocatorFindFreeBlock_sameHash()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a31d21ad373a08bd94963f0b3b870d0d8"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_any" ref="a31d21ad373a08bd94963f0b3b870d0d8" args="(vBlock *&amp;block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_any </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Skrze parametr block vrací právě jeden volný blok (jakýkoli volný blok). </p>
+<p>Pokud takový blok neexistuje, vyhazuje se výjimka <a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a>. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aec2eb2a0867c6d1397f70ee0b7c0b202">allocatorFindFreeBlock_partUsedPreferred()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8b1223e9ed01037e6cb8e74ee3f06f06"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_differentHash" ref="a8b1223e9ed01037e6cb8e74ee3f06f06" args="(vBlock *&amp;block, std::set&lt; hash_ascii_t &gt; &amp;excluded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_differentHash </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>excluded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Skrze parametr block vrací právě jeden volný blok na základě kritéra: Blok se nesmí nacházet v souboru určeném hashem. </p>
+<p>Pokud takový blok neexistuje, vyhazuje se výjimka <a class="el" href="class_hidden_f_s_1_1_exception_block_not_found.html">ExceptionBlockNotFound</a>, </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>excluded</em>&nbsp;</td><td>seznam fyzických souborů, které se nesmí použít </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Zastaralé:</a></b></dt><dd>není implementováno! </dd></dl>
+
+<p></p>
+
+</div>
+</div>
+<a class="anchor" id="a52f9fcec733d4b23bc17ce41fc00f2aa"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_partUsed" ref="a52f9fcec733d4b23bc17ce41fc00f2aa" args="(vBlock *&amp;block, std::set&lt; hash_ascii_t &gt; &amp;excluded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_partUsed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>excluded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá volný blok v částečně obsazeném fyzickém souboru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>excluded</em>&nbsp;</td><td>seznam fyzických souborů, které se nesmí použít </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_block_not_found.html">ExceptionBlockNotFound</a></em>&nbsp;</td><td>pokud takový blok neexistuje </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6bb92231d1a034b9d40ef44d03b9507">allocatorFillFreeBlockByHash()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">HiddenFS::hashTable::auxList_partlyUsed</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a238d36c804e39a1e3a8dfb5ba01aabc1">findPartlyUsedHash()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aec2eb2a0867c6d1397f70ee0b7c0b202"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_partUsedPreferred" ref="aec2eb2a0867c6d1397f70ee0b7c0b202" args="(vBlock *&amp;block, std::set&lt; hash_ascii_t &gt; &amp;excluded)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_partUsedPreferred </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>excluded</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá volný blok v částečně obsazeném fyzickém souboru. </p>
+<p>Pokud takový blok neexistuje, zkouší se vyhledat v dosud neobsazených fyzických souborech. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>excluded</em>&nbsp;</td><td>seznam fyzických souborů, které se nesmí použít </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud není k dispozici ani částečně obsazený blok, ani žádný ze zcela volných </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a52f9fcec733d4b23bc17ce41fc00f2aa">allocatorFindFreeBlock_partUsed()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5bd3d21c7dbf4c7c0b97d20e3cc512b6">allocatorFindFreeBlock_unused()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab011d69fdd32a17b75d897853a82b65a"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_sameHash" ref="ab011d69fdd32a17b75d897853a82b65a" args="(vBlock *&amp;block, hash_ascii_t hash)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_sameHash </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Skrze parametr block vrací právě jeden volný blok na základě kritéra: Blok se musí nacházet v souboru určeném hashem. </p>
+<p>Pokud takový blok neexistuje, vyhazuje se výjimka <a class="el" href="class_hidden_f_s_1_1_exception_block_not_found.html">ExceptionBlockNotFound</a>, </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>nový blok hledat v tomto souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_block_not_found.html">ExceptionBlockNotFound</a></em>&nbsp;</td><td>pokud v hashi už není žádný volný blok </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6bb92231d1a034b9d40ef44d03b9507">allocatorFillFreeBlockByHash()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">HiddenFS::hashTable::end()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bd3d21c7dbf4c7c0b97d20e3cc512b6"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_unused" ref="a5bd3d21c7dbf4c7c0b97d20e3cc512b6" args="(vBlock *&amp;block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_unused </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá volný blok ve fyzickém souboru, který ještě neobsahuje žádný obsazený blok a naplní tak parametr, který metoda sama alokuje. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku do tohoto parametru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_block_not_found.html">ExceptionBlockNotFound</a></em>&nbsp;</td><td>pokud takový blok neexistuje </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa6bb92231d1a034b9d40ef44d03b9507">allocatorFillFreeBlockByHash()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">HiddenFS::hashTable::auxList_unused</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad50eaa58544178b7a47ca007f5a74cf7">findUnusedHash()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab64d4b4f5f9a9871db149e26c111cc25"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFindFreeBlock_unusedPreferred" ref="ab64d4b4f5f9a9871db149e26c111cc25" args="(vBlock *&amp;block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorFindFreeBlock_unusedPreferred </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá (podle potřeby i naalokuje) blok, který dosud není použitý. </p>
+<p>Pokud žádný takový neexistuje, vrací jakýkoli ještě dostupný blok. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>metoda naplní údaje o nalezeném bloku do tohoto parametru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud není k dispozici vůbec žádný volný blok </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a31d21ad373a08bd94963f0b3b870d0d8">allocatorFindFreeBlock_any()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5bd3d21c7dbf4c7c0b97d20e3cc512b6">allocatorFindFreeBlock_unused()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa6662126078838277abefa5bb600295b"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorSetStrategy" ref="aa6662126078838277abefa5bb600295b" args="(unsigned char strategy, unsigned int redundancy)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorSetStrategy </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&nbsp;</td>
+          <td class="paramname"> <em>strategy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&nbsp;</td>
+          <td class="paramname"> <em>redundancy</em> = <code>1</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Nastaví preferovanou strategii pro alokování nových bloků. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>strategy</em>&nbsp;</td><td>typ použité strategie (enum) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>redundancy</em>&nbsp;</td><td>počet kopií stejného fragmentu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="common_8h.html#aebd9f147a28718daf090e7e26f2ed223">_D</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1a281d07d41e606b17f2567a21ced00f">ALLOCATOR_REDUNDANCY</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a66b76f378c8196f9273a64195fcee70f">ALLOCATOR_SECURITY</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#accc2e098a18dff20fd24f8217db5bcb0">ALLOCATOR_SPEED</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9e311c6ceba49305efb83180e73e83d7">allocatorFlags</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#adbdc084068d5a244bb5104d466691a7f">allocatorRedundancy</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a853fbeb024230e14be6128ca74d54719"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorStealReservedBlock" ref="a853fbeb024230e14be6128ca74d54719" args="(inode_t &amp;inode, vBlock *&amp;block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::allocatorStealReservedBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>inode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá a vrací první rezervovaný blok nehledě na to, kterému inode patří. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>inode</em>&nbsp;</td><td>identifikace okradeného souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>lokalizace rezervovaného bloku </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud se v systému nenalézá žádný rezervovaný blok </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a5e08e191b0202b0a2cca6d910ea1508b">HiddenFS::contentTable::findAnyReservedBlock()</a> a <a class="el" href="class_hidden_f_s_1_1content_table.html#a7b869d2bcdbb64eb4279e2bf90451731">HiddenFS::contentTable::setBlockAsUnused()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5dd9550461701b44748440bc6ae51adb"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListAllocate" ref="a5dd9550461701b44748440bc6ae51adb" args="(const hash_ascii_t &amp;hash, vBlock *&amp;output)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::chainListAllocate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>output</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vyhledá volný blok podle trochu jiných kritérií, než se používá v allocatorAllocate. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>identifikace fyzického souboru, který se má upřednostnit při hledání </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>output</em>&nbsp;</td><td>metoda naplní tento ukazatel volným blokem </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud není v systému absolutně žádný další volný blok </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><p>Pokus o vyhledání dalšího bloku pro uložení aktuální části řetězu. Prohledávání se provádí podle následujícho scénáře, výběr končí po prvním nalezeném bloku: 1) blok ve stejném fyzickém souboru 2) blok v dosud neobsazeném souboru (kvůli snížení fragmentace) 3) vyhledání libovolného rezervovaného bloku (nezávisle na inode souboru, kterému patří) a jeho označení za volný</p>
+<p>Pokus o vyhledání dalšího bloku pro uložení aktuální části řetězu. Prohledávání se provádí podle následujícho scénáře, výběr končí po prvním nalezeném bloku: 1) blok ve stejném fyzickém souboru 2) blok v dosud neobsazeném souboru (kvůli snížení fragmentace) 3) vyhledání libovolného rezervovaného bloku (nezávisle na inode souboru, kterému patří) a jeho označení za volný </p>
+</p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab011d69fdd32a17b75d897853a82b65a">allocatorFindFreeBlock_sameHash()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab64d4b4f5f9a9871db149e26c111cc25">allocatorFindFreeBlock_unusedPreferred()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a853fbeb024230e14be6128ca74d54719">allocatorStealReservedBlock()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a345a4bbbd1e3b670e4643f73b4f3516c">HiddenFS::vBlock::length</a> a <a class="el" href="struct_hidden_f_s_1_1v_block.html#a84dec1964ec28a97ac73db3ff9403d7b">HiddenFS::vBlock::used</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9f8c828e2029de66b2550554039b5515"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListCompleteRestore" ref="a9f8c828e2029de66b2550554039b5515" args="(vBlock *first, chainList_t &amp;chain)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::chainListCompleteRestore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Pokusí se načíst kompletní řetěz entit. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>first</em>&nbsp;</td><td>blok s prvním článkem řetězu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>metoda naplní řetěz entitami </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud nebylo možné načíst řetěz kompletní </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad113d3c73de31e61cb9c8b6260534f73">chainListRestore()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a533505e48058f0f43cd83b8d0dac7b0c"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListCompleteSave" ref="a533505e48058f0f43cd83b8d0dac7b0c" args="(const chainList_t &amp;chain, vBlock *firstChain=NULL)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * HiddenFS::hiddenFs::chainListCompleteSave </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>firstChain</em> = <code>NULL</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí zápis chainListu, je vlastně trochu jiným druhem alokátoru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>vstupní seznam entit určených pro zápis </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>firstChain</em>&nbsp;</td><td>pokusit se zapsat od tohoto článku a pokud jsou dostupné i následující, zapisovat do nich namísto nového výběru bloku. Pokud je NULL, automaticky se vybere vhodný blok. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud nelze uložit retěz komplení </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>ukazatel na <a class="el" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>, který obsahuje první článek řetězu </dd></dl>
+
+<p><p>Umístění naposledy zapsaného bloku</p>
+<p>Umístění aktuálně ukládaného bloku</p>
+<p>Umístění aktuálně ukládaného bloku</p>
+<p>Umístění naposledy zapsaného bloku</p>
+<p>Umístění aktuálně ukládaného bloku</p>
+<p>Umístění aktuálně ukládaného bloku</p>
+</p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab64d4b4f5f9a9871db149e26c111cc25">allocatorFindFreeBlock_unusedPreferred()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5dd9550461701b44748440bc6ae51adb">chainListAllocate()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad4f8ea011a0cea3cd581feadebe91dad">chainListFree()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad113d3c73de31e61cb9c8b6260534f73">chainListRestore()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a19cf6a8b03f001414d84261f2b3db19e">chainListSave()</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a1791e85927eb2f35912434048bbeecfe">HiddenFS::vBlock::hash</a> a <a class="el" href="struct_hidden_f_s_1_1v_block.html#a345a4bbbd1e3b670e4643f73b4f3516c">HiddenFS::vBlock::length</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad4f8ea011a0cea3cd581feadebe91dad"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListFree" ref="ad4f8ea011a0cea3cd581feadebe91dad" args="(vBlock *first)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::chainListFree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>first</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Uvolní celý řetězec entit. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>first</em>&nbsp;</td><td>ukazatel na první blok řetězce </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud nebylo možné projít řetězec až do konce </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad113d3c73de31e61cb9c8b6260534f73">chainListRestore()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad113d3c73de31e61cb9c8b6260534f73"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListRestore" ref="ad113d3c73de31e61cb9c8b6260534f73" args="(vBlock *location, vBlock *&amp;next, chainList_t &amp;chain, bool onlyReadNext=false)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::chainListRestore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&amp;&nbsp;</td>
+          <td class="paramname"> <em>next</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>onlyReadNext</em> = <code>false</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Načte část řetězu entit do 'chain', která se nachází v 'location'. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>location</em>&nbsp;</td><td>umístění jednoho článku řetězu pro načtení </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>next</em>&nbsp;</td><td>naplní ukazatel dalšího článku řetězu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>metoda rozšíří řetěz entitami o další obsah, nemaže původní obsah </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>onlyReadNext</em>&nbsp;</td><td>při nastavené hodnotě true se neprovádí rekonstrukce řetězce, ale obnova končí po načtení umístění dalšího článku řetězu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_block_not_used.html">ExceptionBlockNotUsed</a></em>&nbsp;</td><td>vyhazuje pokud se snažíme načíst dosud neobsazený blok </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud čtení z bloku 'location' nebylo z nějakého důvodu korektní </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><p>jeden článek řetězu</p>
+<p>jeden článek řetězu </p>
+</p>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="struct_hidden_f_s_1_1chain_item.html#a3f423919bc85aaca12bbf2785a4e6f43">HiddenFS::chainItem::content</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#abdbfe8944ea93ad71276fc9ce7fd7d32">HiddenFS::IEncryption::decrypt()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a1791e85927eb2f35912434048bbeecfe">HiddenFS::vBlock::hash</a>, <a class="el" href="namespace_hidden_f_s.html#a3d509d9d8b259d97cec78b444a8e7271">HiddenFS::idByteIsChain()</a>, <a class="el" href="struct_hidden_f_s_1_1chain_item.html#a6f0eb49ff6c97cd2181c9feb25f9821a">HiddenFS::chainItem::length</a>, <a class="el" href="namespace_hidden_f_s.html#a39a6206cc23e381234cf2697cb8f4ef8">HiddenFS::print_vBlock()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a01c8f6f9db2aa1d35bc73a4ac3399553">readBlock()</a> a <a class="el" href="namespace_hidden_f_s.html#ad4b984cb2916ae3e926369d9e40f9fb4">HiddenFS::unserialize_vBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a19cf6a8b03f001414d84261f2b3db19e"></a><!-- doxytag: member="HiddenFS::hiddenFs::chainListSave" ref="a19cf6a8b03f001414d84261f2b3db19e" args="(vBlock *location, vBlock *next, const chainList_t &amp;chain)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::chainListSave </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> *&nbsp;</td>
+          <td class="paramname"> <em>next</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>chain</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Uloží řetěz do bloku určeném parametrem location. </p>
+<p>Výsledný bytestream nesmí být delší, než je využitelný obsah bloku. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>location</em>&nbsp;</td><td>cílový soubor pro zápis </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>next</em>&nbsp;</td><td>ukazatel na následující blok (může být i NULL) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>chain</em>&nbsp;</td><td>vstupní řetěz k uložení </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a254f72c4911a6d7a5bbd8b2747bfc6fb">HiddenFS::IEncryption::encrypt()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a1791e85927eb2f35912434048bbeecfe">HiddenFS::vBlock::hash</a>, <a class="el" href="namespace_hidden_f_s.html#a04e250a21816a9a9b41a1336165dcf72">HiddenFS::idByteGenChain()</a>, <a class="el" href="namespace_hidden_f_s.html#a0bbb48398895d30788a3d279c7bd642f">HiddenFS::serialize_vBlock()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a57c853c23c8a0c072fc4733a2d735129">writeBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a16993a635a4c39cb4cc5e7e93c5b08cc"></a><!-- doxytag: member="HiddenFS::hiddenFs::createContext" ref="a16993a635a4c39cb4cc5e7e93c5b08cc" args="(std::string filename)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* HiddenFS::hiddenFs::createContext </td>
+          <td>(</td>
+          <td class="paramtype">std::string&nbsp;</td>
+          <td class="paramname"> <em>filename</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Naalokuje zdroje pro práci se skutečným souborem - otevření souboru, různé inicializace... </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>filename</em>&nbsp;</td><td>adresa ke skutečnému souboru </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>ukazatel na kontext, který může být libovolného typu </dd></dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#a5d2cc6f77541fa571df609492b13d962">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0e3dcbb7ef164ba6465a2534987f3cc4"></a><!-- doxytag: member="HiddenFS::hiddenFs::findHashByAuxList" ref="a0e3dcbb7ef164ba6465a2534987f3cc4" args="(std::set&lt; hash_ascii_t &gt; &amp;list, const unsigned int limit)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::findHashByAuxList </td>
+          <td>(</td>
+          <td class="paramtype">std::set&lt; <a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&nbsp;</td>
+          <td class="paramname"> <em>limit</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Systematicky prohledává hash table za účelem naplnění některého ze seznamů. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>list</em>&nbsp;</td><td>seznam, který chceme naplnit </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>limit</em>&nbsp;</td><td>množství zaplnění parametru list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">HiddenFS::hashTable::begin()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">HiddenFS::hashTable::end()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd">HiddenFS::hashTable::firstIndexing</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#adcc3a4227965cdf25d9878bf526de9c3">HiddenFS::hashTable::lastIndexed</a> a <a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">HiddenFS::hashTable::setContext()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a238d36c804e39a1e3a8dfb5ba01aabc1"></a><!-- doxytag: member="HiddenFS::hiddenFs::findPartlyUsedHash" ref="a238d36c804e39a1e3a8dfb5ba01aabc1" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::findPartlyUsedHash </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK). </p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">HiddenFS::hashTable::auxList_partlyUsed</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0e3dcbb7ef164ba6465a2534987f3cc4">findHashByAuxList()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad50eaa58544178b7a47ca007f5a74cf7"></a><!-- doxytag: member="HiddenFS::hiddenFs::findUnusedHash" ref="ad50eaa58544178b7a47ca007f5a74cf7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::findUnusedHash </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_UNUSED_CHUNK). </p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">HiddenFS::hashTable::auxList_unused</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0e3dcbb7ef164ba6465a2534987f3cc4">findHashByAuxList()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a82658cce37ac321b0f527dd5b10ff40b"></a><!-- doxytag: member="HiddenFS::hiddenFs::flushContext" ref="a82658cce37ac321b0f527dd5b10ff40b" args="(context_t *context)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void HiddenFS::hiddenFs::flushContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Zapíše změny do skutečného souboru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td>ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#abc35de81209606e14ab61c18b4974d85">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6d7307e168a3a7a32519652b1ccbcc5f"></a><!-- doxytag: member="HiddenFS::hiddenFs::freeContext" ref="a6d7307e168a3a7a32519652b1ccbcc5f" args="(context_t *context)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void HiddenFS::hiddenFs::freeContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Uvolní naalokované prostředky pro skutečný soubor. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td>ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#a9acce72ccc9a2bb0cf62eef7503d7943">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac15bfca9d93d90ef1f98dc36c1e464f9"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_chmod" ref="ac15bfca9d93d90ef1f98dc36c1e464f9" args="(const char *path, mode_t mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_chmod </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mode_t&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#a8ac6d48ab9ad3ccfe0eb6e3da0d50d56">HiddenFS::vFile::FLAG_EXECUTE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0b5f1a4aaecea47a38ce7411583cb253">HiddenFS::vFile::FLAG_READ</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7e484c23c8f1302e1fded7d660e4fcae"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_chown" ref="a7e484c23c8f1302e1fded7d660e4fcae" args="(const char *path, uid_t uid, gid_t gid)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_chown </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uid_t&nbsp;</td>
+          <td class="paramname"> <em>uid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gid_t&nbsp;</td>
+          <td class="paramname"> <em>gid</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad2408ef5b28357970eed2de2e7849d85"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_create" ref="ad2408ef5b28357970eed2de2e7849d85" args="(const char *path, mode_t mode, struct fuse_file_info *file_i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_create </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mode_t&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>file_i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a3210deb8262bed229fb48e80e01846a8">HiddenFS::hiddenFs::fileWriteBuff_t::allocated</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a05898510842b291ffe77783d781a0244">HiddenFS::hiddenFs::fileWriteBuff_t::buffer</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a0bf73eff34afd4965caf17b06a292860">HiddenFS::hiddenFs::fileWriteBuff_t::enabled</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">HiddenFS::vFile::filename</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">fileWriteBuff</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a8ac6d48ab9ad3ccfe0eb6e3da0d50d56">HiddenFS::vFile::FLAG_EXECUTE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0475a01b475709844740ca7c3362e3ef">HiddenFS::vFile::FLAG_NONE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0b5f1a4aaecea47a38ce7411583cb253">HiddenFS::vFile::FLAG_READ</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a26398e283af6bc14abee5ff4b63af68f">HiddenFS::hiddenFs::fileWriteBuff_t::length</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a327f8ae2243c2fa072aafe1a7a7eb8e4">HiddenFS::contentTable::newEmptyContent()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a6f91dcf6302688f95d4c93e5ff966381">HiddenFS::structTable::newFile()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a3dea33b8ed4c32417bbc7e48dab1c17a">HiddenFS::vFile::parent</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ac7c11556068a52e73c5dc120c98230b0">HiddenFS::structTable::print()</a>, <a class="el" href="namespace_hidden_f_s.html#ab955c5c79afd7d527d1ff749b3ef0686">HiddenFS::print_vFile()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a95289e9ea2eea0e756ca4fc8e6a1e965">HiddenFS::structTable::splitPathToFilename()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af5efcd49110ff3481b7b46f9055ece88"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_flush" ref="af5efcd49110ff3481b7b46f9055ece88" args="(const char *path, struct fuse_file_info *info)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_flush </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>info</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a3210deb8262bed229fb48e80e01846a8">HiddenFS::hiddenFs::fileWriteBuff_t::allocated</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a68256dce5b0751e8300729b499c4df3e">allocatorAllocate()</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a05898510842b291ffe77783d781a0244">HiddenFS::hiddenFs::fileWriteBuff_t::buffer</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a0bf73eff34afd4965caf17b06a292860">HiddenFS::hiddenFs::fileWriteBuff_t::enabled</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a254f72c4911a6d7a5bbd8b2747bfc6fb">HiddenFS::IEncryption::encrypt()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">fileWriteBuff</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a26398e283af6bc14abee5ff4b63af68f">HiddenFS::hiddenFs::fileWriteBuff_t::length</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0550cbdbe06e7f8a2d2948ee44b457a4">removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a97a7321bc97a4a687753e673e17e7c37"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_getattr" ref="a97a7321bc97a4a687753e673e17e7c37" args="(const char *path, struct stat *stbuf)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_getattr </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct stat *&nbsp;</td>
+          <td class="paramname"> <em>stbuf</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>do stbuf nastavit délku souboru </p>
+
+</div>
+</div>
+<a class="anchor" id="a9e7e1e53ec7b3c281f5acf0621456dd1"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_mkdir" ref="a9e7e1e53ec7b3c281f5acf0621456dd1" args="(const char *path, mode_t mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_mkdir </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mode_t&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">HiddenFS::vFile::filename</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a3fb8dc30df960170042ed6c9df1101e5">HiddenFS::vFile::FLAG_DIR</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a6f91dcf6302688f95d4c93e5ff966381">HiddenFS::structTable::newFile()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a3dea33b8ed4c32417bbc7e48dab1c17a">HiddenFS::vFile::parent</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ac7c11556068a52e73c5dc120c98230b0">HiddenFS::structTable::print()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a95289e9ea2eea0e756ca4fc8e6a1e965">HiddenFS::structTable::splitPathToFilename()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a40e32e91c3d3d09becc47e109f67419f"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_open" ref="a40e32e91c3d3d09becc47e109f67419f" args="(const char *path, struct fuse_file_info *file_i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_open </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>file_i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a540965af165e6bb2ea342a944e145c29"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_read" ref="a540965af165e6bb2ea342a944e145c29" args="(const char *path, char *buffer, size_t size, off_t length, struct fuse_file_info *file_i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_read </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">off_t&nbsp;</td>
+          <td class="paramname"> <em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>file_i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#a0b5f1a4aaecea47a38ce7411583cb253">HiddenFS::vFile::FLAG_READ</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a56f43c8d58ab876af89b618e60c8ac5e">getContent()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1b93fc7ec4af260444793a29b8ed36da"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_readdir" ref="a1b93fc7ec4af260444793a29b8ed36da" args="(const char *path, void *buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *file_i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_readdir </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fuse_fill_dir_t&nbsp;</td>
+          <td class="paramname"> <em>filler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">off_t&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>file_i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1struct_table.html#a2d55cd935fffba6cec7cd0b061f14533">HiddenFS::structTable::directoryContent()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ad47c1a9a4c6592b729426f2c99cbdc03">HiddenFS::structTable::directoryContentEnd()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">HiddenFS::vFile::filename</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ae21f9fa3e4c5febddd38623e9f9fe85d">HiddenFS::structTable::findFileByInode()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a8ac6d48ab9ad3ccfe0eb6e3da0d50d56">HiddenFS::vFile::FLAG_EXECUTE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#aa81ec33d8cf73552b9bae486e4666eb5">HiddenFS::structTable::ROOT_INODE</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ba0603de84d6a815ec43e00a3565b72"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_rename" ref="a3ba0603de84d6a815ec43e00a3565b72" args="(const char *from, const char *to)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_rename </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>to</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#ac0a40fa20a4b30ee6d58f0af486361b5">HiddenFS::vFile::filename</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ae21f9fa3e4c5febddd38623e9f9fe85d">HiddenFS::structTable::findFileByInode()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ab235e6c922414ae393aab266e1a57467">HiddenFS::structTable::findFileByName()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#abd2939840461ba45c28a2f41390a25b5">HiddenFS::structTable::moveInode()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a9fd49476f19a218d20376e914d3b3531">HiddenFS::structTable::removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a95289e9ea2eea0e756ca4fc8e6a1e965">HiddenFS::structTable::splitPathToFilename()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e5408179b0129fb6620b01da044dc49"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_rmdir" ref="a5e5408179b0129fb6620b01da044dc49" args="(const char *path)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_rmdir </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a9fd49476f19a218d20376e914d3b3531">HiddenFS::structTable::removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a16a6e89b463aa8237207c55e68b95816"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_statfs" ref="a16a6e89b463aa8237207c55e68b95816" args="(const char *path, struct statvfs *stat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_statfs </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct statvfs *&nbsp;</td>
+          <td class="paramname"> <em>stat</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a">HiddenFS::context_t::avaliableBlocks</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">HiddenFS::hashTable::begin()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">HiddenFS::hashTable::end()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6d7307e168a3a7a32519652b1ccbcc5f">freeContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaf0edc60d10c84065c14b22616e1621d"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_truncate" ref="aaf0edc60d10c84065c14b22616e1621d" args="(const char *path, off_t length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_truncate </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">off_t&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a68256dce5b0751e8300729b499c4df3e">allocatorAllocate()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#afdec78e23aa4d70fe371b7325e4f2e13">HiddenFS::contentTable::findUsedBlocks()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a56f43c8d58ab876af89b618e60c8ac5e">getContent()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a1b38516df2d49f5cc6d785d61a9b48ad">HiddenFS::contentTable::setBlockAsReserved()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa14350d82f9540c70848303174061047"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_unlink" ref="aa14350d82f9540c70848303174061047" args="(const char *path)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_unlink </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a404c96ed55542153ed145572ae9c6c45">HiddenFS::vFile::inode</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0550cbdbe06e7f8a2d2948ee44b457a4">removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4fd7cf267f6ad29039a0640831c3314b"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_utimens" ref="a4fd7cf267f6ad29039a0640831c3314b" args="(const char *path, const struct timespec tv[2])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int HiddenFS::hiddenFs::fuse_utimens </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct timespec&nbsp;</td>
+          <td class="paramname"> <em>tv</em>[2]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6cec39744a31ada363baebae911a1f1f"></a><!-- doxytag: member="HiddenFS::hiddenFs::fuse_write" ref="a6cec39744a31ada363baebae911a1f1f" args="(const char *path, const char *buffer, size_t size, off_t offset, struct fuse_file_info *file_i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::fuse_write </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">off_t&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct fuse_file_info *&nbsp;</td>
+          <td class="paramname"> <em>file_i</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a3210deb8262bed229fb48e80e01846a8">HiddenFS::hiddenFs::fileWriteBuff_t::allocated</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a05898510842b291ffe77783d781a0244">HiddenFS::hiddenFs::fileWriteBuff_t::buffer</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a0bf73eff34afd4965caf17b06a292860">HiddenFS::hiddenFs::fileWriteBuff_t::enabled</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">fileWriteBuff</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ad50d1c0f3cf494a32688146b626ba1d0">HiddenFS::vFile::FLAG_WRITE</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#a30580a497a6bc8984ec05bcf993ee277">HiddenFS::vFile::flags</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a26398e283af6bc14abee5ff4b63af68f">HiddenFS::hiddenFs::fileWriteBuff_t::length</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a358fd951de78b440ad7b8789046e8712">HiddenFS::structTable::pathToInode()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a56f43c8d58ab876af89b618e60c8ac5e"></a><!-- doxytag: member="HiddenFS::hiddenFs::getContent" ref="a56f43c8d58ab876af89b618e60c8ac5e" args="(inode_t inode, bytestream_t **buffer, size_t *length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::getContent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a>&nbsp;</td>
+          <td class="paramname"> <em>inode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prochází hash table za účelem nalezení dostatečného počtu doposud neobsazených skutečných souborů (konstanta HT_PARTUSED_CHUNK). </p>
+<p>Přečte kompletní obsah virtuálního souboru ze všech fragmentů </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>inode</em>&nbsp;</td><td>inode souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buffer</em>&nbsp;</td><td>obsah souboru (metoda sama alokuje obsah) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>délka souboru v bytech </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><p>1) v try {} načíst blok podle hashe přes blockRead 2) unpackData 3)</p>
+<p>1) v try {} načíst blok podle hashe přes blockRead 2) unpackData 3)</p>
+</p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="struct_hidden_f_s_1_1content_table_1_1table_item.html#afffacf7855c70b41d9a6251154c93f5f">HiddenFS::contentTable::tableItem::content</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#abdbfe8944ea93ad71276fc9ce7fd7d32">HiddenFS::IEncryption::decrypt()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#ae21f9fa3e4c5febddd38623e9f9fe85d">HiddenFS::structTable::findFileByInode()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#aaeb90fe2fa5969a978e82dbc63e1c2d7">HiddenFS::contentTable::getMetadata()</a>, <a class="el" href="namespace_hidden_f_s.html#a9636982fe7ee11dc16adefcce331a482">HiddenFS::idByteIsDataBlock()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a01c8f6f9db2aa1d35bc73a4ac3399553">readBlock()</a>, <a class="el" href="struct_hidden_f_s_1_1v_file.html#ae1067a2113143f961b7a5d433ff9945f">HiddenFS::vFile::size</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a96771cb9afbb1f38737b802b58f4cb40"></a><!-- doxytag: member="HiddenFS::hiddenFs::packData" ref="a96771cb9afbb1f38737b802b58f4cb40" args="(bytestream_t *input, size_t inputSize, bytestream_t **output, size_t *outputSize, id_byte_t id_byte)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::packData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>inputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>outputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a>&nbsp;</td>
+          <td class="paramname"> <em>id_byte</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provede "zabalení" bloku dat a výpočet <a class="el" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a>. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>input</em>&nbsp;</td><td>vstupní buffer </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>inputSize</em>&nbsp;</td><td>délka vstupního bufferu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>output</em>&nbsp;</td><td>výstupní buffer, metoda sama alokuje potřebnou délku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>outputSize</em>&nbsp;</td><td>délka výstupního bufferu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>id_byte</em>&nbsp;</td><td>identifikační byte (pro odlišení superbloku od běžného) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud se snažíme zapsat více dat, než kolik se vejde do bloku (inputSize je menší BLOCK_USABLE_LENGTH) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#ab71d62e1c27f9df0f88b17c2475d3e2f">HiddenFS::CRC::calculate()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">checksum</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2d775afda2e89aab18095a1a2f21b0af"></a><!-- doxytag: member="HiddenFS::hiddenFs::readBlock" ref="a2d775afda2e89aab18095a1a2f21b0af" args="(context_t *context, block_number_t block, bytestream_t *buff, size_t length) const =0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t HiddenFS::hiddenFs::readBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td> const<code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí zápis bloku do skutečného souboru, jeho implementace je na uživateli knihovny. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td>ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>pořadové číslo bloku v rámci souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buff</em>&nbsp;</td><td>obsah bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>maximální délka bloku </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>skutečně načtená délka bloku </dd></dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#a7c47d2a2a06e1f5ef16676fb21b229c9">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a01c8f6f9db2aa1d35bc73a4ac3399553"></a><!-- doxytag: member="HiddenFS::hiddenFs::readBlock" ref="a01c8f6f9db2aa1d35bc73a4ac3399553" args="(hash_ascii_t hash, block_number_t block, bytestream_t **buff, size_t length, id_byte_t *idByte)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t HiddenFS::hiddenFs::readBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>idByte</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Zabezpečuje přečtení bloku obsahující fragment souboru s kontrolou kontrolního součtu a načtení identifikačního byte. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>identifikace souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>pořadové číslo bloku v rámci skutečného souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buff</em>&nbsp;</td><td>užitný obsah bloku, metoda sama alokuje dostatečnou délku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>maximální délka bloku, která se má načíst </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>idByte</em>&nbsp;</td><td>metoda naplní tento parametr hodnotou rozlišovacího byte </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>počet skutečně naštených dat </dd></dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="types_8h.html#ae0595a802b5defaa9dbe70a24924307b">BLOCK_MAX_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a82658cce37ac321b0f527dd5b10ff40b">flushContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">HiddenFS::hashTable::setContext()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0d9334a681a558986a57759770e4ee79">unpackData()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1c004cdeec6fc915641a7fdb37addf30"></a><!-- doxytag: member="HiddenFS::hiddenFs::removeBlock" ref="a1c004cdeec6fc915641a7fdb37addf30" args="(hash_ascii_t hash, block_number_t block)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::removeBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Pokusí se zcela odstranit zadaný blok z fyzického souboru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>jednoznačná identifikace souboru, ve kterém se nachází blok pro mazání </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>číslo bloku ke smazání </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a11cdf9b553955891540b46c6a0dad1f8">HiddenFS::hashTable::auxFree()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a82658cce37ac321b0f527dd5b10ff40b">flushContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a> a <a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">HiddenFS::hashTable::setContext()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af538742c6286e0cffacfaedadea916c7"></a><!-- doxytag: member="HiddenFS::hiddenFs::removeBlock" ref="af538742c6286e0cffacfaedadea916c7" args="(context_t *context, block_number_t block)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void HiddenFS::hiddenFs::removeBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Pokusí se zcela odstranit zadaný blok z fyzického souboru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td>ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>číslo bloku ke smazání </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#a84566911275f509bea7d7aa3332aceb4">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0550cbdbe06e7f8a2d2948ee44b457a4"></a><!-- doxytag: member="HiddenFS::hiddenFs::removeFile" ref="a0550cbdbe06e7f8a2d2948ee44b457a4" args="(inode_t inode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::removeFile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">inode_t</a>&nbsp;</td>
+          <td class="paramname"> <em>inode</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Kompletně odstraní obsah souboru i včetně metadat ve structure i content table. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>inode</em>&nbsp;</td><td>identifikace souboru pro smazání </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#aacdbfcee342f6d68f99fb0952f893514">HiddenFS::contentTable::findAllBlocks()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1c004cdeec6fc915641a7fdb37addf30">removeBlock()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a9fd49476f19a218d20376e914d3b3531">HiddenFS::structTable::removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#ad23aeda728b295e40d5f0aa7c2fcd98f">HiddenFS::contentTable::removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a7b869d2bcdbb64eb4279e2bf90451731">HiddenFS::contentTable::setBlockAsUnused()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9b3b3c1999778ce38662ca46af2c4ef0"></a><!-- doxytag: member="HiddenFS::hiddenFs::run" ref="a9b3b3c1999778ce38662ca46af2c4ef0" args="(int argc, char *argv[])" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HiddenFS::hiddenFs::run </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>argv</em>[]</td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Hlavní výkonná metoda (wrapper nad fuse_main). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>argc</em>&nbsp;</td><td>počet argumentů z příkazové řádky </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>argv</em>&nbsp;</td><td>pole argumentů z příkazové řádky </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Návratová hodnota:</b></dt><dd>návratová hodnota z FUSE </dd></dl>
+
+<p><p>Následující metoda:</p>
+<ul>
+<li>projde načtený superblok</li>
+<li>načte řetězce serializovaných tabulek (provede deserializaci)</li>
+<li>obnoví obsah CT a ST z řetězců</li>
+</ul>
+<p>Následující metoda:</p>
+<ul>
+<li>projde načtený superblok</li>
+<li>načte řetězce serializovaných tabulek (provede deserializaci)</li>
+<li>obnoví obsah CT a ST z řetězců</li>
+</ul>
+</p>
+
+<p>Odkazuje se na <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a3210deb8262bed229fb48e80e01846a8">HiddenFS::hiddenFs::fileWriteBuff_t::allocated</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a5bd3d21c7dbf4c7c0b97d20e3cc512b6">allocatorFindFreeBlock_unused()</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#aeefb921b0df6a8d35d191ea732e56416">HiddenFS::structTable::begin()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">HiddenFS::hashTable::begin()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a97756ec325648786aadcfa96575263ae">HiddenFS::vBlock::block</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a05898510842b291ffe77783d781a0244">HiddenFS::hiddenFs::fileWriteBuff_t::buffer</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad4f8ea011a0cea3cd581feadebe91dad">chainListFree()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a9c13078ffa9cd6ea82a2976b78600801">HiddenFS::hashTable::clearContext()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a61f91afc9b38073aa837768c5b36f592">HiddenFS::superBlock::clearKnownItems()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#afc363071fcfd421a90bfd6bb466635e8">HiddenFS::superBlock::deserialize()</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a0bf73eff34afd4965caf17b06a292860">HiddenFS::hiddenFs::fileWriteBuff_t::enabled</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">encryption</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a1ed94158d7967a5bb6cafb7294648c56">HiddenFS::structTable::end()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">HiddenFS::hashTable::end()</a>, <a class="el" href="namespace_hidden_f_s.html#a35a1dc971534b6f5b49a728132a3f545">HiddenFS::executableFilename</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">fileWriteBuff</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a238d36c804e39a1e3a8dfb5ba01aabc1">findPartlyUsedHash()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad50eaa58544178b7a47ca007f5a74cf7">findUnusedHash()</a>, <a class="el" href="namespace_hidden_f_s.html#a59e12f953022cd707fd9bdf5ab1abfdb">HiddenFS::flagCreateNewFS</a>, <a class="el" href="namespace_hidden_f_s.html#acb307ffd3c9c10d091eb156c7428af36">HiddenFS::flagForce</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="namespace_hidden_f_s.html#a2692e61139f948afc7ac7d530cc591a3">HiddenFS::flagFuseRun</a>, <a class="el" href="namespace_hidden_f_s.html#a3f40e93e2c20dfaa8baf17fe149a3d29">HiddenFS::flagRemove</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6d7307e168a3a7a32519652b1ccbcc5f">freeContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a>, <a class="el" href="struct_hidden_f_s_1_1v_block.html#a1791e85927eb2f35912434048bbeecfe">HiddenFS::vBlock::hash</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a08151ed2e1585c7a6eee5139ffc8121b">HiddenFS::superBlock::hasKnownItems()</a>, <a class="el" href="hiddenfs-lib-newer_8cpp.html#a86c31098fc0a6532e54823d436a2979f">HFS_OPT_KEY</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="namespace_hidden_f_s.html#a95e28e29209ad5cd6592ca56ddb730ee">HiddenFS::idByteGenSuperBlock()</a>, <a class="el" href="namespace_hidden_f_s.html#a0bcebe592aa6c0b0cfd0eccb8a99b776">HiddenFS::idByteIsSuperBlock()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a488a94e86fe5b582f0601645b2f05333">HiddenFS::superBlock::isLoaded()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa6d862f86da5c7237c55ce0c8d07b8efa">KEY_CREATE</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa9bb5cb8d8c9b80e9f885f657bdc6d0a0">KEY_FORCE</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fa603245fc6df26ba4d27660064ef71ae7">KEY_FUSE_DEBUG</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091fafc90eec23c24cd0e1ceaee43b3abfa60">KEY_HELP</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a2d5e0e4ee87f363ca544cfa79680091faeb317ebb7185dbae0db89ffa891e7810">KEY_REMOVE</a>, <a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html#a26398e283af6bc14abee5ff4b63af68f">HiddenFS::hiddenFs::fileWriteBuff_t::length</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a2842e6d2899cb29139778b6ad6ea7878">HiddenFS::hashTable::print()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a01c8f6f9db2aa1d35bc73a4ac3399553">readBlock()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a97b08bfb3b43629bddbd3e1d6aff976c">HiddenFS::superBlock::readKnownItems()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a0550cbdbe06e7f8a2d2948ee44b457a4">removeFile()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abde481709c7df0bc4af2856b1f42a7ff">setConsoleEcho()</a>, <a class="el" href="class_hidden_f_s_1_1_i_encryption.html#a8b6959637990e1ce3f9e1bc7c88d6002">HiddenFS::IEncryption::setKey()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#ae6ae6bc912125f073d7b06dcf9e5d48d">HiddenFS::hashTable::size()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad288420ac7dcf4d9cd238e071e231bea">storagePath</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aa4a1bdcb990555a6cf7ff3f6365349b6">storageRefreshIndex()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aac890270b7b44bda301b0603730ace48">superBlockLocations</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a75dfda2d69d93c09c4d836c7b4d4cb18">superBlockSave()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#ab786266239bf9ea52cf0c9c9171815eb">HiddenFS::superBlock::TABLE_CONTENT_TABLE</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a4ef8120b9abb49bf1d60b85576dee98c">HiddenFS::superBlock::TABLE_STRUCT_TABLE</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a52809b9261682bfa0c59efc8868422f5">tableRestoreFromSB()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a57c853c23c8a0c072fc4733a2d735129">writeBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abde481709c7df0bc4af2856b1f42a7ff"></a><!-- doxytag: member="HiddenFS::hiddenFs::setConsoleEcho" ref="abde481709c7df0bc4af2856b1f42a7ff" args="(bool state)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::setConsoleEcho </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>state</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Povolí/zakáže echo při čtení ze standartního vstupu. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>state</em>&nbsp;</td><td>povolit/zakázat echo </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa4a1bdcb990555a6cf7ff3f6365349b6"></a><!-- doxytag: member="HiddenFS::hiddenFs::storageRefreshIndex" ref="aa4a1bdcb990555a6cf7ff3f6365349b6" args="(std::string filename)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void HiddenFS::hiddenFs::storageRefreshIndex </td>
+          <td>(</td>
+          <td class="paramtype">std::string&nbsp;</td>
+          <td class="paramname"> <em>filename</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Naplní hash tabulku (mapování cesty skutečného souboru na jednoznačný řetězec). </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>filename</em>&nbsp;</td><td>umístění adresáře určeného jako úložiště (storage) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#a5c56aa54730c567a4ad9f15ea5446efc">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a75dfda2d69d93c09c4d836c7b4d4cb18"></a><!-- doxytag: member="HiddenFS::hiddenFs::superBlockSave" ref="a75dfda2d69d93c09c4d836c7b4d4cb18" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::superBlockSave </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Komplexní metoda pro uložení superbloku: provádí serializaci, zápis do stávajících kopií superbloků a podle potřeby doalokování chybějících kopií. </p>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud nebylo možné uložit tabulku kompleně </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">HiddenFS::hashTable::begin()</a>, <a class="el" href="types_8h.html#ae0595a802b5defaa9dbe70a24924307b">BLOCK_MAX_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">BLOCK_USABLE_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">HiddenFS::hashTable::end()</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="namespace_hidden_f_s.html#a95e28e29209ad5cd6592ca56ddb730ee">HiddenFS::idByteGenSuperBlock()</a>, <a class="el" href="namespace_hidden_f_s.html#a0bcebe592aa6c0b0cfd0eccb8a99b776">HiddenFS::idByteIsSuperBlock()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a488a94e86fe5b582f0601645b2f05333">HiddenFS::superBlock::isLoaded()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a01c8f6f9db2aa1d35bc73a4ac3399553">readBlock()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a1bfae244d04a0db5d8fda2abb9c28bbe">HiddenFS::superBlock::serialize()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aac890270b7b44bda301b0603730ace48">superBlockLocations</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aedf7f72b25b7c5072587c46c40b83991">tablesSaveToSB()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a57c853c23c8a0c072fc4733a2d735129">writeBlock()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a52809b9261682bfa0c59efc8868422f5"></a><!-- doxytag: member="HiddenFS::hiddenFs::tableRestoreFromSB" ref="a52809b9261682bfa0c59efc8868422f5" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::tableRestoreFromSB </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí rekonstrukci všech tabulek (<a class="el" href="class_hidden_f_s_1_1struct_table.html">structTable</a> i <a class="el" href="class_hidden_f_s_1_1content_table.html">contentTable</a>) z řetězce entit do skutečného obsahu. </p>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud nejsou content i struct table načteny kompletně a korektně </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9f8c828e2029de66b2550554039b5515">chainListCompleteRestore()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a93e242c7bf1b745019eae46aa007e31e">HiddenFS::structTable::deserialize()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a326b24778d6f27d248891a0f437d869d">HiddenFS::contentTable::deserialize()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a488a94e86fe5b582f0601645b2f05333">HiddenFS::superBlock::isLoaded()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a97b08bfb3b43629bddbd3e1d6aff976c">HiddenFS::superBlock::readKnownItems()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#ab786266239bf9ea52cf0c9c9171815eb">HiddenFS::superBlock::TABLE_CONTENT_TABLE</a> a <a class="el" href="class_hidden_f_s_1_1super_block.html#a4ef8120b9abb49bf1d60b85576dee98c">HiddenFS::superBlock::TABLE_STRUCT_TABLE</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a660a957d07bbdb947d53ddd3e9a07a7a"></a><!-- doxytag: member="HiddenFS::hiddenFs::tableSave" ref="a660a957d07bbdb947d53ddd3e9a07a7a" args="(chainList_t &amp;content, std::set&lt; vBlock * &gt; &amp;copies)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::tableSave </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">chainList_t</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>content</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; <a class="el" href="struct_hidden_f_s_1_1v_block.html">vBlock</a> * &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>copies</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Uloží řetěz entit do několika různých kopií (počet podle konstanty TABLES_REDUNDANCY_AMOUNT) a pokud už jsou známy dříve obsazené bloky tímto obsahem, upřednostnit je při ukládání. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>content</em>&nbsp;</td><td>kompletní řetězec pro uložení </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>copies</em>&nbsp;</td><td>seznam <a class="el" href="struct_hidden_f_s_1_1v_block.html" title="abstrakce datového bloku obsahující právě jeden fragment">vBlock</a>(ů) s prvními články řetězu; pokud je prázdný, metoda sama alokuje první články a naplní jimi tento parametr </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud nebylo možné uložit tabulku kompleně </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a533505e48058f0f43cd83b8d0dac7b0c">chainListCompleteSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aedf7f72b25b7c5072587c46c40b83991"></a><!-- doxytag: member="HiddenFS::hiddenFs::tablesSaveToSB" ref="aedf7f72b25b7c5072587c46c40b83991" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::tablesSaveToSB </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Serializuje všechny tabulky (CT, ST), uloží všechny jejich kopie a vloží začátky řetězců do superbloku. </p>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_disc_full.html">ExceptionDiscFull</a></em>&nbsp;</td><td>pokud nebylo možné vše uložit kompleně </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1super_block.html#aea6057f1d0f49f834dd7042c67768620">HiddenFS::superBlock::addKnownItem()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a61f91afc9b38073aa837768c5b36f592">HiddenFS::superBlock::clearKnownItems()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">CT</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a488a94e86fe5b582f0601645b2f05333">HiddenFS::superBlock::isLoaded()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a97b08bfb3b43629bddbd3e1d6aff976c">HiddenFS::superBlock::readKnownItems()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">SB</a>, <a class="el" href="class_hidden_f_s_1_1struct_table.html#a2e9d30f293bca501320228fed1d3d598">HiddenFS::structTable::serialize()</a>, <a class="el" href="class_hidden_f_s_1_1content_table.html#a5d66b79d277bbf6f3cd330df52a6e2b4">HiddenFS::contentTable::serialize()</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a06093a4376e9093e0e367e89c3660983">HiddenFS::superBlock::setLoaded()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">ST</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#ab786266239bf9ea52cf0c9c9171815eb">HiddenFS::superBlock::TABLE_CONTENT_TABLE</a>, <a class="el" href="class_hidden_f_s_1_1super_block.html#a4ef8120b9abb49bf1d60b85576dee98c">HiddenFS::superBlock::TABLE_STRUCT_TABLE</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a660a957d07bbdb947d53ddd3e9a07a7a">tableSave()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d9334a681a558986a57759770e4ee79"></a><!-- doxytag: member="HiddenFS::hiddenFs::unpackData" ref="a0d9334a681a558986a57759770e4ee79" args="(bytestream_t *input, size_t inputSize, bytestream_t **output, size_t *outputSize, id_byte_t *id_byte)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::unpackData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>inputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> **&nbsp;</td>
+          <td class="paramname"> <em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&nbsp;</td>
+          <td class="paramname"> <em>outputSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>id_byte</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Vstupní data rozdělí na <a class="el" href="class_hidden_f_s_1_1_c_r_c.html" title="Objekt zastřešující výpočet kontrolního CRC součtu Implementace převzata z RFC 1952.">CRC</a> část a zbytek, porovná kontrolní součty (v případě nesrovnalostí vyhazuje výjimku XYZ) a výsledek předá do výstupného bufferu. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>input</em>&nbsp;</td><td>vstupní buffer </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>inputSize</em>&nbsp;</td><td>délka vstupního bufferu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>output</em>&nbsp;</td><td>výstupní buffer, metoda sama alokuje potřebnou délku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>outputSize</em>&nbsp;</td><td>délka výstupního bufferu </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>id_byte</em>&nbsp;</td><td>metoda naplní tento parametr hodnotou identifikačního byte </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p></p>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1_c_r_c.html#ab71d62e1c27f9df0f88b17c2475d3e2f">HiddenFS::CRC::calculate()</a> a <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">checksum</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a428e58627e94c8e750d0633d43154df8"></a><!-- doxytag: member="HiddenFS::hiddenFs::writeBlock" ref="a428e58627e94c8e750d0633d43154df8" args="(context_t *context, block_number_t block, bytestream_t *buff, size_t length)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void HiddenFS::hiddenFs::writeBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_hidden_f_s_1_1context__t.html">context_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí zápis bloku do skutečného souboru, jeho implementace je na uživateli knihovny. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>context</em>&nbsp;</td><td>ukazatel na kontext, v rámci kterého se pracuje s právě jedním skutečným souborem </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>pořadové číslo bloku v rámci souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buff</em>&nbsp;</td><td>obsah bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>délka zapisovaného bloku </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implementováno v <a class="el" href="classmp3fs.html#ab0f7c044bb27223d6f17c4acc73ab7cc">mp3fs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a57c853c23c8a0c072fc4733a2d735129"></a><!-- doxytag: member="HiddenFS::hiddenFs::writeBlock" ref="a57c853c23c8a0c072fc4733a2d735129" args="(hash_ascii_t hash, block_number_t block, bytestream_t *buff, size_t length, id_byte_t idByte)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HiddenFS::hiddenFs::writeBlock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&nbsp;</td>
+          <td class="paramname"> <em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">block_number_t</a>&nbsp;</td>
+          <td class="paramname"> <em>block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">bytestream_t</a> *&nbsp;</td>
+          <td class="paramname"> <em>buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a>&nbsp;</td>
+          <td class="paramname"> <em>idByte</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Provádí zápis bloku do skutečného souboru. </p>
+<dl><dt><b>Parametry:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>hash</em>&nbsp;</td><td>hash skutečného souboru, do kterého se má blok schovat </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>block</em>&nbsp;</td><td>pořadové číslo bloku v rámci souboru </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>buff</em>&nbsp;</td><td>obsah bloku </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>length</em>&nbsp;</td><td>délka zapisovaného bloku </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Výjimky:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em><a class="el" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a></em>&nbsp;</td><td>pokud je buffer příliš dlouhý </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Odkazuje se na <a class="el" href="class_hidden_f_s_1_1hash_table.html#aac025b93e99baf6d0083fc4f4dd7eac1">HiddenFS::hashTable::auxUse()</a>, <a class="el" href="types_8h.html#ae0595a802b5defaa9dbe70a24924307b">BLOCK_MAX_LENGTH</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a16993a635a4c39cb4cc5e7e93c5b08cc">createContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc">HiddenFS::hashTable::find()</a>, <a class="el" href="namespace_hidden_f_s.html#a4ef9a20654099ebc1b37f2c76a8fb05d">HiddenFS::flagFuseDebug</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a82658cce37ac321b0f527dd5b10ff40b">flushContext()</a>, <a class="el" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">HiddenFS::hashTable::getContext()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HT</a>, <a class="el" href="namespace_hidden_f_s.html#a3d509d9d8b259d97cec78b444a8e7271">HiddenFS::idByteIsChain()</a>, <a class="el" href="namespace_hidden_f_s.html#a9636982fe7ee11dc16adefcce331a482">HiddenFS::idByteIsDataBlock()</a>, <a class="el" href="namespace_hidden_f_s.html#a0bcebe592aa6c0b0cfd0eccb8a99b776">HiddenFS::idByteIsSuperBlock()</a>, <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a96771cb9afbb1f38737b802b58f4cb40">packData()</a> a <a class="el" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">HiddenFS::hashTable::setContext()</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Dokumentace k datovým členům</h2>
+<a class="anchor" id="a1a281d07d41e606b17f2567a21ced00f"></a><!-- doxytag: member="HiddenFS::hiddenFs::ALLOCATOR_REDUNDANCY" ref="a1a281d07d41e606b17f2567a21ced00f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a1a281d07d41e606b17f2567a21ced00f">HiddenFS::hiddenFs::ALLOCATOR_REDUNDANCY</a> = 1 &lt;&lt; 7<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>uložení jednoho bloku se provede několikanásobně do různých fyzických souborů </p>
+
+</div>
+</div>
+<a class="anchor" id="a66b76f378c8196f9273a64195fcee70f"></a><!-- doxytag: member="HiddenFS::hiddenFs::ALLOCATOR_SECURITY" ref="a66b76f378c8196f9273a64195fcee70f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a66b76f378c8196f9273a64195fcee70f">HiddenFS::hiddenFs::ALLOCATOR_SECURITY</a> = 1 &lt;&lt; 1<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>zamezit míchání více bloků virtuálních souborů v rámci jednoho skutečného </p>
+
+</div>
+</div>
+<a class="anchor" id="accc2e098a18dff20fd24f8217db5bcb0"></a><!-- doxytag: member="HiddenFS::hiddenFs::ALLOCATOR_SPEED" ref="accc2e098a18dff20fd24f8217db5bcb0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#accc2e098a18dff20fd24f8217db5bcb0">HiddenFS::hiddenFs::ALLOCATOR_SPEED</a> = 1 &lt;&lt; 0<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>maximální využití každého fyzického souboru (více virtuálních souborů v rámci jednoho fyzického) </p>
+
+</div>
+</div>
+<a class="anchor" id="a9e311c6ceba49305efb83180e73e83d7"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorFlags" ref="a9e311c6ceba49305efb83180e73e83d7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a9e311c6ceba49305efb83180e73e83d7">HiddenFS::hiddenFs::allocatorFlags</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adbdc084068d5a244bb5104d466691a7f"></a><!-- doxytag: member="HiddenFS::hiddenFs::allocatorRedundancy" ref="adbdc084068d5a244bb5104d466691a7f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#adbdc084068d5a244bb5104d466691a7f">HiddenFS::hiddenFs::allocatorRedundancy</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>míra duplikace dat </p>
+
+</div>
+</div>
+<a class="anchor" id="a818f6df26ee9eac0b50c6e7aee7a7555"></a><!-- doxytag: member="HiddenFS::hiddenFs::BLOCK_USABLE_LENGTH" ref="a818f6df26ee9eac0b50c6e7aee7a7555" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a818f6df26ee9eac0b50c6e7aee7a7555">HiddenFS::hiddenFs::BLOCK_USABLE_LENGTH</a> = BLOCK_MAX_LENGTH - sizeof(<a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a193a5de294f5650cd022e950333a6c99">checksum_t</a>) - sizeof(<a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">id_byte_t</a>)<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a22a656ca0121327d73d2c676b60e9824"></a><!-- doxytag: member="HiddenFS::hiddenFs::checksum" ref="a22a656ca0121327d73d2c676b60e9824" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1_c_r_c.html">CRC</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a22a656ca0121327d73d2c676b60e9824">HiddenFS::hiddenFs::checksum</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>instance objektu pro výpočet kontrolního součtu </p>
+
+</div>
+</div>
+<a class="anchor" id="abe6c091b63e2e2624c26c59471c786ac"></a><!-- doxytag: member="HiddenFS::hiddenFs::CT" ref="abe6c091b63e2e2624c26c59471c786ac" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1content_table.html">contentTable</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#abe6c091b63e2e2624c26c59471c786ac">HiddenFS::hiddenFs::CT</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af62f08bb6a0a8dde258e2ca44c5182bc"></a><!-- doxytag: member="HiddenFS::hiddenFs::encryption" ref="af62f08bb6a0a8dde258e2ca44c5182bc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1_i_encryption.html">IEncryption</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#af62f08bb6a0a8dde258e2ca44c5182bc">HiddenFS::hiddenFs::encryption</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6cb624642452c7bdfc3efa80ff6bb823"></a><!-- doxytag: member="HiddenFS::hiddenFs::fileWriteBuff" ref="a6cb624642452c7bdfc3efa80ff6bb823" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_hidden_f_s_1_1hidden_fs_1_1file_write_buff__t.html">fileWriteBuff_t</a> <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a6cb624642452c7bdfc3efa80ff6bb823">HiddenFS::hiddenFs::fileWriteBuff</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab1e1dc2e8f10a4f73214617150b8d6a9"></a><!-- doxytag: member="HiddenFS::hiddenFs::HT" ref="ab1e1dc2e8f10a4f73214617150b8d6a9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1hash_table.html">hashTable</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ab1e1dc2e8f10a4f73214617150b8d6a9">HiddenFS::hiddenFs::HT</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8ba72ba92f10c1b5bb051749154ee5d7"></a><!-- doxytag: member="HiddenFS::hiddenFs::SB" ref="a8ba72ba92f10c1b5bb051749154ee5d7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1super_block.html">superBlock</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a8ba72ba92f10c1b5bb051749154ee5d7">HiddenFS::hiddenFs::SB</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a46d4873812d7ef21782a9f41d774a284"></a><!-- doxytag: member="HiddenFS::hiddenFs::ST" ref="a46d4873812d7ef21782a9f41d774a284" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_hidden_f_s_1_1struct_table.html">structTable</a>* <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#a46d4873812d7ef21782a9f41d774a284">HiddenFS::hiddenFs::ST</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad288420ac7dcf4d9cd238e071e231bea"></a><!-- doxytag: member="HiddenFS::hiddenFs::storagePath" ref="ad288420ac7dcf4d9cd238e071e231bea" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#ad288420ac7dcf4d9cd238e071e231bea">HiddenFS::hiddenFs::storagePath</a><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aac890270b7b44bda301b0603730ace48"></a><!-- doxytag: member="HiddenFS::hiddenFs::superBlockLocations" ref="aac890270b7b44bda301b0603730ace48" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;<a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">hash_ascii_t</a>&gt; <a class="el" href="class_hidden_f_s_1_1hidden_fs.html#aac890270b7b44bda301b0603730ace48">HiddenFS::hiddenFs::superBlockLocations</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Seznam všech hash, kde se vykytují kopie superbloků. </p>
+
+</div>
+</div>
+<hr/>Dokumentace pro tuto třídu byla generována z následujících souborů:<ul>
+<li><a class="el" href="hiddenfs-lib_8h_source.html">hiddenfs-lib.h</a></li>
+<li><a class="el" href="hiddenfs-lib-newer_8cpp.html">hiddenfs-lib-newer.cpp</a></li>
+<li><a class="el" href="hiddenfs-lib_8cpp.html">hiddenfs-lib.cpp</a></li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

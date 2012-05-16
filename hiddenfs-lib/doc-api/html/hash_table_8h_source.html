@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Zdrojový soubor hashTable.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li><a href="annotated.html"><span>Třídy</span></a></li>
+      <li class="current"><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Seznam&nbsp;souborů</span></a></li>
+      <li><a href="globals.html"><span>Symboly&nbsp;v&nbsp;souborech</span></a></li>
+    </ul>
+  </div>
+<div class="header">
+  <div class="headertitle">
+<h1>hashTable.h</h1>  </div>
+</div>
+<div class="contents">
+<a href="hash_table_8h.html">Zobrazit dokumentaci tohoto souboru.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00007"></a>00007 <span class="preprocessor">#ifndef HASHTABLE_H</span>
+<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#define HASHTABLE_H</span>
+<a name="l00009"></a>00009 <span class="preprocessor"></span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;map&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;set&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;string&gt;</span>
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014 <span class="preprocessor">#include &quot;<a class="code" href="types_8h.html">types.h</a>&quot;</span>
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="keyword">namespace </span>HiddenFS {
+<a name="l00020"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html">00020</a>     <span class="keyword">class </span><a class="code" href="class_hidden_f_s_1_1hash_table.html" title="Obousměrné mapování hash a adresy ke skutečnému souboru.">hashTable</a> {
+<a name="l00021"></a>00021     <span class="keyword">public</span>:
+<a name="l00022"></a><a class="code" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html">00022</a>         <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00023"></a><a class="code" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html#af9c65d4c4284aa2a3318af1f96c0cf3a">00023</a>             std::string filename;
+<a name="l00024"></a><a class="code" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html#a635deb8b4de9866a67e3228614d46d37">00024</a>             <a class="code" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* context;
+<a name="l00025"></a>00025         } <a class="code" href="struct_hidden_f_s_1_1hash_table_1_1table_item.html">tableItem</a>;
+<a name="l00026"></a>00026 
+<a name="l00027"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a1adeb113dff827d74df3d1e98b8d6d01">00027</a>         <span class="keyword">typedef</span> std::map&lt;hash_ascii_t, tableItem&gt; table_t;
+<a name="l00028"></a>00028 
+<a name="l00029"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">00029</a>         <span class="keyword">typedef</span> table_t::const_iterator table_t_constiterator;
+<a name="l00030"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#adcc3a4227965cdf25d9878bf526de9c3">00030</a>         <a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> <a class="code" href="class_hidden_f_s_1_1hash_table.html#adcc3a4227965cdf25d9878bf526de9c3">lastIndexed</a>;
+<a name="l00031"></a>00031 
+<a name="l00033"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd">00033</a>         <span class="keywordtype">bool</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a91014f01fb7cc634b348b59fa70741cd" title="Příznak pro identifikaci prvního indexování.">firstIndexing</a>;
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035         <a class="code" href="class_hidden_f_s_1_1hash_table.html#ab73c9fca1f0cce4a6ae060b97a8210a0">hashTable</a>();
+<a name="l00036"></a>00036         <a class="code" href="class_hidden_f_s_1_1hash_table.html#ab73c9fca1f0cce4a6ae060b97a8210a0">hashTable</a>(<span class="keyword">const</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html" title="Obousměrné mapování hash a adresy ke skutečnému souboru.">hashTable</a>&amp; orig);
+<a name="l00037"></a>00037 
+<a name="l00040"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8">00040</a>         std::set&lt;hash_ascii_t&gt; <a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8" title="Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).">auxList_unused</a>;
+<a name="l00041"></a>00041 
+<a name="l00043"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653">00043</a>         std::set&lt;hash_ascii_t&gt; <a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>;
+<a name="l00044"></a>00044 
+<a name="l00051"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#aac025b93e99baf6d0083fc4f4dd7eac1">00051</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#aac025b93e99baf6d0083fc4f4dd7eac1" title="Modifikací pomocných tabulek označí blok jako obsazený.">auxUse</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash, <a class="code" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642" title="datový typ čísla bloku v rámci skutečného souboru">block_number_t</a> block) {
+<a name="l00052"></a>00052             <a class="code" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* context;
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054             context = this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6" title="Vrací kontext k souboru určeném hashem, pokud existuje.">getContext</a>(hash);
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056             <span class="keywordflow">if</span>(context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a" title="seznam neobsazených bloků">avaliableBlocks</a>.size() == 0) {
+<a name="l00057"></a>00057                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.erase(hash);
+<a name="l00058"></a>00058             } <span class="keywordflow">else</span> {
+<a name="l00060"></a>00060                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.insert(hash);
+<a name="l00061"></a>00061                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8" title="Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).">auxList_unused</a>.erase(hash);
+<a name="l00062"></a>00062             }
+<a name="l00063"></a>00063         };
+<a name="l00064"></a>00064 
+<a name="l00072"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a11cdf9b553955891540b46c6a0dad1f8">00072</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a11cdf9b553955891540b46c6a0dad1f8" title="Modifikací pomocných tabulek označí blok jako volný (tzn.">auxFree</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash, <a class="code" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642" title="datový typ čísla bloku v rámci skutečného souboru">block_number_t</a> block) {
+<a name="l00073"></a>00073             <a class="code" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* context;
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075             context = this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6" title="Vrací kontext k souboru určeném hashem, pokud existuje.">getContext</a>(hash);
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077             <span class="keywordflow">if</span>(context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a" title="seznam neobsazených bloků">avaliableBlocks</a>.size() == context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#a522ee9054cd69412ff2ee550c867b315" title="maximální počet bloků, které je povoleno do tohoto souboru umístit">maxBlocks</a>) {
+<a name="l00079"></a>00079                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8" title="Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).">auxList_unused</a>.insert(hash);
+<a name="l00080"></a>00080                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.erase(hash);
+<a name="l00081"></a>00081             } <span class="keywordflow">else</span> {
+<a name="l00083"></a>00083                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.insert(hash);
+<a name="l00084"></a>00084             }
+<a name="l00085"></a>00085         }
+<a name="l00086"></a>00086 
+<a name="l00093"></a>00093         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a0664391fe9bcf0886225cfd4c5776dbc" title="Vyhledání v tabulce (mapování hash -&amp;gt; název souboru).">find</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash, std::string* filename) <span class="keyword">const</span>;
+<a name="l00094"></a>00094 
+<a name="l00100"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a3a1f1984d0b8681404303d1269931b11">00100</a>         <a class="code" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a3a1f1984d0b8681404303d1269931b11" title="Metoda vrací iterátor prvku podle hash.">find</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash) {
+<a name="l00101"></a>00101             <span class="keywordflow">return</span> this-&gt;table.find(hash);
+<a name="l00102"></a>00102         }
+<a name="l00103"></a>00103 
+<a name="l00109"></a>00109         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a391c866a72490be4f2e56fa485428c90" title="Vloží nový záznam do hash tabulky.">add</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash, std::string filename);
+<a name="l00110"></a>00110 
+<a name="l00114"></a>00114         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a2842e6d2899cb29139778b6ad6ea7878" title="User friendly zobrazení obsahu tabulky - používat pouze pro ladění!">print</a>() <span class="keyword">const</span>;
+<a name="l00115"></a>00115 
+<a name="l00120"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0">00120</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0" title="Přiřadí kontext k souboru určenému hashem).">setContext</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash, <a class="code" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* context) {
+<a name="l00121"></a>00121             this-&gt;table[hash].context = context;
+<a name="l00122"></a>00122             
+<a name="l00123"></a>00123             <span class="keywordflow">if</span>(context == NULL) {
+<a name="l00124"></a>00124                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.erase(hash);
+<a name="l00125"></a>00125                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8" title="Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).">auxList_unused</a>.erase(hash);
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127                 <span class="keywordflow">return</span>;
+<a name="l00128"></a>00128             }
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131             <span class="comment">// zařazení do do aux* pomocných seznamů</span>
+<a name="l00132"></a>00132             <span class="keywordflow">if</span>(context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#acc7792332f5c3e8870a099387eb7e63a" title="seznam neobsazených bloků">avaliableBlocks</a>.size() == context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#a522ee9054cd69412ff2ee550c867b315" title="maximální počet bloků, které je povoleno do tohoto souboru umístit">maxBlocks</a>) {
+<a name="l00133"></a>00133                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#a04ebb358f37b160f00cf38bc8ab035a8" title="Seznam hash, které jsou zcela neobsazené (neobsahuje žádné obsazené bloky).">auxList_unused</a>.insert(hash);
+<a name="l00134"></a>00134             } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#ae06f88c5786e56e1c816ce79786baefa" title="seznam obsazených bloků">usedBlocks</a>.size() &lt; context-&gt;<a class="code" href="struct_hidden_f_s_1_1context__t.html#a522ee9054cd69412ff2ee550c867b315" title="maximální počet bloků, které je povoleno do tohoto souboru umístit">maxBlocks</a>) {
+<a name="l00135"></a>00135                 this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#aec091a9a06350466850570ac2da27653" title="Seznam hash, které mají obsazen alespoň 1 blok a současně je dostupný alespoň 1 blok.">auxList_partlyUsed</a>.insert(hash);
+<a name="l00136"></a>00136             }
+<a name="l00137"></a>00137         }
+<a name="l00138"></a>00138 
+<a name="l00143"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a9c13078ffa9cd6ea82a2976b78600801">00143</a>         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a9c13078ffa9cd6ea82a2976b78600801" title="Smaže odkaz na kontext, ale původní ukazatel už neuvolňuje.">clearContext</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash) {
+<a name="l00144"></a>00144             this-&gt;<a class="code" href="class_hidden_f_s_1_1hash_table.html#a3271c90531a4cb3a526923f845e8fde0" title="Přiřadí kontext k souboru určenému hashem).">setContext</a>(hash, NULL);
+<a name="l00145"></a>00145         }
+<a name="l00146"></a>00146 
+<a name="l00153"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6">00153</a>         <a class="code" href="struct_hidden_f_s_1_1context__t.html">context_t</a>* <a class="code" href="class_hidden_f_s_1_1hash_table.html#aaf19085380d3db66ba1d3fb6caf6f6b6" title="Vrací kontext k souboru určeném hashem, pokud existuje.">getContext</a>(<a class="code" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121" title="datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru">hash_ascii_t</a> hash) {
+<a name="l00154"></a>00154             <span class="keywordflow">if</span>(this-&gt;table[hash].context == NULL) {
+<a name="l00155"></a>00155                 <span class="keywordflow">throw</span> <a class="code" href="class_hidden_f_s_1_1_exception_runtime_error.html">ExceptionRuntimeError</a>(<span class="stringliteral">&quot;Kontext k tomuto souboru nebyl doposud přiřazen.&quot;</span>);
+<a name="l00156"></a>00156             }
+<a name="l00157"></a>00157 
+<a name="l00158"></a>00158             <span class="keywordflow">return</span> this-&gt;table[hash].context;
+<a name="l00159"></a>00159         }
+<a name="l00160"></a>00160 
+<a name="l00164"></a>00164         <span class="keywordtype">void</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#aeacbf2678eb4a4969c49c1615a67aea3" title="Remove all items from table.">clear</a>();
+<a name="l00165"></a>00165         <span class="keyword">virtual</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#ad684a9778de149456a41390fa49e43d9">~hashTable</a>();
+<a name="l00166"></a>00166 
+<a name="l00167"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">00167</a>         <a class="code" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> <a class="code" href="class_hidden_f_s_1_1hash_table.html#a1ce5994606141bd52f4716d20c518087">begin</a>()<span class="keyword"> const </span>{
+<a name="l00168"></a>00168             <span class="keywordflow">return</span> this-&gt;table.begin();
+<a name="l00169"></a>00169         }
+<a name="l00170"></a>00170 
+<a name="l00171"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">00171</a>         <a class="code" href="class_hidden_f_s_1_1hash_table.html#a54bb86d284fde0ba4eace0ced6c2f32f">table_t_constiterator</a> <a class="code" href="class_hidden_f_s_1_1hash_table.html#aa78dd6154f5df09955370185949c02f8">end</a>()<span class="keyword"> const </span>{
+<a name="l00172"></a>00172             <span class="keywordflow">return</span> this-&gt;table.end();
+<a name="l00173"></a>00173         }
+<a name="l00174"></a>00174 
+<a name="l00175"></a><a class="code" href="class_hidden_f_s_1_1hash_table.html#ae6ae6bc912125f073d7b06dcf9e5d48d">00175</a>         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_hidden_f_s_1_1hash_table.html#ae6ae6bc912125f073d7b06dcf9e5d48d">size</a>()<span class="keyword"> const </span>{
+<a name="l00176"></a>00176             <span class="keywordflow">return</span> this-&gt;table.size();
+<a name="l00177"></a>00177         }
+<a name="l00178"></a>00178 
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180         <span class="keyword">private</span>:
+<a name="l00181"></a>00181             <a class="code" href="class_hidden_f_s_1_1hash_table.html#a1adeb113dff827d74df3d1e98b8d6d01">table_t</a> table;
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183     };
+<a name="l00184"></a>00184 };
+<a name="l00185"></a>00185 
+<a name="l00186"></a>00186 <span class="preprocessor">#endif  </span><span class="comment">/* HASHTABLE_H */</span>
+<a name="l00187"></a>00187 
+</pre></div></div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

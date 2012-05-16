@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>hiddenfs-lib: Dokumentace souboru types.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Generováno programem Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Hledat');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Hlavní&nbsp;stránka</span></a></li>
+      <li><a href="pages.html"><span>Ostatní&nbsp;stránky</span></a></li>
+      <li><a href="namespaces.html"><span>Prostory&nbsp;jmen</span></a></li>
+      <li><a href="annotated.html"><span>Třídy</span></a></li>
+      <li class="current"><a href="files.html"><span>Soubory</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Hledat" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Seznam&nbsp;souborů</span></a></li>
+      <li><a href="globals.html"><span>Symboly&nbsp;v&nbsp;souborech</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Třídy</a> &#124;
+<a href="#namespaces">Prostory jmen</a> &#124;
+<a href="#define-members">Definice maker</a> &#124;
+<a href="#typedef-members">Definice typů</a>  </div>
+  <div class="headertitle">
+<h1>Dokumentace souboru types.h</h1>  </div>
+</div>
+<div class="contents">
+<code>#include &lt;bits/types.h&gt;</code><br/>
+<code>#include &lt;cryptopp/sha.h&gt;</code><br/>
+<code>#include &lt;set&gt;</code><br/>
+<code>#include &lt;stdexcept&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;sstream&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+
+<p><a href="types_8h_source.html">Zobrazit zdrojový text tohoto souboru.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Třídy</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hidden_f_s_1_1smart_const.html">HiddenFS::smartConst&lt; T &gt;</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Objekt plní funkci chytré konstanty - lze ji číst bez omezení, ale nastavit právě jednou.  <a href="class_hidden_f_s_1_1smart_const.html#_details">...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_file.html">HiddenFS::vFile</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Reprezentace virtuálního souboru - skrývaného souboru.  <a href="struct_hidden_f_s_1_1v_file.html#_details">...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1v_block.html">HiddenFS::vBlock</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">abstrakce datového bloku obsahující právě jeden fragment  <a href="struct_hidden_f_s_1_1v_block.html#_details">...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1chain_item.html">HiddenFS::chainItem</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Popis obsahu jedné entity (složky length a content*).  <a href="struct_hidden_f_s_1_1chain_item.html#_details">...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_hidden_f_s_1_1context__t.html">HiddenFS::context_t</a></td></tr>
+<tr><td colspan="2"><h2><a name="namespaces"></a>
+Prostory jmen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">namespace &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html">HiddenFS</a></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Definice maker</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8h.html#ae0595a802b5defaa9dbe70a24924307b">BLOCK_MAX_LENGTH</a>&nbsp;&nbsp;&nbsp;(1 &lt;&lt; 12)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">maximální délka obecně pro zápis dat do úložiště (implicitně 4kB)  <a href="#ae0595a802b5defaa9dbe70a24924307b"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Definice typů</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __uint32_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ad8c88a9c4f8b616ede69352fd52c3642">HiddenFS::block_number_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ čísla bloku v rámci skutečného souboru  <a href="#ad8c88a9c4f8b616ede69352fd52c3642"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __uint32_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a205950fe2b585160ef16e562c81c89df">HiddenFS::inode_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ pro číslování souborů  <a href="#a205950fe2b585160ef16e562c81c89df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#af900a7c6ca722caf82db0b2746d0c49e">HiddenFS::flags_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ad697dc14547ebb74f871a269ae645121">HiddenFS::hash_ascii_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ pro ASCII reprezentaci binární podoby hash skutečného souboru  <a href="#ad697dc14547ebb74f871a269ae645121"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __u_char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a78ec834dee5c77304e57f21c5a1c9bb7">HiddenFS::bytestream_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ "jednotky" pro manipulaci s binárním obsahem (unsigned char)  <a href="#a78ec834dee5c77304e57f21c5a1c9bb7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef bytestream_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#afc177eeed20be4ba175a3a04b0432ef9">HiddenFS::hash_raw_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __uint32_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ae38522e6e96414605738fd220646f40a">HiddenFS::fragment_t</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __u_char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a83303481f25d1501d8996176b5bee37b">HiddenFS::id_byte_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ identifikačního byte pro rozlišení superbloku a běžného bloku (unsigned char)  <a href="#a83303481f25d1501d8996176b5bee37b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef __uint32_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#a704d5620f08a3213ec2f5c0a33ffe46c">HiddenFS::chain_count_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">datový typ pro uchování počtu entit v rámci jednoho bloku  <a href="#a704d5620f08a3213ec2f5c0a33ffe46c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; chainItem &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_hidden_f_s.html#ae7291a022cfb068cc9f726bc3f752285">HiddenFS::chainList_t</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Abstrakce spojového seznamu, který slouží pro manipulaci s entitami (jakožto prvky obecné délky) vector&lt;chainItem&gt;  <a href="#ae7291a022cfb068cc9f726bc3f752285"></a><br/></td></tr>
+</table>
+<hr/><h2>Dokumentace k definicím maker</h2>
+<a class="anchor" id="ae0595a802b5defaa9dbe70a24924307b"></a><!-- doxytag: member="types.h::BLOCK_MAX_LENGTH" ref="ae0595a802b5defaa9dbe70a24924307b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BLOCK_MAX_LENGTH&nbsp;&nbsp;&nbsp;(1 &lt;&lt; 12)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>maximální délka obecně pro zápis dat do úložiště (implicitně 4kB) </p>
+
+</div>
+</div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Vše</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Třídy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Prostory jmen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Soubory</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funkce</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Proměnné</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Definice typů</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&nbsp;</span>Výčty</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&nbsp;</span>Hodnoty výčtu</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&nbsp;</span>Definice maker</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Generováno st 16. kvě 2012 12.39:26 pro projekt hiddenfs-lib programem&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>
