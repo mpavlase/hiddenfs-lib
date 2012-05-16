@@ -1,5 +1,7 @@
-#
-# @author Martin Pavlásek (xpavla07@stud.fit.vutbr.cz)
+# Makefile
+
+# Project:  HiddenFS-lib
+# Author:   Martin Pavlásek (xpavla07@stud.fit.vutbr.cz)
 #
 
 INCLUDE=
@@ -12,7 +14,7 @@ CXXFLAGS=-g -Wall -pedantic
 CXXFLAGS=-g -std=c++0x -Wall
 OBJFILES=structTable.o contentTable.o hiddenfs-lib.o hashTable.o common.o superBlock.o
 
-.PHONY: all valgrind clean mount umount doc ddd
+.PHONY: doc
 
 all: $(PROJECT)
 
@@ -40,26 +42,9 @@ $(PROJECT).o: $(PROJECT).cpp $(OBJFILES)
 # `pkg-config taglib --libs` `pkg-config taglib --cflags`
 $(PROJECT): $(PROJECT).cpp $(OBJFILES)
 	$(CXX) $(CXXFLAGS) `pkg-config fuse --libs` `pkg-config fuse --cflags` -lcrypto++ -lid3 -lm $(INCLUDE) $(PROJECT).cpp $(OBJFILES) -o $(OUTPUT)
-	@echo "---"
-	@echo "Kompilace je OK."
+#	@echo "---"
+#	@echo "Kompilace je OK."
 ###############################################
-valgrind: all
-	valgrind -v --leak-check=full --show-reachable=no ./$(OUTPUT) -d  -s ../../mp3_examples -m ./vfs
-
-mount: all
-	./$(OUTPUT) -d vfs/
-
-debug: all umount
-	gdb -x list.gdb --args ./$(OUTPUT) -d -s ../../mp3_examples -m ./vfs
-
-ddd: all umount
-	ddd -x list.gdb --args ./$(OUTPUT) -d -s ../../mp3_examples -m ./vfs -p 123
-
-umount:
-	./umount.sh
-
-run: umount all mount
-	@echo "mp3fs je už nyní odpojený."
 
 doc:
 	doxygen

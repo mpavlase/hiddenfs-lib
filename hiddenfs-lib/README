@@ -7,18 +7,18 @@ Autor:  Martin Pavlásek, 2012
 Souhrn
 ---------------------
 Knihovna psaná v jazyce C++, využívajá rozhraní FUSE, která umožňuje ukládat
-soubory do jiných prostřednictvím úložiště, které si lze implementovat podle potřeby,
-přiložený příklad pracuje s ID3 tagy souborů MP3.
+soubory do jiných prostřednictvím úložiště, které si lze implementovat podle potřeby.
+Přiložený příklad pracuje s ID3 tagy souborů MP3.
 
 
 Závislosti
 ---------------------
-Pro kompilaci je nutné mít nainstalovány následující knihovny (balíčky):
-- libcrypto++-dev
-- libid3-dev
-- libfuse-dev
-- gcc 4.3 a vyšší
-- GNU Make
+Pro kompilaci je nutné mít nainstalovány následující knihovny (v závorce je název konkrétního balíčku, který byl použit při vývoji):
+- libcrypto++-dev (libcrypto++-dev)
+- libid3-dev (libid3-3.8.3-dev)
+- libfuse-dev (libfuse-dev)
+- gcc 4.3 a vyšší (gcc)
+- GNU Make (make)
 
 
 Kompilace a použití
