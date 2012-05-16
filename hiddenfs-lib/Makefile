@@ -14,7 +14,7 @@ CXXFLAGS=-g -Wall -pedantic
 CXXFLAGS=-g -std=c++0x -Wall
 OBJFILES=structTable.o contentTable.o hiddenfs-lib.o hashTable.o common.o superBlock.o
 
-.PHONY: doc
+.PHONY: doc clean
 
 all: $(PROJECT)
 
@@ -51,5 +51,5 @@ doc:
 
 clean:
 	rm -f *.bin *.o *.a
-	rm -rf doc/html/*
+	rm -rf doc-api/html/*
 
